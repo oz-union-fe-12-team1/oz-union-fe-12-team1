@@ -1,9 +1,16 @@
+import Button from "./components/ui/Button";
+
 export default function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-green-500">
-      <h1 className="text-4xl font-bold text-white drop-shadow-lg">
-        App.jsx
-      </h1>
+  return (<>
+    <div className="flex flex-col gap-5">
+      <Button size="sm" variant="common">common-m</Button>
+
+      <Button size="md" variant="common">common-m</Button>
+
+      <Button size="lg" variant="common">common-m</Button>
     </div>
+
+
+  </>  
   );
 }
