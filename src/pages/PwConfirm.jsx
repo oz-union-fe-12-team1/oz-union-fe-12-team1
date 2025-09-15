@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import Modal from '../components/ui/Modal';
+import { useState } from "react";
+import Modal from "../components/ui/Modal";
 
-export function Login() {
+export function PwConfirm() {
   const [openModal] = useState(true);
 
   return (
-    <div className="flex h-screen w-screen flex-col">
-      <header className="flex h-16 items-center bg-slate-900 px-6 text-white">
+    <div className="flex flex-col w-screen h-screen">
+      <header className="h-16 bg-slate-900 text-white flex items-center px-6">
         <h1 className="text-lg font-medium"></h1>
       </header>
       <main className="flex-1 bg-slate-100 p-4">
-        <div className="grid h-full grid-cols-[3fr_1fr] gap-4">
+        <div className="h-full grid grid-cols-[3fr_1fr] gap-4">
           <div className="grid grid-rows-[1fr_2fr] gap-4">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
               <div className="bg-white rounded-lg p-6 flex items-center justify-center">
@@ -30,9 +30,11 @@ export function Login() {
         </div>
       </main>
 
-      <Modal openModal={openModal} title={'로그인'}>
-        로그인
-      </Modal>
+      <div className="w-[300px]">
+        <Modal openModal={openModal} title={"비밀번호 찾기"}>
+          비밀번호 찾기
+        </Modal>
+      </div>
     </div>
   );
 }

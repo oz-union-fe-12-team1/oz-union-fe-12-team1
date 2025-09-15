@@ -13,6 +13,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/pwconfirm" element={<PwConfirm />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
       <Route
         path="/main"
