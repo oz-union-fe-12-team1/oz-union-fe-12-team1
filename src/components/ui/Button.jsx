@@ -9,8 +9,8 @@ export default function Button ({
 
   const variants= {
     common: "bg-[#3456AF] hover:bg-[#24469d] disabled:bg-[#214294]",
-    cancel: "bg-[#636e8b] hover:bg-[#44506e] disabled:bg-[#495060]",
-    confirm: "bg-[#1d3d8d] hover:bg-[#102d77] disabled:bg-[#1c3063]",
+    cancle: "bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060]",
+    confirm: "bg-[#3058bd] hover:bg-[#1f45a5] disabled:bg-[#1c3063]",
   };
 
   const sizes = {

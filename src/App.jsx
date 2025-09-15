@@ -1,16 +1,21 @@
-import Button from "./components/ui/Button";
-
-export default function App() {
-  return (<>
-    <div className="flex flex-col gap-5">
-      <Button size="sm" variant="common">common-m</Button>
-
-      <Button size="md" variant="common">common-m</Button>
-
-      <Button size="lg" variant="common">common-m</Button>
-    </div>
+import './App.css'
+import { Routes, Route} from 'react-router-dom';
+import MainPage from './MainPage';
+import { SignIn } from './components/SignIn';
+import PrivateRoute from '../PrivateRoute';
 
 
-  </>  
-  );
+function App() {
+
+  return (
+    <Routes>
+      <Route path="/login" element={<SignIn/>} />
+      <Route path="/main" element={
+          <PrivateRoute>
+            <MainPage />
+          </PrivateRoute>} />
+    </Routes>
+  )
 }
+
+export default App;
