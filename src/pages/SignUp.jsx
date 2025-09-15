@@ -19,7 +19,7 @@ export function SignUp() {
     return (
       <div className="buttons w-full flex felx-col gap-2 pt-6">
         <LoginButton type="submit" variant="common" size="md">
-          회원가입
+          회원가입asdf
         </LoginButton>
       </div>
     );
