@@ -10,7 +10,9 @@ export function LoginInput({
 }) {
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
-  const errorMessage = "text-red-500 text-sm mt-1";
+  const errorMessage = error
+    ? "text-red-500 text-sm mt-1"
+    : "text-white text-sm mt-1";
 
   return (
     <div>
@@ -28,7 +30,7 @@ export function LoginInput({
           className="border px-3 rounded-sm"
           {...rest}
         />
-        {error && <div className={errorMessage}>{error}</div>}
+        <div className={errorMessage}>{error}</div>
       </div>
     </div>
   );

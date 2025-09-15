@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input } from "../components/ui/Input";
 import LoginModal from "../components/ui/LoginModal";
 import LoginButton from "../components/ui/LoginButtons";
+import { LoginInput } from "../components/ui/LoginInput";
 
 export function SignUp() {
   const openModal = true;
@@ -13,8 +14,6 @@ export function SignUp() {
     confirm: "",
   });
   const [error, setError] = useState({});
-
-  const asdf = 123;
 
   const footer = () => {
     return (
@@ -52,54 +51,54 @@ export function SignUp() {
         </div>
       </main>
       <LoginModal openModal={openModal} title="회원가입" footer={footer()}>
-        <div className="flex flex-col gap-6 mt-2 mb-2">
+        <div className="flex flex-col gap-4 mt-2 mb-2">
           <div className="flex gap-1">
-            <Input
+            <LoginInput
               label={"이메일"}
               type={"email"}
               placeholder="이메일을 입력하세요"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })} //state 업데이트
               // onBlur={} //유효성검사 메세지 출력
-              error={asdf}
+              error={"1234"}
             />
-            <button className="">인증번호 전송</button>
+            <button className="h-[26px]">인증번호 전송</button>
           </div>
-          <Input
+          <LoginInput
             label={"이름"}
             type={"text"}
             placeholder="이름을 입력하세요"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={error.name}
+            error={"1234"}
           />
-          <Input
+          <LoginInput
             label={"생년월일"}
             type={"date"}
             placeholder="생년월일 작성"
             value={form.birth}
             onChange={(e) => setForm({ ...form, birth: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={error.birth}
+            error={"1234"}
           />
-          <Input
+          <LoginInput
             label={"비밀번호"}
             type={"password"}
             placeholder="비밀번호 입력"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={error.password}
+            error={"1234"}
           />
-          <Input
+          <LoginInput
             label={"비밀번호 확인"}
             type={"password"}
             placeholder="비밀번호 입력 확인"
             value={form.confirm}
             onChange={(e) => setForm({ ...form, confirm: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={error.confirm}
+            error={"1234"}
           />
         </div>
       </LoginModal>
