@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Input } from "../components/ui/Input";
 import LoginModal from "../components/ui/LoginModal";
 import LoginButton from "../components/ui/LoginButtons";
 import { LoginInput } from "../components/ui/LoginInput";
@@ -14,12 +13,24 @@ export function SignUp() {
     confirm: "",
   });
   const [error, setError] = useState({});
+  const [agreed, setAgreed] = useState(false);
+  console.log(agreed);
+
+  function handleSubmit() {
+    setError();
+  }
 
   const footer = () => {
     return (
-      <div className="buttons w-full flex felx-col gap-2 pt-6">
-        <LoginButton type="submit" variant="common" size="md">
-          회원가입asdf
+      <div className="flex flex-col buttons w-full gap-2 pt-6">
+        <LoginButton
+          type="submit"
+          variant={agreed ? "common" : "cancle"}
+          size="md"
+          disabled={!agreed}
+          form="signupForm"
+        >
+          회원가입
         </LoginButton>
       </div>
     );
@@ -50,9 +61,14 @@ export function SignUp() {
           </div>
         </div>
       </main>
+
       <LoginModal openModal={openModal} title="회원가입" footer={footer()}>
-        <div className="flex flex-col gap-4 mt-2 mb-2">
-          <div className="flex gap-1">
+        <form
+          id="signupForm"
+          className="flex flex-col gap-1 mt-2"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex justify-between">
             <LoginInput
               label={"이메일"}
               type={"email"}
@@ -60,9 +76,14 @@ export function SignUp() {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })} //state 업데이트
               // onBlur={} //유효성검사 메세지 출력
-              error={"1234"}
+              error={error.email}
             />
-            <button className="h-[26px]">인증번호 전송</button>
+            <button
+              type="button"
+              className="flex justify-center items-center h-[35px] border-[1px] rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400"
+            >
+              인증번호 전송
+            </button>
           </div>
           <LoginInput
             label={"이름"}
@@ -71,7 +92,7 @@ export function SignUp() {
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={"1234"}
+            error={error.name}
           />
           <LoginInput
             label={"생년월일"}
@@ -80,7 +101,7 @@ export function SignUp() {
             value={form.birth}
             onChange={(e) => setForm({ ...form, birth: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={"1234"}
+            error={error.birth}
           />
           <LoginInput
             label={"비밀번호"}
@@ -89,7 +110,7 @@ export function SignUp() {
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={"1234"}
+            error={error.password}
           />
           <LoginInput
             label={"비밀번호 확인"}
@@ -98,9 +119,20 @@ export function SignUp() {
             value={form.confirm}
             onChange={(e) => setForm({ ...form, confirm: e.target.value })} //state 업데이트
             // onBlur={} //유효성검사 메세지 출력
-            error={"1234"}
+            error={error.confirm}
           />
-        </div>
+          <div className="flex gap-1">
+            <input
+              id="cb"
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            ></input>
+            <label htmlFor="cb" className="select-none">
+              개인 정보 수집 이용 동의
+            </label>
+          </div>
+        </form>
       </LoginModal>
     </div>
   );

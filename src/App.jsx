@@ -8,6 +8,7 @@ import MyPage from './components/Mypage';
 import Admin from './components/Admin';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
+import MyPage from './components/Mypage';
 
 function App() {
   return (

@@ -11,8 +11,8 @@ export function LoginInput({
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
   const errorMessage = error
-    ? "text-red-500 text-sm mt-1"
-    : "text-white text-sm mt-1";
+    ? "text-red-500 text-[14px] mt-1 select-none"
+    : "text-white text-[14px] mt-1 select-none";
 
   return (
     <div>
@@ -27,10 +27,10 @@ export function LoginInput({
           type={type}
           onChange={onChange}
           onBlur={onBlur}
-          className="border px-3 rounded-sm"
+          className="border px-3 rounded-sm h-[35px] border-gray-400"
           {...rest}
         />
-        <div className={errorMessage}>{error}</div>
+        <div className={errorMessage}>{error ? error : "123"}</div>
       </div>
     </div>
   );
