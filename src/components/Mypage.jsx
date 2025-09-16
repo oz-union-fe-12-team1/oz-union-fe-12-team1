@@ -19,12 +19,20 @@ export default function MyPage() {
       {/* 헤더 */}
       <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
         <h1 className="text-lg font-medium">Logo</h1>
-        <button
-          className="w-10 h-10 rounded-full bg-blue-500 text-white"
-          onClick={() => setOpenMyPage(true)}
-        >
-          mypage
-        </button>
+        <div className='flex gap-7'>
+          <button
+            className="w-10 h-10 rounded-full bg-blue-500 text-white"
+            onClick={() => setOpenMyPage(true)}
+          >
+            mypage
+          </button>
+          <button
+            className="w-10 h-10 rounded-full bg-white text-blue-500"
+            onClick={() => setAdminAccount(!adminAccount)}
+          >
+            admin
+          </button>
+        </div>
       </header>
 
       {/* 메인 */}
@@ -67,6 +75,8 @@ export default function MyPage() {
                 setMe(updated);
               }}
             />
+
+            
           </div>
         </div>
       </main>
