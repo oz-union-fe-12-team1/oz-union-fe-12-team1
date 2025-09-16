@@ -6,6 +6,7 @@ import PrivateRoute from '../PrivateRoute';
 import { Login } from './pages/Login';
 import MyPage from './components/MyPage';
 import ErrorPage from './pages/ErrorPage';
+import LoadingPage from './pages/LoadingPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       />
       <Route path="/Mypage" element={<MyPage />} />
       <Route path="/*" element={<ErrorPage />} />
+      <Route path="/loading" element={<LoadingPage />} />
     </Routes>
   );
 }
