@@ -1,3 +1,4 @@
+import Admin from "../components/Admin";
 import Button from "../components/ui/Button";
 
 export function Login() {
