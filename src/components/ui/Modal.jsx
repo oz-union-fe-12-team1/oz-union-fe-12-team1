@@ -1,7 +1,5 @@
 export default function Modal({ openModal, title, children, onClose, footer }) {
   if (!openModal) return null;
-export default function Modal({ openModal, title, children, onClose, footer }) {
-  if (!openModal) return null;
 
   return (
     <div //모달 뒤 배경화면 (모달과 배경화면으로 나눠서=> 배경화면 클릭 시 모달 종료되게 하고 / 모달 부분 클릭시 종료 안 되게 하기 위함.)
@@ -26,6 +24,4 @@ export default function Modal({ openModal, title, children, onClose, footer }) {
       </div>
     </div>
   );
-  );
 }
-
