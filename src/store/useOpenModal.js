@@ -1,6 +1,12 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export const useOpenModal = create((set) => ({
-openModal: '',
-setOpenModal: (openModal)=>set({openModal}),
-}))
+  openModal: '',
+  setOpenModal: (openModal) => set({ openModal }),
+}));
+import { create } from 'zustand';
+
+export const useOpenModal = create((set) => ({
+  openModal: '',
+  setOpenModal: (openModal) => set({ openModal }),
+}));

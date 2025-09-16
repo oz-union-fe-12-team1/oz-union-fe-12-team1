@@ -1,9 +1,17 @@
-import { useState } from 'react';
-import { Login } from '../pages/Login';
+import { useEffect, useState } from 'react';
 import { useOpenMyPage } from '../store/useOpenMyPage';
+import { getMeMock, updateMeMock } from '../mockData';
 
 export default function MyPage() {
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
+  const [me, setMe] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getMeMock();
+      setMe(data);
+    })();
+  }, []);
 
   return (
     <div className="flex flex-col w-screen h-screen">
@@ -48,6 +56,11 @@ export default function MyPage() {
             <PinkMyPageCard
               open={openMyPage}
               onClose={() => setOpenMyPage(false)}
+              me={me}
+              onUpdate={async (payload) => {
+                const updated = await updateMeMock(payload);
+                setMe(updated);
+              }}
             />
           </div>
         </div>
@@ -57,7 +70,7 @@ export default function MyPage() {
 }
 
 /* ---------- 분홍 카드 컴포넌트 ---------- */
-function PinkMyPageCard({ open, onClose }) {
+function PinkMyPageCard({ open, onClose, me, onUpdate }) {
   // view / edit / delete 3단계
   const [mode, setMode] = useState('view');
 
@@ -72,28 +85,63 @@ function PinkMyPageCard({ open, onClose }) {
       ].join(' ')}
     >
       <div className="h-full bg-pink-300 p-6 flex flex-col">
-        {/* 닫기 */}
-        <button
-          className="ml-auto text-black/80 hover:text-black text-xl"
-          onClick={onClose}
-          aria-label="close"
-        >
-          ✕
-        </button>
+        <div className="flex items-center justify-between">
+          {/* 뒤로가기 버튼: edit/delete 모드에서만 */}
+          {mode !== 'view' && (
+            <button
+              className="text-black/80 hover:text-black text-xl"
+              onClick={() => setMode('view')}
+              aria-label="back"
+            >
+              ←
+            </button>
+          )}
+          {/* 닫기 */}
+          <button
+            className="ml-auto text-black/80 hover:text-black text-xl"
+            onClick={onClose}
+            aria-label="close"
+          >
+            ✕
+          </button>
+        </div>
 
         {/* 프로필 */}
         <div className="flex flex-col items-center mt-2">
-          <div className="w-20 h-20 rounded-full bg-black" />
-          <span className="mt-2 text-sm text-slate-800">0000@gmail.com</span>
+          <div className="w-20 h-20 rounded-full bg-black">
+            {me?.profile_image && (
+              <img
+                src={me.profile_image}
+                alt="profile"
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
+          <span className="mt-2 text-sm text-slate-800">
+            {me?.email ?? '-'}
+          </span>
         </div>
 
         <hr className="my-4 border-black/20" />
 
         {/* 본문 (모드별 화면) */}
         <div className="flex-1">
-          {mode === 'view' && <ViewSection onAsk={() => {}} />}
+          {mode === 'view' && (
+            <ViewSection
+              onAsk={() => {}}
+              name={me?.username}
+              birthdate={me?.birthdate}
+            />
+          )}
 
-          {mode === 'edit' && <EditSection />}
+          {mode === 'edit' && (
+            <EditSection
+              defaultUsername={me?.username ?? ''}
+              defaultBirthdate={me?.birthdate ?? ''}
+              defaultProfileImage={me?.profile_image ?? ''}
+              onSubmit={onUpdate}
+            />
+          )}
 
           {mode === 'delete' && (
             <DeleteSection onCancel={() => setMode('view')} />
@@ -113,10 +161,13 @@ function PinkMyPageCard({ open, onClose }) {
 }
 
 /* ---------- 섹션들 ---------- */
-function ViewSection({ onAsk }) {
+function ViewSection({ onAsk, name, birthdate }) {
   return (
     <div className="flex-1 space-y-4 text-center">
-      <p className="text-lg font-semibold">XXX님 어서오세요!</p>
+      <p className="text-lg font-semibold">
+        {(name ?? '회원') + '님 어서오세요!'}
+      </p>
+      <p className="text-sm text-slate-700">생년월일: {birthdate ?? '—'}</p>
       <p className="text-sm text-slate-700">
         도움이 필요하신가요?
         <button
@@ -130,15 +181,45 @@ function ViewSection({ onAsk }) {
   );
 }
 
-function EditSection() {
+function EditSection({
+  defaultUsername,
+  defaultBirthdate,
+  defaultProfileImage,
+  onSubmit,
+}) {
+  const [username, setUsername] = useState(defaultUsername);
+  const [birthdate, setBirthdate] = useState(defaultBirthdate); // YYYY-MM-DD
+  const [profileImage, setProfileImage] = useState(defaultProfileImage);
+
+  const handleSubmitProfile = async () => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthdate)) {
+      alert('생년월일은 YYYY-MM-DD 형식이어야 합니다.');
+      return;
+    }
+    await onSubmit({ username, profile_image: profileImage, birthdate });
+    alert('프로필이 수정되었습니다.');
+  };
+
   return (
     <div className="space-y-4">
       <Label>이미지 변경</Label>
-      <input type="file" className="block w-full text-sm" />
+      <input
+        type="url"
+        className="block w-full text-sm input"
+        placeholder="https://example.com/me.png"
+        value={profileImage}
+        onChange={(e) => setProfileImage(e.target.value)}
+      />
 
       <Label>생년월일 변경</Label>
       <div className="flex gap-2">
-        <input className="input flex-1" placeholder="YYYY.MM.DD" />
+        <input
+          className="input flex-1"
+          placeholder="YYYY.MM.DD"
+          type="date"
+          value={birthdate}
+          onChange={(e) => setBirthdate(e.target.value)}
+        />
         <button className="btn">적용</button>
       </div>
 

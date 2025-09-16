@@ -4,6 +4,7 @@ import MainPage from './MainPage';
 import { SignIn } from './components/SignIn';
 import PrivateRoute from '../PrivateRoute';
 import { Login } from './pages/Login';
+import MyPage from './components/MyPage';
 
 function App() {
   return (
