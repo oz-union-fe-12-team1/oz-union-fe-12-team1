@@ -10,6 +10,6 @@ export default function Schedule() {
   const [list, setList] = useState([]);
 
   const handleChange = (e) => {
-    const
+
   }
 }
