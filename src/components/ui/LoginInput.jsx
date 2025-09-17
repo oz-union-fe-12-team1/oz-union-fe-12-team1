@@ -11,11 +11,11 @@ export function LoginInput({
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
   const errorMessage = error
-    ? "text-red-500 text-[14px] mt-1 select-none"
-    : "text-white text-[14px] mt-1 select-none";
+    ? 'text-red-500 text-[14px] mt-1 select-none'
+    : 'text-white text-[14px] mt-1 select-none';
 
   return (
-    <div>
+    <div className="flex flex-col flex-1">
       {label && (
         <label htmlFor={id} className="opacity-0 sr-only">
           {label}
@@ -27,10 +27,10 @@ export function LoginInput({
           type={type}
           onChange={onChange}
           onBlur={onBlur}
-          className="border px-3 rounded-sm h-[35px] border-gray-400"
+          className="border px-3 rounded-sm h-[35px] border-gray-400 w-full"
           {...rest}
         />
-        <div className={errorMessage}>{error ? error : "123"}</div>
+        <div className={errorMessage}>{error ? error : '123'}</div>
       </div>
     </div>
   );

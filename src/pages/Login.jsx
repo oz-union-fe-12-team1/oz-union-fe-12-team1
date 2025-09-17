@@ -2,21 +2,34 @@ import { useState } from 'react';
 import LoginModal from '../components/ui/LoginModal';
 import { LoginInput } from '../components/ui/LoginInput';
 import LoginButton from '../components/ui/LoginButtons';
+import { useNavigate } from 'react-router-dom';
+import { newError } from '../utils/validate';
 
 export function Login() {
+  const navigate = useNavigate();
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
-    name: '',
-    birth: '',
     password: '',
-    confirm: '',
   });
-  const [error, setError] = useState({});
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+  });
 
-  function handleSubmit() {
-    setError();
+  function handleSubmit(e) {
+    e.preventDefault();
+    setTouched({
+      email: true,
+      password: true,
+    });
   }
+
+  const errors = newError(form);
+
+  const mustFilled = form.email.length && form.password.length;
+  const noError = !errors.email && !errors.password;
+  const onButton = noError && mustFilled;
 
   const footer = () => {
     return (
@@ -24,13 +37,14 @@ export function Login() {
         <div className="buttons flex flex-col buttons w-full gap-2 pt-6">
           <LoginButton
             type="submit"
-            variant="cancle"
+            variant={onButton ? 'common' : 'cancle'}
             size="md"
+            disabled={!onButton}
             form="loginForm"
           >
             로그인
           </LoginButton>
-          <button className="flex justify-center items-center h-[40px] bg-[#f2f2f2] rounded-[0.6rem]">
+          <button className="flex justify-center items-center h-[40px] bg-[#f2f2f2] hover:bg-[#001d35]/[0.08] rounded-[0.6rem]">
             <img className="w-6" src=".\src\assets\pngegg.png" alt="google" />
             구글로 시작하기
           </button>
@@ -38,9 +52,15 @@ export function Login() {
 
         <div className="flex justify-between mt-4">
           <div>
-            처음이신가요? <span>회원가입</span>
+            처음이신가요?
+            <button
+              className="text-[#3058bd] font-bold"
+              onClick={() => navigate('/signup')}
+            >
+              회원가입
+            </button>
           </div>
-          <div>비밀번호 찾기</div>
+          <button onClick={() => navigate('/pwconfirm')}>비밀번호 찾기</button>
         </div>
       </div>
     );
@@ -84,9 +104,11 @@ export function Login() {
               type={'email'}
               placeholder="이메일을 입력하세요"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })} //state 업데이트
-              // onBlur={} //유효성검사 메세지 출력
-              error={error.email}
+              onChange={(e) => {
+                setForm((email) => ({ ...email, email: e.target.value }));
+              }} //state 업데이트
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))} //유효성검사 메세지 출력
+              error={touched.email ? errors.email : ''}
             />
           </div>
           <LoginInput
@@ -94,9 +116,12 @@ export function Login() {
             type={'password'}
             placeholder="비밀번호 입력"
             value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })} //state 업데이트
-            // onBlur={} //유효성검사 메세지 출력
-            error={error.password}
+            onChange={(e) => {
+              const next = e.target.value;
+              setForm((p) => ({ ...p, password: next }));
+              setTouched((t) => ({ ...t, password: true }));
+            }}
+            error={touched.password ? errors.password : ''}
           />
         </form>
       </LoginModal>
