@@ -3,6 +3,7 @@ import { LoginInput } from '../components/ui/LoginInput';
 import { useState } from 'react';
 import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
+import { newError } from '../utils/validate';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -12,7 +13,22 @@ export function PwConfirm() {
     password: '',
     confirm: '',
   });
-  const [error, setError] = useState({});
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    confirm: false,
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setTouched({
+      email: true,
+      password: true,
+      confirm: true,
+    });
+  }
+
+  const errors = newError(form);
 
   const footer = () => {
     return (
@@ -70,16 +86,18 @@ export function PwConfirm() {
         title={'비밀번호 찾기'}
         footer={footer()}
       >
-        <form id="pwConfirmForm" action="">
+        <form id="pwConfirmForm" onSubmit={handleSubmit}>
           <div className="flex justify-between gap-2">
             <LoginInput
               label={'이메일'}
               type={'email'}
               placeholder="이메일을 입력하세요"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })} //state 업데이트
-              // onBlur={} //유효성검사 메세지 출력
-              error={error.email}
+              onChange={(e) => {
+                setForm((email) => ({ ...email, email: e.target.value }));
+              }} //state 업데이트
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))} //유효성검사 메세지 출력
+              error={touched.email ? errors.email : ''}
             ></LoginInput>
             <button
               type="button"
@@ -94,18 +112,24 @@ export function PwConfirm() {
             type={'password'}
             placeholder="비밀번호 입력"
             value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })} //state 업데이트
-            // onBlur={} //유효성검사 메세지 출력
-            error={error.password}
+            onChange={(e) => {
+              const next = e.target.value;
+              setForm((p) => ({ ...p, password: next }));
+              setTouched((t) => ({ ...t, password: true }));
+            }}
+            error={touched.password ? errors.password : ''}
           ></LoginInput>
           <LoginInput
             label={'비밀번호 확인'}
             type={'password'}
             placeholder="비밀번호 입력 확인"
             value={form.confirm}
-            onChange={(e) => setForm({ ...form, confirm: e.target.value })} //state 업데이트
-            // onBlur={} //유효성검사 메세지 출력
-            error={error.confirm}
+            onChange={(e) => {
+              const next = e.target.value;
+              setForm((p) => ({ ...p, confirm: next }));
+              setTouched((t) => ({ ...t, confirm: true }));
+            }}
+            error={touched.confirm ? errors.confirm : ''}
           ></LoginInput>
         </form>
       </LoginModal>
