@@ -1,63 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function News() {
-  const newsData = [
-    {
-      id: 1,
-      title: '1번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 2,
-      title: '2번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 3,
-      title: '3번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 4,
-      title: '4번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 5,
-      title: '5번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 6,
-      title: '6번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 7,
-      title: '7번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 8,
-      title: '8번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 9,
-      title: '9번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-    {
-      id: 10,
-      title: '10번 뉴스',
-      url: 'https://news.naver.com/',
-    },
-  ];
-
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(newsData.length / itemsPerPage);
+  const [newsData, setNewsData] = useState([]);
   const [page, setPage] = useState(0);
 
+  const itemsPerPage = 5;
+
+  useEffect(() => {
+    const dummyData = [
+      {
+        headline: '일정관리해주는 AI, 냥비서가 출시!',
+        url: 'https://news.naver.com/',
+      },
+      { headline: '배가 고파요', url: 'https://news.naver.com/' },
+      { headline: '매콤만두 맛있겠다', url: 'https://news.naver.com/' },
+      { headline: '쏘맥도 맛있겠다', url: 'https://news.naver.com/' },
+      { headline: '아이스크림 맛있겠다', url: 'https://news.naver.com/' },
+      { headline: '오늘 점심 뭐 먹지?', url: 'https://news.naver.com/' },
+    ];
+    setNewsData(dummyData);
+  }, []);
+
+  const totalPages = Math.ceil(newsData.length / itemsPerPage);
   const startIndex = page * itemsPerPage;
   const currentItems = newsData.slice(startIndex, startIndex + itemsPerPage);
 
@@ -70,51 +34,57 @@ export default function News() {
   };
 
   return (
-    <div className="w-full bg-orange-200 rounded-3xl p-6 relative">
-      {/* 뉴스 제목 */}
-      <h2 className="text-lg font-bold mb-4 text-center underline">뉴스</h2>
+    <div className="flex flex-col h-full">
+      <h2 className="text-lg font-bold mb-2 text-slate-800 underline">뉴스</h2>
 
-      {/* 뉴스 리스트 */}
-      <ul className="space-y-2">
-        {currentItems.map((news) => (
-          <li key={news.id}>
-            <a
-              href={news.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-sm text-black hover:underline"
-            >
-              {news.title}
-            </a>
-          </li>
-        ))}
-      </ul>
+      {newsData.length === 0 ? (
+        <p className="text-sm text-slate-500">뉴스를 불러오는 중...</p>
+      ) : (
+        <ul className="flex-1 space-y-2 overflow-auto">
+          {currentItems.map((news, idx) => (
+            <li key={idx}>
+              <a
+                href={news.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-sm text-slate-800 hover:text-blue-600 hover:underline"
+              >
+                {news.headline}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {/* 좌우 버튼 */}
-      <button
-        onClick={handlePrev}
-        className="absolute left-4 bottom-4 bg-white w-8 h-8 rounded-full flex items-center justify-center shadow"
-      >
-        &lt;
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute right-4 bottom-4 bg-white w-8 h-8 rounded-full flex items-center justify-center shadow"
-      >
-        &gt;
-      </button>
+      {/* 페이지네이션 */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center mt-3 space-x-3">
+          <button
+            onClick={handlePrev}
+            className="bg-slate-100 hover:bg-slate-200 w-7 h-7 rounded-full flex items-center justify-center text-slate-600"
+          >
+            &lt;
+          </button>
 
-      {/* 페이지 점 */}
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }).map((_, idx) => (
-          <div
-            key={idx}
-            className={`w-3 h-3 mx-1 rounded-full ${
-              idx === page ? 'bg-black' : 'bg-gray-400'
-            }`}
-          />
-        ))}
-      </div>
+          <div className="flex space-x-2">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-2.5 h-2.5 rounded-full ${
+                  idx === page ? 'bg-blue-600' : 'bg-slate-400'
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="bg-slate-100 hover:bg-slate-200 w-7 h-7 rounded-full flex items-center justify-center text-slate-600"
+          >
+            &gt;
+          </button>
+        </div>
+      )}
     </div>
   );
 }

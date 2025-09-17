@@ -13,7 +13,7 @@ export function Login() {
         <div className="grid h-full grid-cols-[3fr_1fr] gap-4">
           <div className="grid grid-rows-[1fr_2fr] gap-4">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="flex items-center justify-center rounded-lg bg-white p-6">
+              <div className="bg-white rounded-lg p-6 flex flex-col">
                 <News />
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
