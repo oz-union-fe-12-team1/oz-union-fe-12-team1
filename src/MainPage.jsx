@@ -4,12 +4,6 @@ import Button from './components/ui/Button';
 import { Input } from './components/ui/Input';
 import Modal from './components/ui/Modal';
 import { useOpenModal } from './store/useOpenModal';
-import { useState } from 'react';
-import { SignIn } from './components/SignIn';
-import Button from './components/ui/Button';
-import { Input } from './components/ui/Input';
-import Modal from './components/ui/Modal';
-import { useOpenModal } from './store/useOpenModal';
 
 export default function MainPage() {
   const { openModal, setOpenModal } = useOpenModal();
