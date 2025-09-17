@@ -1,91 +1,43 @@
-import { useState } from 'react';
-import { SignIn } from './components/SignIn';
+import Admin from './components/Admin';
+import News from './components/News';
 import Button from './components/ui/Button';
-import { Input } from './components/ui/Input';
-import Modal from './components/ui/Modal';
-import { useOpenModal } from './store/useOpenModal';
 
 export default function MainPage() {
-  const { openModal, setOpenModal } = useOpenModal();
-  const [verification, setVerification] = useState('');
-  const [verificationError, setVerificationError] = useState('');
-
-  const handleVerification = () => {
-    if (verification !== 'check') {
-      setVerificationError('인증번호가 일치하지 않습니다.');
-    } else {
-      setVerificationError('');
-    }
-  };
   return (
-    <>
-      {/* 버튼 */}
-      <div className="flex flex-col gap-5 border p-8">
-        <h1 className="text-black">Common 버튼</h1>
-        <Button size="sm" variant="common">
-          common-m
-        </Button>
-        <Button size="md" variant="common">
-          common-m
-        </Button>
-        <Button size="lg" variant="common">
-          common-m
-        </Button>
-      </div>
-      <div className="flex flex-col gap-5 border p-8">
-        <h1 className="text-black">confirm/cancle 버튼</h1>
-        <div className="flex gap-5">
-          <Button size="sm" variant="confirm">
-            confirm-sm
-          </Button>
-          <Button size="sm" variant="cancle">
-            cancle-sm
-          </Button>
-        </div>
-      </div>
+    <div className="flex h-screen w-screen flex-col">
+      <header className="flex h-16 items-center bg-slate-900 px-6 text-white">
+        <h1 className="text-lg font-medium"></h1>
+      </header>
 
-      {/* input */}
-      <div className="flex flex-col border p-8">
-        <SignIn />
-      </div>
-
-      {/* 모달 */}
-      <div className="border p-8">
-        <Button
-          size="md"
-          variant="common"
-          onClick={() => setOpenModal(!openModal)}
-        >
-          모달 토글
-        </Button>
-
-        <Modal
-          openModal={openModal}
-          title="인증 확인 요청을 보냈습니다. 인증번호를 입력해주세요."
-          onClose={() => setOpenModal()}
-          children={
-            <Input
-              label="인증번호"
-              type="text"
-              placeholder="인증번호를 입력해주세요"
-              value={verification}
-              onChange={(e) => setVerification(e.target.value)}
-              onBlur={handleVerification}
-              error={verificationError}
-            />
-          }
-          footer={
-            <div className="flex gap-5">
-              <Button size="sm" variant="confirm">
-                confirm-sm
-              </Button>
-              <Button size="sm" variant="cancle">
-                cancle-sm
-              </Button>
+      <main className="flex-1 bg-slate-100 p-4">
+        <div className="grid h-full grid-cols-[3fr_1fr] gap-4">
+          <div className="grid grid-rows-[1fr_2fr] gap-4">
+            <div className="grid grid-cols-[2fr_1fr] gap-4">
+              <div className="bg-white rounded-lg p-6 flex flex-col">
+                <News />
+              </div>
+              <div className="flex items-center justify-center rounded-lg bg-white p-6">
+                <span className="text-lg font-medium text-slate-700">날씨</span>
+              </div>
             </div>
-          }
-        />
-      </div>
-    </>
+
+            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+              <span className="text-xl font-medium text-slate-700">메인</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
+            {/* <span className="text-lg font-medium text-white "> /}
+                  <Button size="md" variant="common">Todo List</Button>
+                  <Button size="md" variant="common">일정 리스트</Button>
+                  <Button size="md" variant="common">5일 날씨</Button>
+                  <Button size="md" variant="common">오늘의 운세</Button>
+                  <Button size="md" variant="common">QUIZ</Button>
+                  <Button size="md" variant="common">푸쉬 설정</Button>
+                {/ </span> */}
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
