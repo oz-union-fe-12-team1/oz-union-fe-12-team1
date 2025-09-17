@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 export default function NyangErrorSimple({
   status = 404,
@@ -38,12 +39,11 @@ export default function NyangErrorSimple({
 
           {/* 버튼들 */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={homeHref}
-              className="rounded-xl border border-slate-300 px-4 py-2 text-slate-800 hover:bg-slate-50"
+            <Link to={homeHref}
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50"
             >
               홈으로 가기
-            </a>
+            </Link>
             {onRetry && (
               <button
                 onClick={onRetry}
