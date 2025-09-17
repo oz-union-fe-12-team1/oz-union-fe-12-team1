@@ -5,10 +5,11 @@ import { SignIn } from './components/SignIn';
 import { Login } from './pages/Login';
 import { PwConfirm } from './pages/PwConfirm';
 import { SignUp } from './pages/SignUp';
-import MyPage from './components/Mypage';
+import MyPage from './components/Mypage/Mypage';
 import PrivateRoute from './layout/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
+import Admin from './components/Admin';
 
 function App() {
   return (
