@@ -27,9 +27,9 @@ function App() {
         }
       />
       <Route path="/Mypage" element={<MyPage />} />
-      <Route path="/*" element={<ErrorPage />} />
-      <Route path="/loading" element={<LoadingPage />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/loading" element={<LoadingPage />} />
+      <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
 }
