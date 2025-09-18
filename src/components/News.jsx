@@ -5,15 +5,15 @@ export default function News() {
   const [newsData, setNewsData] = useState([]);
   const [page, setPage] = useState(0);
 
-  const itemsPerPage = 5;
+  const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
     setNewsData(dummyNews);
   }, []);
 
-  const totalPages = Math.ceil(newsData.length / itemsPerPage);
-  const startIndex = page * itemsPerPage;
-  const currentItems = newsData.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(newsData.length / ITEMS_PER_PAGE);
+  const startIndex = page * ITEMS_PER_PAGE;
+  const currentItems = newsData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePrev = () => {
     setPage((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
@@ -31,8 +31,8 @@ export default function News() {
         <p className="text-sm text-slate-500">뉴스를 불러오는 중...</p>
       ) : (
         <ul className="flex-1 space-y-2 overflow-auto">
-          {currentItems.map((news, idx) => (
-            <li key={idx}>
+          {currentItems.map((news) => (
+            <li key={news.url}>
               <a
                 href={news.url}
                 target="_blank"
