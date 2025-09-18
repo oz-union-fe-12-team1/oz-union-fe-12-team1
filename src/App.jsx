@@ -5,11 +5,12 @@ import { SignIn } from './components/SignIn';
 import { Login } from './pages/Login';
 import { PwConfirm } from './pages/PwConfirm';
 import { SignUp } from './pages/SignUp';
-import MyPage from './components/Mypage/Mypage';
+// import MyPage from './components/Mypage/Mypage';
 import PrivateRoute from './layout/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
-import Admin from './components/Admin';
+// import Admin from './components/Admin';
+import AdminMypage from './components/adminPage/AdminMypage';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
         }
       />
 
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={<AdminMypage />} />
       <Route path="/loading" element={<LoadingPage />} />
       <Route path="/*" element={<ErrorPage />} />
     </Routes>

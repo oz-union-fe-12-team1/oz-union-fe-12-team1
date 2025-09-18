@@ -1,12 +1,16 @@
-import Admin from './components/Admin';
+// import Admin from './components/Admin';
 import News from './components/News';
 import Button from './components/ui/Button';
 import { useOpenMyPage } from './store/useOpenMyPage';
 import MyPage from './components/Mypage/Mypage';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import AdminMypage from './components/adminPage/AdminMypage';
+import { useOpenAdminPage } from './store/useOpenAdminPage';
+
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
+  const { setOpenAdminPage } = useOpenAdminPage();
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -14,13 +18,26 @@ export default function MainPage() {
         <h1 className="text-lg font-medium">Logo</h1>
 
         {/* 테스트용: 필요하면 어드민 바로 가기 버튼 추가 */}
-        <Link to="/admin" className="underline">
+        {/* <Link to="/admin" className="underline">
           Admin으로
-        </Link>
+        </Link> */}
+        <button
+          className='underline'
+          onClick={() => {
+            setOpenAdminPage(true)
+            setOpenMyPage(false)
+          }}
+        >
+          Admin
+        </button>
 
         <button
           className="w-10 h-10 rounded-full bg-blue-500 text-white"
-          onClick={() => setOpenMyPage(true)}
+          onClick={() => {
+            setOpenMyPage(true)
+            setOpenAdminPage(false)
+
+          }}
         >
           마이페이지
         </button>
@@ -65,6 +82,7 @@ export default function MainPage() {
               </Button>
             </span>
             <MyPage />
+            <AdminMypage/>
           </div>
         </div>
       </main>
