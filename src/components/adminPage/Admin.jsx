@@ -1,15 +1,9 @@
-// import { useAdminAccount } from "../store/useAdminAccount";
 import { adminData } from "./adminData";
 
-// 마이페이지 완성 후 
-// 관리자마이페이지 만들기, 이후 버튼 클릭 시 true 되어 
-// 대시보드 출력
-
 export default function Admin () {
-  // const { adminAccount, setAdminAccount } = useAdminAccount();
   
   return (<>
-    <div className="text-black">
+    <div className="text-black transition-all duration-300">
       <table className="border">
         <thead>
           <tr>

@@ -6,11 +6,19 @@ import MyPage from './components/Mypage/Mypage';
 // import { Link } from 'react-router-dom';
 import AdminMypage from './components/adminPage/AdminMypage';
 import { useOpenAdminPage } from './store/useOpenAdminPage';
+import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
+import Admin from './components/adminPage/Admin';
+import { useEffect } from 'react';
 
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
-  const { setOpenAdminPage } = useOpenAdminPage();
+  const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
+  const { openAdminDashboard } = useOpenAdminDashboard();
+  
+  useEffect( ()=> {
+    console.log(openAdminDashboard)
+  }, [openAdminDashboard]);
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -55,8 +63,11 @@ export default function MainPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+            <div className="flex items-center justify-center rounded-lg bg-white p-6 ">
+              { !openAdminDashboard || !openAdminPage?
               <span className="text-xl font-medium text-slate-700">메인</span>
+              : <Admin />
+              }
             </div>
           </div>
 

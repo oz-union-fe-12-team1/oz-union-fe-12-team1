@@ -13,27 +13,31 @@ export default function AdminMypage () {
     <PinkCard open={openAdminPage} onClose={() => setOpenAdminPage(false)}>
       <button
           className="ml-auto text-black/80 hover:text-black text-xl"
-          onClick={() => setOpenAdminPage(false)}
+          onClick={() => {
+            setOpenAdminPage(false)
+            setOpenAdminDashboard(false)
+          }}
           aria-label="close"
         >
           ✕
         </button>
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex flex-col justify-start h-full gap-20">
         <div className="flex flex-col gap-10 w-full items-center">
           <img 
-            className="w-[10rem] h-[10rem] border rounded-[50%] border-gray-600 aspect-[1/1]"
+            className="mt-2 w-20 h-20 border rounded-[50%] border-gray-600 aspect-[1/1]"
             src="/images/nyangbiseo-sunglasses.png"/>
           <p className="text-[1.2rem] font">관리자님 ㅎㅇ?</p>
         </div>
-      <hr/>
-        
-      <Button 
-        size="md" 
-        variant="common"
-        onClick = { () => { setOpenAdminDashboard(!openAdminDashboard) }}
-      >
-        { openAdminDashboard ? <p>숨기기</p> : <p>유저 목록</p>}
-      </Button>
+        <hr className="bg-black h-0.1"/>
+          
+        <Button 
+          size="md" 
+          variant="common"
+          onClick = { () => { setOpenAdminDashboard(!openAdminDashboard) }}
+        >
+          { openAdminDashboard ? <p>숨기기</p> : <p>유저 목록</p>}
+        </Button>
+      </div>
 
       <button
           className="hover:underline"
@@ -46,8 +50,6 @@ export default function AdminMypage () {
         >
           로그아웃
         </button>
-
-      </div>
 
     </PinkCard>
   </>)
