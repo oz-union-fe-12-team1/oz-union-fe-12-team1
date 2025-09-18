@@ -8,7 +8,11 @@ export async function getMyProfile () {
   return res.data;
 }
 export function useGetMyProfile () {
-  return useQuery ({ queryKey: ["myProfile"], qeuryFn: getMyProfile});
+  return useQuery ({ 
+    queryKey: ["myProfile"], 
+    qeuryFn: getMyProfile,
+    staleTime: 1000 * 60 * 5,
+  });
   //useQuery: 서버에서 데이터 가져올 때. (GET 요청 보낼 때)
   //queryKey: 호출에 이름을 지음, 같은 호출을 두 번 할 때 새롭게 불러오지 않고 기존에 있던 호출 결과를 불러옴. 
 }
@@ -42,6 +46,7 @@ export function useUserDetail(userId) {
     queryFn: () => getUserDetail(userId),
     enabled: !!userId,
     // userId가 없을 때는 요청 안 함
+    staleTime: 1000 * 60 * 5,
   });
 }
 

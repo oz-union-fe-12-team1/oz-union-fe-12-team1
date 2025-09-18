@@ -1,6 +1,8 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "./client";
 
+
+// - - - - 유저 목록 검색 - - - -
 export async function getUsers (params) {
   const res = await api.get("/users", { params });
   // params: 쿼리스트링으로 url 뒤에 붙는 형태. (주로 GET 요청에서 사용)
@@ -26,6 +28,8 @@ export function useUsers (params) {
   return useQuery ({
     queryKey: ["adminUsers", params],
     queryFn: () => getUsers(params),
+    staleTime: 1000 * 60 * 5,
+    // 유저 목록은 자주 바뀌지 않으니 짧게 캐싱해 두었음.
   });
 }
 

@@ -10,6 +10,8 @@ export function useNews() {
   return useQuery({
     queryKey: ["news"],
     queryFn: getNews,
+    staleTime: 1000 * 60 * 5,
+    //5분 동안은 캐시가 살아있어서, news를 재호출했을 때 캐시를 불러옴. 
   });
 }
 
@@ -24,6 +26,7 @@ export function useQuiz() {
   return useQuery({
     queryKey: ["quiz"],
     queryFn: getQuiz,
+    //얘는 매번 랜덤으로 새로 문제 뽑아오게 staleTime: 0 기본값으로 두었음.
   });
 }
 
@@ -36,6 +39,8 @@ export function useBriefings() {
   return useQuery({
     queryKey: ["briefings"],
     queryFn: getBriefings,
+    staleTime: 1000 * 60 * 5,
+    // 브리핑은 아침/저녁에만 바뀌니까 실시간 반영 필요 없음.
   });
 }
 
@@ -60,7 +65,10 @@ export function useFortune(params) {
   return useQuery({
     queryKey: ["fortune", params],
     queryFn: () => getFortune(params),
-    enabled: !!params?.birthday, // 생일이 있을 때만 실행
+    enabled: !!params?.birthday, 
+    // 생일이 있을 때만 실행
+    // staleTime: 1000 * 60 * 60 * 12,
+    // 오늘의 운세는 하루 단위로 바뀌니 12시간을 고민하였으나, 자정이 지날 때 queryClient.inavalidateQueries({queryKey: ["fortune"]})을 해줘야 함. (useEffect로 초기화함수를 Timeout 지정해서..)
   });
 }
 
@@ -73,6 +81,7 @@ export function useWeather() {
   return useQuery({
     queryKey: ["weather"],
     queryFn: getWeather,
+    staleTime: 1000 * 60 * 1,
   });
 }
 
@@ -85,5 +94,6 @@ export function useWeatherForecast() {
   return useQuery({
     queryKey: ["weatherForecast"],
     queryFn: getWeatherForecast,
+    staleTime: 1000 * 60 * 30,
   });
 }

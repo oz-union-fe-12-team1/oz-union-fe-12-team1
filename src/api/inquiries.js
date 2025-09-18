@@ -10,6 +10,8 @@ export function useInquiries(params) {
   return useQuery({
     queryKey: ["inquiries", params],
     queryFn: () => getInquiries(params),
+    staleTime: 1000 * 60 * 5,
+    // 문의 달았을 때 createInguiry에서 캐시 초기화가 발생하기 때문에 새로고침돼서 바로바로 잘 나타나고, 그렇기에 오래 캐싱할 필요도 없음. 
   });
 }
 
