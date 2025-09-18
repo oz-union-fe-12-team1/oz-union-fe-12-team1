@@ -61,23 +61,23 @@ export default function MainPage() {
           </div>
 
           <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
-            <span className="text-lg font-medium text-white ">
-              <Button size="md" variant="common">
+            <span className="text-lg font-medium text-white flex flex-col gap-10">
+              <Button size="lg" variant="common">
                 Todo List
               </Button>
-              <Button size="md" variant="common">
+              <Button size="lg" variant="common">
                 일정 리스트
               </Button>
-              <Button size="md" variant="common">
+              <Button size="lg" variant="common">
                 5일 날씨
               </Button>
-              <Button size="md" variant="common">
+              <Button size="lg" variant="common">
                 오늘의 운세
               </Button>
-              <Button size="md" variant="common">
+              <Button size="lg" variant="common">
                 QUIZ
               </Button>
-              <Button size="md" variant="common">
+              <Button size="lg" variant="common">
                 푸쉬 설정
               </Button>
             </span>

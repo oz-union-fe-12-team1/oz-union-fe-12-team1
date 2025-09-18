@@ -21,7 +21,7 @@ export default function AdminMypage () {
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-10 w-full items-center">
           <img 
-            className="w-50 h-50 border rounded-[50%] border-gray-600"
+            className="w-[10rem] h-[10rem] border rounded-[50%] border-gray-600 aspect-[1/1]"
             src="/images/nyangbiseo-sunglasses.png"/>
           <p className="text-[1.2rem] font">관리자님 ㅎㅇ?</p>
         </div>
