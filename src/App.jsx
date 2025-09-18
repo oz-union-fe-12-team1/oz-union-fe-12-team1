@@ -26,7 +26,7 @@ function App() {
           </PrivateRoute>
         }
       />
-      <Route path="/Mypage" element={<MyPage />} />
+
       <Route path="/admin" element={<Admin />} />
       <Route path="/loading" element={<LoadingPage />} />
       <Route path="/*" element={<ErrorPage />} />
