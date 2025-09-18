@@ -1,12 +1,29 @@
 import Admin from './components/Admin';
 import News from './components/News';
 import Button from './components/ui/Button';
+import { useOpenMyPage } from './store/useOpenMyPage';
+import MyPage from './components/Mypage/Mypage';
+import { Link } from 'react-router-dom';
 
 export default function MainPage() {
+  const { setOpenMyPage } = useOpenMyPage();
+
   return (
     <div className="flex h-screen w-screen flex-col">
-      <header className="flex h-16 items-center bg-slate-900 px-6 text-white">
-        <h1 className="text-lg font-medium"></h1>
+      <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
+        <h1 className="text-lg font-medium">Logo</h1>
+
+        {/* 테스트용: 필요하면 어드민 바로 가기 버튼 추가 */}
+        <Link to="/admin" className="underline">
+          Admin으로
+        </Link>
+
+        <button
+          className="w-10 h-10 rounded-full bg-blue-500 text-white"
+          onClick={() => setOpenMyPage(true)}
+        >
+          마이페이지
+        </button>
       </header>
 
       <main className="flex-1 bg-slate-100 p-4">
@@ -26,15 +43,28 @@ export default function MainPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
-            {/* <span className="text-lg font-medium text-white "> /}
-                  <Button size="md" variant="common">Todo List</Button>
-                  <Button size="md" variant="common">일정 리스트</Button>
-                  <Button size="md" variant="common">5일 날씨</Button>
-                  <Button size="md" variant="common">오늘의 운세</Button>
-                  <Button size="md" variant="common">QUIZ</Button>
-                  <Button size="md" variant="common">푸쉬 설정</Button>
-                {/ </span> */}
+          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
+            <span className="text-lg font-medium text-white ">
+              <Button size="md" variant="common">
+                Todo List
+              </Button>
+              <Button size="md" variant="common">
+                일정 리스트
+              </Button>
+              <Button size="md" variant="common">
+                5일 날씨
+              </Button>
+              <Button size="md" variant="common">
+                오늘의 운세
+              </Button>
+              <Button size="md" variant="common">
+                QUIZ
+              </Button>
+              <Button size="md" variant="common">
+                푸쉬 설정
+              </Button>
+            </span>
+            <MyPage />
           </div>
         </div>
       </main>
