@@ -12,12 +12,14 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
+import TodayFortune from './components/TodayFortune';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const [openFiveDay, setOpenFiveDay] = useState(false);
+  const [openFortune, setOpenFortune] = useState(false);
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -70,6 +72,8 @@ export default function MainPage() {
                 <Admin />
               ) : openFiveDay ? (
                 <FiveDayWeather />
+              ) : openFortune ? (
+                <TodayFortune />
               ) : (
                 <span className="text-xl">메인</span>
               )}
@@ -84,10 +88,10 @@ export default function MainPage() {
               <Button size="lg" variant="common">
                 일정 리스트
               </Button>
-              <Button size="md" variant="common" onClick={() => setOpenFiveDay(true)}>
+              <Button size="lg" variant="common" onClick={() => setOpenFiveDay(true)}>
                 5일 날씨
               </Button>
-              <Button size="lg" variant="common">
+              <Button size="lg" variant="common" onClick={() => setOpenFortune(true)}>
                 오늘의 운세
               </Button>
               <Button size="lg" variant="common">
