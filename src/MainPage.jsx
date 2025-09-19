@@ -9,15 +9,19 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Admin from './components/adminPage/Admin';
 import { useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
+import TodayWeather from './components/weather/TodayWeather';
+import FiveDayWeather from './components/weather/FiveDayWeather';
+import { useWeatherView } from './store/useWeatherView';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  
-  useEffect( ()=> {
-    console.log(openAdminDashboard)
+  const { view, setView } = useWeatherView();
+
+  useEffect(() => {
+    console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
   return (
@@ -30,10 +34,10 @@ export default function MainPage() {
           Admin으로
         </Link> */}
         <button
-          className='underline'
+          className="underline"
           onClick={() => {
-            setOpenAdminPage(true)
-            setOpenMyPage(false)
+            setOpenAdminPage(true);
+            setOpenMyPage(false);
           }}
         >
           Admin
@@ -42,9 +46,8 @@ export default function MainPage() {
         <button
           className="w-10 h-10 rounded-full bg-blue-500 text-white"
           onClick={() => {
-            setOpenMyPage(true)
-            setOpenAdminPage(false)
-
+            setOpenMyPage(true);
+            setOpenAdminPage(false);
           }}
         >
           마이페이지
@@ -59,15 +62,18 @@ export default function MainPage() {
                 <News />
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
-                <span className="text-lg font-medium text-slate-700">날씨</span>
+                <TodayWeather />
               </div>
             </div>
 
-            <div className="flex items-center justify-center rounded-lg bg-white p-6 ">
-              { !openAdminDashboard || !openAdminPage?
-              <span className="text-xl font-medium text-slate-700">메인</span>
-              : <Admin />
-              }
+            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+              {openAdminPage && openAdminDashboard ? (
+                <Admin />
+              ) : view === 'today' ? (
+                <span className="text-xl">메인</span>
+              ) : (
+                <FiveDayWeather />
+              )}
             </div>
           </div>
 
@@ -79,7 +85,7 @@ export default function MainPage() {
               <Button size="lg" variant="common">
                 일정 리스트
               </Button>
-              <Button size="lg" variant="common">
+              <Button size="md" variant="common" onClick={() => setView('five')}>
                 5일 날씨
               </Button>
               <Button size="lg" variant="common">
@@ -93,7 +99,7 @@ export default function MainPage() {
               </Button>
             </span>
             <MyPage />
-            <AdminMypage/>
+            <AdminMypage />
           </div>
         </div>
       </main>
