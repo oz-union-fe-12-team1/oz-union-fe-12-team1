@@ -24,6 +24,17 @@ export default function MainPage() {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
+  let content;
+  if (openAdminPage && openAdminDashboard) {
+    content = <Admin />;
+  } else if (view === 'five') {
+    content = <FiveDayWeather />;
+  } else if (view === 'fortune') {
+    content = <TodayFortune />;
+  } else {
+    content = <span className="text-xl">메인</span>;
+  }
+
   return (
     <div className="flex h-screen w-screen flex-col">
       <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
@@ -67,15 +78,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {openAdminPage && openAdminDashboard ? (
-                <Admin />
-              ) : view === 'five' ? (
-                <FiveDayWeather />
-              ) : view === 'fortune' ? (
-                <TodayFortune />
-              ) : (
-                <span className="text-xl">메인</span>
-              )}
+              {content}
             </div>
           </div>
 
