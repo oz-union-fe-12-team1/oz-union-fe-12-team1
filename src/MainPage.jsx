@@ -11,40 +11,14 @@ import Admin from './components/adminPage/Admin';
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
-import ScheduleAdd from './components/layout/ScheduleAdd';
-import Scheduleform from './components/layout/Scheduleform';
+import TodayFortune from './components/TodayFortune';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  const [openSchedule, setOpenSchedule] = useState(false);
-
-  const [form, setForm] = useState({
-    date: '',
-    time: '',
-    title: '',
-    memo: '',
-  });
-  const [list, setList] = useState([]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleAdd = (e) => {
-    e.preventDefault();
-    if (!form.title.trim()) return;
-
-    const newSchedule = { id: Date.now(), ...form };
-    setList((prev) => [...prev, newSchedule]);
-    setForm({ date: '', time: '', title: '', memo: '' });
-  };
-
-  const handleDelete = (id) => {
-    setList((prev) => prev.filter((item) => item.id !== id));
-  };
+  const [openFiveDay, setOpenFiveDay] = useState(false);
+  const [openFortune, setOpenFortune] = useState(false);
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -103,47 +77,41 @@ export default function MainPage() {
                 <TodayWeather />
               </div>
             </div>
+
+            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+              {openAdminPage && openAdminDashboard ? (
+                <Admin />
+              ) : openFiveDay ? (
+                <FiveDayWeather />
+              ) : openFortune ? (
+                <TodayFortune />
+              ) : (
+                <span className="text-xl">메인</span>
+              )}
+            </div>
           </div>
 
-          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-            {!openSchedule ? (
-              <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-                <Button size="lg" variant="common">
-                  Todo List
-                </Button>
-                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
-                  일정 리스트
-                </Button>
-                <Button size="lg" variant="common">
-                  5일 날씨
-                </Button>
-                <Button size="lg" variant="common">
-                  오늘의 운세
-                </Button>
-                <Button size="lg" variant="common">
-                  QUIZ
-                </Button>
-                <Button size="lg" variant="common">
-                  푸쉬 설정
-                </Button>
-              </span>
-            ) : (
-              <div className="w-full mt-6">
-                <Scheduleform
-                  form={form}
-                  onChange={handleChange}
-                  onAdd={handleAdd}
-                  openAdminDashboard={openAdminDashboard}
-                  openSchedule={openSchedule}
-                  setOpenSchedule={setOpenSchedule}
-                  list={list}
-                  handleDelete={handleDelete}
-                  openAdminPage={openAdminPage}
-                  // onEdit={onEdit}
-                />
-              </div>
-            )}
-
+          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
+            <span className="text-lg font-medium text-white flex flex-col gap-10">
+              <Button size="lg" variant="common">
+                Todo List
+              </Button>
+              <Button size="lg" variant="common">
+                일정 리스트
+              </Button>
+              <Button size="lg" variant="common" onClick={() => setOpenFiveDay(true)}>
+                5일 날씨
+              </Button>
+              <Button size="lg" variant="common" onClick={() => setOpenFortune(true)}>
+                오늘의 운세
+              </Button>
+              <Button size="lg" variant="common">
+                QUIZ
+              </Button>
+              <Button size="lg" variant="common">
+                푸쉬 설정
+              </Button>
+            </span>
             <MyPage />
             <AdminMypage />
           </div>
