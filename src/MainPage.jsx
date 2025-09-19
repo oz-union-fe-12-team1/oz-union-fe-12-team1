@@ -8,17 +8,16 @@ import AdminMypage from './components/adminPage/AdminMypage';
 import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Admin from './components/adminPage/Admin';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
-import { useWeatherView } from './store/useWeatherView';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  const { view, setView } = useWeatherView();
+  const [openFiveDay, setOpenFiveDay] = useState(false);
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -69,10 +68,10 @@ export default function MainPage() {
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
               {openAdminPage && openAdminDashboard ? (
                 <Admin />
-              ) : view === 'today' ? (
-                <span className="text-xl">메인</span>
-              ) : (
+              ) : openFiveDay ? (
                 <FiveDayWeather />
+              ) : (
+                <span className="text-xl">메인</span>
               )}
             </div>
           </div>
@@ -85,7 +84,7 @@ export default function MainPage() {
               <Button size="lg" variant="common">
                 일정 리스트
               </Button>
-              <Button size="md" variant="common" onClick={() => setView('five')}>
+              <Button size="md" variant="common" onClick={() => setOpenFiveDay(true)}>
                 5일 날씨
               </Button>
               <Button size="lg" variant="common">

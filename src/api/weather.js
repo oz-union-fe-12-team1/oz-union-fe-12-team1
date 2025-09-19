@@ -1,4 +1,3 @@
-// 오늘 날씨 더미데이터
 export const todayWeatherDummy = {
   current_temp: 23.5,
   min_temp: 18.0,
@@ -9,7 +8,6 @@ export const todayWeatherDummy = {
   weather_icon: '01d',
 };
 
-// 5일 날씨 더미데이터
 export const fiveDayWeatherDummy = [
   {
     date: '2025-09-19',
