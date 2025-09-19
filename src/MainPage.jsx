@@ -51,16 +51,25 @@ export default function MainPage() {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
-  let content;
-  if (openAdminPage && openAdminDashboard) {
-    content = <Admin />;
-  } else if (view === 'five') {
-    content = <FiveDayWeather />;
-  } else if (view === 'fortune') {
-    content = <TodayFortune />;
-  } else {
-    content = <span className="text-xl">메인</span>;
-  }
+  const CONTENT_MAP = {
+    admin: <Admin />,
+    five: <FiveDayWeather />,
+    fortune: <TodayFortune />,
+    main: <span className="text-xl">메인</span>,
+  };
+
+  const contentKey = (() => {
+    if (openAdminPage && openAdminDashboard) {
+      return 'admin';
+    }
+    if (view === 'five') {
+      return 'five';
+    }
+    if (view === 'fortune') {
+      return 'fortune';
+    }
+    return 'main';
+  })();
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -101,7 +110,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {content}
+              {CONTENT_MAP[contentKey]}
             </div>
           </div>
 
