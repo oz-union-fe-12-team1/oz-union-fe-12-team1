@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export default function Contact({
   open,
-  tab,            // 'ask' | 'inbox'
+  tab, // 'ask' | 'inbox'
   setTab,
   onClose,
   tickets,
@@ -13,7 +13,11 @@ export default function Contact({
   setExpandedId,
 }) {
   const [askTitle, setAskTitle] = useState('');
-  const [askBody, setAskBody]   = useState('');
+  const [askBody, setAskBody] = useState('');
+
+  const [editingId, setEditingId] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editBody, setEditBody] = useState('');
 
   if (!open) return null;
 
@@ -24,11 +28,11 @@ export default function Contact({
     }
     const now = new Date();
     const time =
-      `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ` +
-      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ` +
+      `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     const newId = Date.now();
 
-    setTickets(prev => [
+    setTickets((prev) => [
       { id: newId, status: '처리중', title: askTitle.trim(), time, body: askBody.trim() },
       ...prev,
     ]);
@@ -38,6 +42,34 @@ export default function Contact({
     setExpandedId(newId);
     alert('문의가 접수되었습니다.');
   };
+  // 편집 시작: 현재 카드 내용을 편집 상태로 로드
+  const startEdit = (t) => {
+    setEditingId(t.id);
+    setEditTitle(t.title);
+    setEditBody(t.body);
+  };
+
+  // 편집 취소: 편집 상태/값 초기화
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditTitle('');
+    setEditBody('');
+  };
+
+  // 편집 저장: 제목/내용만 갱신하여 tickets 반영
+  const saveEdit = (t) => {
+    if (!editTitle.trim() || !editBody.trim()) {
+      alert('제목과 내용을 입력해 주세요.');
+      return;
+    }
+    setTickets((prev) =>
+      prev.map((item) =>
+        item.id === t.id ? { ...item, title: editTitle.trim(), body: editBody.trim() } : item,
+      ),
+    );
+    setEditingId(null);
+    alert('수정이 반영되었습니다.');
+  };
 
   return (
     <ModalPortal>
@@ -46,19 +78,29 @@ export default function Contact({
           <div className="bg-white rounded-lg shadow-lg w-full h-[min(90vh,800px)] p-5 flex flex-col">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-base font-semibold">문의하기</h3>
-              <button className="text-xl" onClick={onClose}>✕</button>
+              <button className="text-xl" onClick={onClose}>
+                ✕
+              </button>
             </div>
 
             {/* 탭 */}
             <div className="mb-3 border-b flex gap-2">
               <button
-                className={`px-3 py-2 text-sm ${tab==='ask' ? 'border-b-2 border-black font-semibold' : 'text-slate-500'}`}
-                onClick={() => setTab('ask')}
-              >문의하기</button>
+                className={`px-3 py-2 text-sm ${tab === 'ask' ? 'border-b-2 border-black font-semibold' : 'text-slate-500'}`}
+                onClick={() => {
+                  // 탭 이동 시 진행 중인 편집이 있다면 초기화
+                  cancelEdit();
+                  setTab('ask');
+                }}
+              >
+                문의하기
+              </button>
               <button
-                className={`px-3 py-2 text-sm ${tab==='inbox' ? 'border-b-2 border-black font-semibold' : 'text-slate-500'}`}
+                className={`px-3 py-2 text-sm ${tab === 'inbox' ? 'border-b-2 border-black font-semibold' : 'text-slate-500'}`}
                 onClick={() => setTab('inbox')}
-              >문의함</button>
+              >
+                문의함
+              </button>
             </div>
 
             {/* 탭 컨텐츠 */}
@@ -72,7 +114,7 @@ export default function Contact({
                       className="w-full border rounded p-2 text-sm"
                       placeholder="제목을 입력하세요."
                       value={askTitle}
-                      onChange={(e)=>setAskTitle(e.target.value)}
+                      onChange={(e) => setAskTitle(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2 mt-4 flex-1 flex flex-col">
@@ -81,12 +123,16 @@ export default function Contact({
                       className="w-full flex-1 border rounded p-2 text-sm"
                       placeholder="문의 내용을 입력하세요."
                       value={askBody}
-                      onChange={(e)=>setAskBody(e.target.value)}
+                      onChange={(e) => setAskBody(e.target.value)}
                     />
                   </div>
                   <div className="mt-3 flex justify-end gap-2">
-                    <button className="btn-secondary" onClick={onClose}>취소</button>
-                    <button className="btn" onClick={submit}>보내기</button>
+                    <button className="btn-secondary" onClick={onClose}>
+                      취소
+                    </button>
+                    <button className="btn" onClick={submit}>
+                      보내기
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -96,38 +142,113 @@ export default function Contact({
                   ) : (
                     tickets.map((t) => {
                       const isOpen = expandedId === t.id;
+                      const isEditing = editingId === t.id; // 현재 카드가 편집 중인지 여부
+
                       return (
                         <div key={t.id} className="border rounded p-3">
                           {/* 헤더: 클릭으로 토글 */}
                           <button
                             type="button"
                             aria-expanded={isOpen}
-                            onClick={() => setExpandedId(isOpen ? null : t.id)}
+                            onClick={() => {
+                              // 다른 항목을 클릭하면 기존 편집은 자동 취소하여 상태 꼬임 방지
+                              if (editingId && editingId !== t.id) {
+                                cancelEdit();
+                              }
+
+                              //  편집 중일 때는 "접기"만 막고, "열기"는 허용
+                              //  - isOpen === true 이고 isEditing === true이면 접히지 않도록 return
+                              //  - isOpen === false 인 경우엔 편집 중이어도 열 수 있게 허용
+                              if (isEditing && isOpen) return;
+
+                              setExpandedId(isOpen ? null : t.id);
+                            }}
                             className="w-full text-left cursor-pointer select-none"
                           >
                             <div className="flex items-baseline justify-between gap-3">
-                              <div className="text-sm font-semibold">[{t.status}] {t.title}</div>
-                              <div className="text-xs text-slate-500 shrink-0">{t.time}</div>
+                              <div className="text-sm font-semibold">
+                                [{t.status}] {isEditing ? editTitle : t.title}{' '}
+                              </div>
+                              <div className="text-xs text-slate-500 shrink-0">
+                                <div className="text-xs text-slate-500">{t.time}</div>
+                                {/* 오른쪽 위 수정/취소 버튼 (처리중 + 펼침 상태에서만 표시) */}
+                              </div>
                             </div>
-                            <div className="text-sm mt-1 line-clamp-2">{t.body}</div>
+                            <div className="text-sm mt-1 line-clamp-2">
+                              {isEditing ? editBody : t.body}
+                            </div>
                           </button>
 
                           {/* 접이식 바디 */}
-                          <div className={[
-                            'mt-2 overflow-hidden transition-all duration-300',
-                            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
-                          ].join(' ')}>
-                            <div className="pt-2 border-t text-sm">
-                              {t.status === '처리중' ? (
-                                <div className="text-slate-700">
-                                  <div className="font-medium">답변 대기중입니다.</div>
-                                  <div>영업시간은 <b>09:00 ~ 18:00</b> 입니다. 조금만 기다려주세요.</div>
+                          <div
+                            className={[
+                              'mt-2 overflow-hidden transition-all duration-300',
+                              isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
+                            ].join(' ')}
+                          >
+                            <div className="pt-2 border-t text-sm relative">
+                              {isEditing ? (
+                                // 편집 모드 UI (제목/내용 입력 + 완료 버튼)
+                                <div className="flex flex-col gap-3">
+                                  <div className="space-y-1">
+                                    <label className="text-xs text-slate-600">제목</label>
+                                    <input
+                                      className="w-full border rounded p-2 text-sm"
+                                      value={editTitle}
+                                      onChange={(e) => setEditTitle(e.target.value)}
+                                      placeholder="제목을 입력하세요."
+                                    />
+                                  </div>
+                                  <div className="space-y-1 flex-1 flex flex-col">
+                                    <label className="text-xs text-slate-600">내용</label>
+                                    <textarea
+                                      className="w-full min-h-32 border rounded p-2 text-sm"
+                                      value={editBody}
+                                      onChange={(e) => setEditBody(e.target.value)}
+                                      placeholder="문의 내용을 입력하세요."
+                                    />
+                                  </div>
+
+                                  {/* 하단 오른쪽: 수정 모드에서는 '취소'와 '완료' 버튼을 같은 자리에 표시 */}
+                                  <div className="flex justify-end gap-2">
+                                    {/* 취소 버튼 (하단) */}
+                                    <button className="btn-secondary" onClick={() => cancelEdit()}>
+                                      취소
+                                    </button>
+                                    {/* 완료 버튼의 위치를 고정(하단 오른쪽) */}
+                                    <button className="btn" onClick={() => saveEdit(t)}>
+                                      완료
+                                    </button>
+                                  </div>
                                 </div>
                               ) : (
-                                <div className="space-y-1">
-                                  <div className="text-slate-500 text-xs">처리 결과</div>
-                                  <div className="text-slate-800">{t.answer ?? '처리가 완료되었습니다.'}</div>
-                                </div>
+                                // 보기 모드 (기존)
+                                <>
+                                  {t.status === '처리중' ? (
+                                    <div className="text-slate-700">
+                                      <div className="font-medium">답변 대기중입니다.</div>
+                                      <div>
+                                        영업시간은 <b>09:00 ~ 18:00</b> 입니다. 조금만 기다려주세요.
+                                      </div>
+                                      {/* [추가] 하단 오른쪽: 보기 모드(처리중)일 때 '수정' 버튼 표시 */}
+                                      <div className="mt-3 flex justify-end">
+                                        <button
+                                          className="text-xs text-slate-600 underline"
+                                          onClick={() => startEdit(t)}
+                                        >
+                                          수정
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="space-y-1">
+                                      <div className="text-slate-500 text-xs">처리 결과</div>
+                                      <div className="text-slate-800">
+                                        {t.answer ?? '처리가 완료되었습니다.'}
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
                               )}
                             </div>
                           </div>
