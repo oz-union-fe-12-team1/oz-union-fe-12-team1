@@ -18,8 +18,7 @@ export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  const [openFiveDay, setOpenFiveDay] = useState(false);
-  const [openFortune, setOpenFortune] = useState(false);
+  const [view, setView] = useState('main');
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -70,9 +69,9 @@ export default function MainPage() {
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
               {openAdminPage && openAdminDashboard ? (
                 <Admin />
-              ) : openFiveDay ? (
+              ) : view === 'five' ? (
                 <FiveDayWeather />
-              ) : openFortune ? (
+              ) : view === 'fortune' ? (
                 <TodayFortune />
               ) : (
                 <span className="text-xl">메인</span>
@@ -88,10 +87,10 @@ export default function MainPage() {
               <Button size="lg" variant="common">
                 일정 리스트
               </Button>
-              <Button size="lg" variant="common" onClick={() => setOpenFiveDay(true)}>
+              <Button size="lg" variant="common" onClick={() => setView('five')}>
                 5일 날씨
               </Button>
-              <Button size="lg" variant="common" onClick={() => setOpenFortune(true)}>
+              <Button size="lg" variant="common" onClick={() => setView('fortune')}>
                 오늘의 운세
               </Button>
               <Button size="lg" variant="common">
