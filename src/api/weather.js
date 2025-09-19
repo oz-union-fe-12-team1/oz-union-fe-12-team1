@@ -10,7 +10,7 @@ export const todayWeatherDummy = {
 
 export const fiveDayWeatherDummy = [
   {
-    date: '2025-09-19',
+    date: '2025-09-19T00:00:00+09:00', // ISO8601
     temp_min: 21.3,
     temp_max: 27.8,
     description: '구름 많음',
@@ -18,7 +18,7 @@ export const fiveDayWeatherDummy = [
     precipitation: 0.3,
   },
   {
-    date: '2025-09-20',
+    date: '2025-09-20T00:00:00+09:00',
     temp_min: 20.1,
     temp_max: 26.4,
     description: '맑음',
@@ -26,7 +26,7 @@ export const fiveDayWeatherDummy = [
     precipitation: 0.0,
   },
   {
-    date: '2025-09-21',
+    date: '2025-09-21T00:00:00+09:00',
     temp_min: 19.5,
     temp_max: 25.2,
     description: '흐림',
@@ -34,7 +34,7 @@ export const fiveDayWeatherDummy = [
     precipitation: 0.1,
   },
   {
-    date: '2025-09-22',
+    date: '2025-09-22T00:00:00+09:00',
     temp_min: 18.7,
     temp_max: 24.0,
     description: '비',
@@ -42,7 +42,7 @@ export const fiveDayWeatherDummy = [
     precipitation: 2.3,
   },
   {
-    date: '2025-09-23',
+    date: '2025-09-23T00:00:00+09:00',
     temp_min: 21.0,
     temp_max: 27.0,
     description: '맑음',
