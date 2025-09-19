@@ -1,8 +1,17 @@
-export default function LoginModal({ openModal, title, children, footer }) {
+export default function LoginModal({
+  openModal,
+  title,
+  children,
+  onClose,
+  footer,
+}) {
   if (!openModal) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50"
+      onClick={onClose}
+    >
       <div //모달
         className="bg-white rounded-[0.7rem] shadow-lg w-[420px] p-11"
         onClick={(e) => e.stopPropagation()}
