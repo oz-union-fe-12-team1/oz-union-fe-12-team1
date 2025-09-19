@@ -1,5 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "./client";
+// 덩어리별 코드 순서(목차)
+// 1. api 요청 함수
+// 2. TanStack Query 훅
+// 3. 구조분해할당으로 데이터 꺼내오는 법
+
 
 
 // - - - - 이메일/패스워드 회원가입 - - - -
@@ -10,10 +15,19 @@ export async function registerUser (payload) {
 }
 export function useRegisterUser() {
   // 위에서 만든 registerUser를 호출하는 용도.
-  return useMutation({ mutationFn: registerUser });
+  const {
+    mutate: registerUserMutate,
+    error: registerUserError,
+    ...rest
+  } = useMutation({ mutationFn: registerUser });
   // useMuatation: 서버에 데이터 보낼 때. (주로 POST, PUT, PATCH, DELETE 요청)
   // mutationFn: 실행할 함수
+  return { registerUserMutate, registerUserError, ...rest };
 }
+// const { registerUserMutate, registerUserError } = useRegisterUser();
+// const handleSignInSubmit =()=> { registerUserMutate(form) }; 
+// -- Mutate(실행할 함수)에 payload로 form(이건 따로 상태 같은 거로 만들어서..)를 request body에 담아서 보내기 
+
 
 
 // - - - - 로그인(JWT 발급) - - - - 
@@ -23,8 +37,16 @@ export async function login (payload) {
   return res.data;
 }
 export function useLogin () {
-  return useMutation ({ mutationFn: login });
+  const {
+    mutate: loginMutate,
+    error: loginError,
+    ...rest
+  } = useMutation ({ mutationFn: login });
+  return { loginMutate, loginError, ...rest };
 }
+// const { loginMutate, loginError } = useLogin();
+// const handleLoginSubmit =()=> { loginMutate(form) };
+
 
 
 // - - - - 구글 소셜 로그인 - - - -
@@ -33,8 +55,15 @@ export async function socialLogin (payload) {
   return res.data;
 }
 export function useSocialLogin () {
-  return useMutation ({ mutationFn: socialLogin });
+  const {
+    mutate: socialLoginMutate,
+    error: socialLoginErrror,
+    ...rest
+  } = useMutation ({ mutationFn: socialLogin });
+  return { socialLoginMutate, socialLoginErrror, ...rest };
 }
+// const { socialLoginMutate, socialLoginError } = useSocialLogin();
+
 
 
 // - - - - 토큰 리프레시로 액세스 재발급 (다시 불러오기) - - - -
@@ -43,8 +72,19 @@ export async function refreshToken (payload) {
   return res.data;
 }
 export function useRefreshToken () {
-  return useMutation ({ mutationFn: refreshToken });
+  const {
+    mutate: refreshTokenMutate,
+    error: refreshTokenError,
+    ...rest
+  } = useMutation ({ mutationFn: refreshToken });
+  return { refreshTokenMutate, refreshTokenError, ...rest };
 }
+// const { refreshTokenMutate, refreshTokenError } = useRefreshToken();
+// const handleRefresh = () => {
+//   const refreshToken = localStorage.getItem("refresh_token");
+//   refreshTokenMutate({ refresh_token: refreshToken });
+// };
+
 
 
 // - - - - 로그아웃(현재 jti 블랙리스트 등록) - - - -
@@ -53,8 +93,22 @@ export async function logout () {
   return res.data;
 }
 export function useLogout () {
-  return useMutation ({ mutationFn: logout });
+  const {
+    mutate: logoutMutate,
+    error: logoutError,
+    ...rest
+  } = useMutation ({ mutationFn: logout });
+  return { logoutMutate, logoutError, ...rest };
 }
+// const { logoutMutate, logoutError } = useLogout();
+// const handleLogout = () => {
+//   logoutMutate(undefined, {
+//     onSuccess: () => {
+//       localStorage.removeItem("access_token");
+//     },
+//   });
+// };
+
 
 
 // - - - - 인증 메일 재발송 - - - - 
@@ -63,8 +117,28 @@ export async function resend () {
   return res.data;
 }
 export function useResend () {
-  return useMutation ({ mutationFn: resend });
+  const {
+    mutate: resendMutate,
+    error: resendError,
+    ...rest
+  } =  useMutation ({ mutationFn: resend });
+  return { resendMutate, resendError, ...rest };
 }
+// const { resendMutate, resendError } = useResend();
+
+// const handleResend =()=> { resendMutate() }; 
+// -- 이렇게만 해도 되는데
+
+// const handleResend =()=> { 
+//   resendMutate(undefined, { 
+// -- Request_Body로 내용을 첫 번쨰 인자에 넣는 건데, 이 api는 보낼 내용 없으니까 undefined로 두기.
+//     onSuccess: () => alert("인증 메일 보냄!"),
+//     onError: () => alert("실패!"),
+//   });
+// }
+// 이렇게 하면 성공시/실패시 실행할 콜백을 지정할 수 있음. 
+// 여러 군데의 컴포넌트에서 쓰더라도 일괄적으로 미리 공통 처리할 수 있음. 
+
 
 
 // - - - - 이메일 인증 완료 - - - -

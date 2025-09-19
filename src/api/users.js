@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "./client";
+// 덩어리별 코드 순서(목차)
+// 1. api 요청 함수
+// 2. TanStack Query 훅
+// 3. 구조분해할당으로 데이터 꺼내오는 법
 
 
 // - - - - 내 프로필 조회 - - - -
