@@ -52,7 +52,7 @@ export function Login() {
 
         <div className="flex justify-between mt-4">
           <div>
-            처음이신가요?
+            처음이신가요?{' '}
             <button
               className="text-[#3058bd] font-bold"
               onClick={() => navigate('/signup')}

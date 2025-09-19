@@ -4,6 +4,7 @@ import { useState } from 'react';
 import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
+import Button from '../components/ui/Button';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -19,6 +20,10 @@ export function PwConfirm() {
     confirm: false,
   });
 
+  const [isPopup, setIsPopup] = useState(false);
+  const [isInput, setIsInput] = useState(false);
+  const [popupMessge, setPopupMessge] = useState('');
+
   function handleSubmit(e) {
     e.preventDefault();
     setTouched({
@@ -30,19 +35,49 @@ export function PwConfirm() {
 
   const errors = newError(form);
 
+  const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
+
+  function emailConfirm(email) {
+    const value = String(email || '')
+      .trim()
+      .toLowerCase();
+
+    if (!value) {
+      setPopupMessge('이메일을 입력하세요.');
+      setIsInput(true);
+      return;
+    }
+
+    const confirm = users.some(
+      (user) => (user.email || '').toLowerCase() === value,
+    );
+    if (confirm) {
+      setPopupMessge('확인되었습니다.');
+      setIsInput(true);
+    } else {
+      setPopupMessge('존재하지 않는 이메일입니다.');
+    }
+    setIsPopup(true);
+  }
+
+  const forms = form.password.length && form.confirm.length;
+  const noError = !errors.password && !errors.confirm;
+  const onButton = noError && forms;
+
   const footer = () => {
     return (
       <div className="flex flex-col buttons w-full gap-2 pt-6">
         <LoginButton
           type="submit"
-          variant={'common'}
+          variant={onButton ? 'common' : 'cancle'}
           size="md"
           form="pwConfirmForm"
+          disabled={!onButton}
         >
           변경하기
         </LoginButton>
         <div>
-          비밀번호 생각났어요!
+          비밀번호 생각났어요!{' '}
           <button
             onClick={() => navigate('/')}
             type="button"
@@ -51,6 +86,16 @@ export function PwConfirm() {
             돌아가기
           </button>
         </div>
+      </div>
+    );
+  };
+
+  const emailfooter = () => {
+    return (
+      <div className="mt-6">
+        <Button variant="common" size="md" onClick={() => setIsPopup(false)}>
+          닫기
+        </Button>
       </div>
     );
   };
@@ -103,6 +148,7 @@ export function PwConfirm() {
               type="button"
               className="flex justify-center items-center w-auto h-[35px] border-[1px]
                 rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
+              onClick={() => emailConfirm(form.email)}
             >
               이메일 확인
             </button>
@@ -112,6 +158,7 @@ export function PwConfirm() {
             type={'password'}
             placeholder="비밀번호 입력"
             value={form.password}
+            disabled={!isInput}
             onChange={(e) => {
               const next = e.target.value;
               setForm((p) => ({ ...p, password: next }));
@@ -124,6 +171,7 @@ export function PwConfirm() {
             type={'password'}
             placeholder="비밀번호 입력 확인"
             value={form.confirm}
+            disabled={!isInput}
             onChange={(e) => {
               const next = e.target.value;
               setForm((p) => ({ ...p, confirm: next }));
@@ -132,6 +180,15 @@ export function PwConfirm() {
             error={touched.confirm ? errors.confirm : ''}
           ></LoginInput>
         </form>
+      </LoginModal>
+
+      <LoginModal
+        title={'이메일 확인'}
+        openModal={isPopup}
+        footer={emailfooter()}
+        onClose={() => setIsPopup(false)}
+      >
+        {popupMessge}
       </LoginModal>
     </div>
   );
