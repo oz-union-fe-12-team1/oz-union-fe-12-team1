@@ -1,13 +1,13 @@
-import { useState } from "react";
-import ScheduleForm from "./Scheduleform";
-import ScheduleAdd from "./ScheduleAdd";
+import { useState } from 'react';
+import ScheduleForm from './Scheduleform';
+import ScheduleAdd from './ScheduleAdd';
 
 export default function Schedule() {
   const [form, setForm] = useState({
-    date: "",
-    time: "",
-    title: "",
-    memo: "",
+    date: '',
+    time: '',
+    title: '',
+    memo: '',
   });
 
   const [list, setList] = useState([]);
@@ -23,7 +23,7 @@ export default function Schedule() {
 
     const newSchedule = { id: Date.now(), ...form };
     setList((prev) => [...prev, newSchedule]);
-    setForm({ date: "", time: "", title: "", memo: "" });
+    setForm({ date: '', time: '', title: '', memo: '' });
   };
 
   const handleDelete = (id) => {
@@ -33,7 +33,7 @@ export default function Schedule() {
   return (
     <div className="p-4 grid md:grid-cols-[1fr_300px] gap-6">
       <ScheduleAdd list={list} onDelete={handleDelete} />
-      <ScheduleForm form={form} onChange={handleChange} onAdd={handleAdd} handleDelete={handleDelete} setOpenSchedule={setOpenSchedule} />
+      <ScheduleForm form={form} onChange={handleChange} onAdd={handleAdd} />
     </div>
   );
 }

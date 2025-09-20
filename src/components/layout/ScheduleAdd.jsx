@@ -1,4 +1,4 @@
-export default function ScheduleAdd({ list, onDelete, onEdit }) {
+export default function ScheduleAdd({ list, onDelete }) {
   return (
     <div className="rounded-2xl bg-gray-100 p-4 text-black">
       <h2 className="text-lg font-semibold mb-3">일정 목록</h2>
@@ -16,24 +16,14 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
                 <div className="text-sm text-gray-700">
                   {item.date} {item.time}
                 </div>
-                {item.memo && (
-                  <div className="text-xs text-gray-500">{item.memo}</div>
-                )}
+                {item.memo && <div className="text-xs text-gray-500">{item.memo}</div>}
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => onEdit(item)}
-                  className="text-xs px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  수정
-                </button>
-                <button
-                  onClick={() => onDelete(item.id)}
-                  className="text-xs px-2 py-1 rounded bg-gray-800 text-white hover:bg-black"
-                >
-                  삭제
-                </button>
-              </div>
+              <button
+                onClick={() => onDelete(item.id)}
+                className="text-xs px-2 py-1 rounded bg-gray-800 text-white hover:bg-black"
+              >
+                삭제
+              </button>
             </li>
           ))}
         </ul>

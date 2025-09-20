@@ -8,11 +8,12 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
-import TodayFortune from './components/TodayFortune';
+import ScheduleAdd from './components/layout/ScheduleAdd';
+import Scheduleform from './components/layout/Scheduleform';
+import ScheduleList from './components/layout/ScheduleList';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -47,9 +48,6 @@ export default function MainPage() {
     setList((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const [view, setView] = useState('main');
-
-
   useEffect(() => {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
@@ -72,7 +70,10 @@ export default function MainPage() {
 
         <button
           className="underline"
+          className="underline"
           onClick={() => {
+            setOpenAdminPage(true);
+            setOpenMyPage(false);
             setOpenAdminPage(true);
             setOpenMyPage(false);
           }}
@@ -83,6 +84,8 @@ export default function MainPage() {
         <button
           className="w-10 h-10 rounded-full bg-blue-500 text-white"
           onClick={() => {
+            setOpenMyPage(true);
+            setOpenAdminPage(false);
             setOpenMyPage(true);
             setOpenAdminPage(false);
           }}
@@ -102,54 +105,44 @@ export default function MainPage() {
                 <TodayWeather />
               </div>
             </div>
-
-            <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {content}
-            </div>
           </div>
 
           <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-              {!openSchedule ? (
-                <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-              <Button size="lg" variant="common">
-                Todo List
-              </Button>
-                <Button
-                  size="lg"
-                  variant="common"
-                  onClick={() => setOpenSchedule(true)}
-                >
+            {!openSchedule ? (
+              <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
+                <Button size="lg" variant="common">
+                  Todo List
+                </Button>
+                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
                   일정 리스트
                 </Button>
-                          <Button size="lg" variant="common">
-                5일 날씨
-              </Button>
-              <Button size="lg" variant="common" onClick={() => setView('fortune')}>
-                오늘의 운세
-              </Button>
-              <Button size="lg" variant="common">
-                QUIZ
-              </Button>
-              <Button size="lg" variant="common">
-                푸쉬 설정
-              </Button>
-            </span>
-              ) : (
-                <div className="w-full mt-6">
+                <Button size="lg" variant="common">
+                  5일 날씨
+                </Button>
+                <Button size="lg" variant="common">
+                  오늘의 운세
+                </Button>
+                <Button size="lg" variant="common">
+                  QUIZ
+                </Button>
+                <Button size="lg" variant="common">
+                  푸쉬 설정
+                </Button>
+              </span>
+            ) : (
+              <div className="w-full mt-6">
                 <Scheduleform
                   form={form}
                   onChange={handleChange}
                   onAdd={handleAdd}
                   openAdminDashboard={openAdminDashboard}
                   openSchedule={openSchedule}
-                  setOpenSchedule={setOpenSchedule}
                   list={list}
                   handleDelete={handleDelete}
                   openAdminPage={openAdminPage}
-                  // onEdit={onEdit}
                 />
               </div>
-              )}
+            )}
 
             <MyPage />
             <AdminMypage />
