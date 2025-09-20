@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Button({
   children,
   variant = '',
@@ -23,11 +25,15 @@ export default function Button({
   };
 
   const disabledClasses = disabled ? 'cursor-not-allowed opacity-70' : '';
+  const navigate = useNavigate()
 
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${disabledClasses}`;
+  const onhandle= ()=>{
+    navigate("")
+  }
 
   return (
-    <button type="button" className={classes} disabled={disabled} {...rest}>
+    <button type="button" onClick={onhandle} className={classes} disabled={disabled} {...rest}>
       {children}
     </button>
   );

@@ -11,6 +11,7 @@ import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
 // import Admin from './components/Admin';
 import AdminMypage from './components/adminPage/AdminMypage';
+import Schedule from './components/layout/Schedule';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/admin" element={<AdminMypage />} />
       <Route path="/loading" element={<LoadingPage />} />
       <Route path="/*" element={<ErrorPage />} />
+      <Route path="/Schedule" element={<Schedule />} />
     </Routes>
   );
 }
