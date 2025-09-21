@@ -13,13 +13,11 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import ScheduleAdd from './components/layout/ScheduleAdd';
 import Scheduleform from './components/layout/Scheduleform';
-import ScheduleList from './components/layout/ScheduleList';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-
   const [openSchedule, setOpenSchedule] = useState(false);
 
   const [form, setForm] = useState({
@@ -137,9 +135,11 @@ export default function MainPage() {
                   onAdd={handleAdd}
                   openAdminDashboard={openAdminDashboard}
                   openSchedule={openSchedule}
+                  setOpenSchedule={setOpenSchedule}
                   list={list}
                   handleDelete={handleDelete}
                   openAdminPage={openAdminPage}
+                  // onEdit={onEdit}
                 />
               </div>
             )}
