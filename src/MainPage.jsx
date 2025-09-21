@@ -7,11 +7,18 @@ import AdminMypage from './components/adminPage/AdminMypage';
 import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
+import Admin from './components/adminPage/Admin';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import TodayWeather from './components/weather/TodayWeather';
+import FiveDayWeather from './components/weather/FiveDayWeather';
+import TodayFortune from './components/TodayFortune';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
+
   const [openSchedule, setOpenSchedule] = useState(false);
 
   const [form, setForm] = useState({
@@ -40,9 +47,23 @@ export default function MainPage() {
     setList((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const [view, setView] = useState('main');
+
+
   useEffect(() => {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
+
+  let content;
+  if (openAdminPage && openAdminDashboard) {
+    content = <Admin />;
+  } else if (view === 'five') {
+    content = <FiveDayWeather />;
+  } else if (view === 'fortune') {
+    content = <TodayFortune />;
+  } else {
+    content = <span className="text-xl">메인</span>;
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -78,8 +99,12 @@ export default function MainPage() {
                 <News />
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
-                <span className="text-lg font-medium text-slate-700">날씨</span>
+                <TodayWeather />
               </div>
+            </div>
+
+            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+              {content}
             </div>
           </div>
 
@@ -99,7 +124,7 @@ export default function MainPage() {
                           <Button size="lg" variant="common">
                 5일 날씨
               </Button>
-              <Button size="lg" variant="common">
+              <Button size="lg" variant="common" onClick={() => setView('fortune')}>
                 오늘의 운세
               </Button>
               <Button size="lg" variant="common">

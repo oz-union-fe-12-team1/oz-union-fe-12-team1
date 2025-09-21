@@ -4,17 +4,21 @@ import LoginButton from '../components/ui/LoginButtons';
 import { LoginInput } from '../components/ui/LoginInput';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
+import Button from '../components/ui/Button';
 
 export function SignUp() {
   const navigate = useNavigate();
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
+    code: '',
     name: '',
     birth: '',
     password: '',
     confirm: '',
   });
+
+  const code = '1q2w3e4r';
 
   const [touched, setTouched] = useState({
     email: false,
@@ -23,6 +27,11 @@ export function SignUp() {
     password: false,
     confirm: false,
   });
+  const [isCodeInput, setIsCodeInput] = useState(true);
+  const [isFormInput, setIsFormInput] = useState(true);
+  const [isSendModal, setIsSendModal] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState('');
+  const [ismodalConfirm, setIsModalConfirm] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -49,6 +58,17 @@ export function SignUp() {
     !errors.email && !errors.name && !errors.password && !errors.confirm;
   const onButton = agreed && noError && forms;
 
+  const codeConfirm = (emailCode) => {
+    if (emailCode === code) {
+      setModalConfirm('인증되었습니다.');
+      setIsModalConfirm(true);
+      setIsFormInput(false);
+    } else {
+      setModalConfirm('인증번호가 틀립니다.');
+      setIsModalConfirm(true);
+    }
+  };
+
   const footer = () => {
     return (
       <div className="flex flex-col buttons w-full gap-2 pt-6">
@@ -62,7 +82,7 @@ export function SignUp() {
           회원가입
         </LoginButton>
         <div>
-          생각해보니 가입했었네!?
+          생각해보니 가입했었네!?{' '}
           <button
             onClick={() => navigate('/')}
             type="button"
@@ -71,6 +91,34 @@ export function SignUp() {
             돌아가기
           </button>
         </div>
+      </div>
+    );
+  };
+
+  const close = () => {
+    return (
+      <div className="mt-6">
+        <Button
+          variant="common"
+          size="md"
+          onClick={() => setIsSendModal(false)}
+        >
+          닫기
+        </Button>
+      </div>
+    );
+  };
+
+  const confirmClose = () => {
+    return (
+      <div className="mt-6">
+        <Button
+          variant="common"
+          size="md"
+          onClick={() => setIsModalConfirm(false)}
+        >
+          닫기
+        </Button>
       </div>
     );
   };
@@ -122,9 +170,35 @@ export function SignUp() {
             <button
               type="button"
               className="flex justify-center items-center h-[35px] border-[1px]
-                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
+                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
+              disabled={!(form.email.length && !errors.email)}
+              onClick={() => {
+                setIsCodeInput(false);
+                setIsSendModal(true);
+              }}
             >
-              이메일 인증
+              인증번호 발송
+            </button>
+          </div>
+          <div className="flex justify-between gap-2">
+            <LoginInput
+              label={'인증번호'}
+              type={'password'}
+              placeholder="인증번호를 입력하세요"
+              value={form.code}
+              onChange={(e) => {
+                setForm((code) => ({ ...code, code: e.target.value }));
+              }} //state 업데이트
+              disabled={isCodeInput}
+            />
+            <button
+              type="button"
+              className="flex justify-center items-center h-[35px] border-[1px]
+                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
+              disabled={!form.code.length}
+              onClick={() => codeConfirm(form.code)}
+            >
+              인증번호 확인
             </button>
           </div>
           <LoginInput
@@ -135,6 +209,7 @@ export function SignUp() {
             onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
             onBlur={() => setTouched((t) => ({ ...t, name: true }))}
             error={touched.name ? errors.name : ''}
+            disabled={isFormInput}
           />
           <LoginInput
             label={'생년월일'}
@@ -146,6 +221,7 @@ export function SignUp() {
             }
             onBlur={() => setTouched((t) => ({ ...t, birth: true }))}
             error={touched.birth ? errors.birth : ''}
+            disabled={isFormInput}
           />
           <LoginInput
             label={'비밀번호'}
@@ -158,6 +234,7 @@ export function SignUp() {
               setTouched((t) => ({ ...t, password: true }));
             }}
             error={touched.password ? errors.password : ''}
+            disabled={isFormInput}
           />
           <LoginInput
             label={'비밀번호 확인'}
@@ -170,6 +247,7 @@ export function SignUp() {
               setTouched((t) => ({ ...t, confirm: true }));
             }}
             error={touched.confirm ? errors.confirm : ''}
+            disabled={isFormInput}
           />
           <div className="flex gap-1">
             <input
@@ -183,6 +261,14 @@ export function SignUp() {
             </label>
           </div>
         </form>
+      </LoginModal>
+
+      <LoginModal openModal={isSendModal} footer={close()}>
+        인증번호를 발송했습니다.
+      </LoginModal>
+
+      <LoginModal openModal={ismodalConfirm} footer={confirmClose()}>
+        {modalConfirm}
       </LoginModal>
     </div>
   );
