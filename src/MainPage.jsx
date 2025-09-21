@@ -1,12 +1,12 @@
-// import Admin from './components/Admin';
+import { useState, useEffect } from 'react';
 import News from './components/News';
 import Button from './components/ui/Button';
 import { useOpenMyPage } from './store/useOpenMyPage';
 import MyPage from './components/Mypage/Mypage';
-// import { Link } from 'react-router-dom';
 import AdminMypage from './components/adminPage/AdminMypage';
 import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
+import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -18,7 +18,37 @@ export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
+
+  const [openSchedule, setOpenSchedule] = useState(false);
+
+  const [form, setForm] = useState({
+    date: '',
+    time: '',
+    title: '',
+    memo: '',
+  });
+  const [list, setList] = useState([]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return;
+
+    const newSchedule = { id: Date.now(), ...form };
+    setList((prev) => [...prev, newSchedule]);
+    setForm({ date: '', time: '', title: '', memo: '' });
+  };
+
+  const handleDelete = (id) => {
+    setList((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const [view, setView] = useState('main');
+
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -40,10 +70,6 @@ export default function MainPage() {
       <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
         <h1 className="text-lg font-medium">Logo</h1>
 
-        {/* 테스트용: 필요하면 어드민 바로 가기 버튼 추가 */}
-        {/* <Link to="/admin" className="underline">
-          Admin으로
-        </Link> */}
         <button
           className="underline"
           onClick={() => {
@@ -82,15 +108,20 @@ export default function MainPage() {
             </div>
           </div>
 
-          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
-            <span className="text-lg font-medium text-white flex flex-col gap-10">
+          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
+              {!openSchedule ? (
+                <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
               <Button size="lg" variant="common">
                 Todo List
               </Button>
-              <Button size="lg" variant="common">
-                일정 리스트
-              </Button>
-              <Button size="lg" variant="common" onClick={() => setView('five')}>
+                <Button
+                  size="lg"
+                  variant="common"
+                  onClick={() => setOpenSchedule(true)}
+                >
+                  일정 리스트
+                </Button>
+                          <Button size="lg" variant="common">
                 5일 날씨
               </Button>
               <Button size="lg" variant="common" onClick={() => setView('fortune')}>
@@ -103,6 +134,23 @@ export default function MainPage() {
                 푸쉬 설정
               </Button>
             </span>
+              ) : (
+                <div className="w-full mt-6">
+                <Scheduleform
+                  form={form}
+                  onChange={handleChange}
+                  onAdd={handleAdd}
+                  openAdminDashboard={openAdminDashboard}
+                  openSchedule={openSchedule}
+                  setOpenSchedule={setOpenSchedule}
+                  list={list}
+                  handleDelete={handleDelete}
+                  openAdminPage={openAdminPage}
+                  // onEdit={onEdit}
+                />
+              </div>
+              )}
+
             <MyPage />
             <AdminMypage />
           </div>
