@@ -33,7 +33,7 @@ export default function Schedule() {
   return (
     <div className="p-4 grid md:grid-cols-[1fr_300px] gap-6">
       <ScheduleAdd list={list} onDelete={handleDelete} />
-      <ScheduleForm form={form} onChange={handleChange} onAdd={handleAdd} />
+      <ScheduleForm form={form} onChange={handleChange} onAdd={handleAdd} handleDelete={handleDelete} setOpenSchedule={setOpenSchedule} />
     </div>
   );
 }
