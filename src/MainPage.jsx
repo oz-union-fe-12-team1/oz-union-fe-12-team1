@@ -8,8 +8,6 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
