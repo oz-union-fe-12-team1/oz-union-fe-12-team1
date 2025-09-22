@@ -11,6 +11,7 @@ import Admin from './components/adminPage/Admin';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
+import Chatbot from './components/Chatbot';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -55,7 +56,7 @@ export default function MainPage() {
     admin: <Admin />,
     five: <FiveDayWeather />,
     fortune: <TodayFortune />,
-    main: <span className="text-xl">메인</span>,
+    main: <Chatbot />,
   };
 
   const contentKey = (() => {
