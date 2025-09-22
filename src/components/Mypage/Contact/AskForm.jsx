@@ -1,11 +1,13 @@
 // src/components/Mypage/Contact/AskForm.jsx
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function AskForm({ onCancel, onSubmit }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const bodyRef = useRef(null);
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault(); // 새로고침 막기
     if (!title.trim() || !body.trim()) {
       alert('제목과 내용을 입력해 주세요.');
       return;
@@ -16,7 +18,7 @@ export default function AskForm({ onCancel, onSubmit }) {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <form className="flex flex-col h-full" onSubmit={submit}>
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-700">제목</label>
         <input
@@ -24,6 +26,13 @@ export default function AskForm({ onCancel, onSubmit }) {
           placeholder="제목을 입력하세요."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              // 제목에서 엔터 금지 + 본문으로 이동(선택)
+              e.preventDefault();
+              bodyRef.current?.focus();
+            }
+          }}
         />
       </div>
 
@@ -34,6 +43,12 @@ export default function AskForm({ onCancel, onSubmit }) {
           placeholder="문의 내용을 입력하세요."
           value={body}
           onChange={(e) => setBody(e.target.value)}
+          onKeyDown={(e) => {
+            // 본문에서 Ctrl/Cmd + Enter 로만 제출되게
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+              submit(e);
+            }
+          }}
         />
       </div>
 
@@ -45,6 +60,6 @@ export default function AskForm({ onCancel, onSubmit }) {
           보내기
         </button>
       </div>
-    </div>
+    </form>
   );
 }
