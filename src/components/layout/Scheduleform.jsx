@@ -1,35 +1,32 @@
-import ScheduleList from "./ScheduleList";
+import ScheduleList from './ScheduleList';
 
-export default function ScheduleForm({ 
-  form, 
-  onChange, 
-  onAdd, 
-  onCancelEdit, 
+export default function ScheduleForm({
+  form,
+  onChange,
+  onAdd,
+  onCancelEdit,
   isEditing,
-  openAdminDashboard, 
-  openAdminPage, 
-  openSchedule, 
-  list, 
+  openAdminDashboard,
+  openAdminPage,
+  openSchedule,
+  list,
   handleDelete,
-  setOpenSchedule
+  setOpenSchedule,
 }) {
   const onBack = () => {
-    console.log("asd");
+    console.log('asd');
     setOpenSchedule(false);
   };
   return (
-    <form
-      onSubmit={onAdd}
-      className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black"
-    >
+    <form onSubmit={onAdd} className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black">
       <div className="rounded-xl bg-gray-300 text-center py-2 font-semibold">
-        {isEditing ? "일정 수정" : "일정 추가"}
-        <ScheduleList 
-          openAdminDashboard={openAdminDashboard} 
-          openAdminPage={openAdminPage} 
+        {isEditing ? '일정 수정' : '일정 추가'}
+        <ScheduleList
+          openAdminDashboard={openAdminDashboard}
+          openAdminPage={openAdminPage}
           openSchedule={openSchedule}
-          list={list} 
-          handleDelete={handleDelete} 
+          list={list}
+          handleDelete={handleDelete}
         />
       </div>
 
@@ -73,7 +70,7 @@ export default function ScheduleForm({
           type="submit"
           className="flex-1 rounded-xl bg-gray-800 hover:bg-black py-2 font-semibold text-white"
         >
-          {isEditing ? "수정완료" : "등록"}
+          {isEditing ? '수정완료' : '등록'}
         </button>
 
         {isEditing && (
@@ -88,7 +85,10 @@ export default function ScheduleForm({
 
         <button
           type="button"
-         onClick={() => { console.log('aaa'); onBack(); }}
+          onClick={() => {
+            console.log('aaa');
+            onBack();
+          }}
           className="px-4 rounded-xl bg-blue-600 hover:bg-blue-700 py-2 font-semibold text-white"
         >
           X

@@ -1,13 +1,13 @@
-import { useState } from "react";
-import ScheduleForm from "./Scheduleform";
-import ScheduleAdd from "./ScheduleAdd";
+import { useState } from 'react';
+import ScheduleForm from './Scheduleform';
+import ScheduleAdd from './ScheduleAdd';
 
 export default function Schedule() {
   const [form, setForm] = useState({
-    date: "",
-    time: "",
-    title: "",
-    memo: "",
+    date: '',
+    time: '',
+    title: '',
+    memo: '',
   });
 
   const [list, setList] = useState([]);
@@ -23,7 +23,7 @@ export default function Schedule() {
 
     const newSchedule = { id: Date.now(), ...form };
     setList((prev) => [...prev, newSchedule]);
-    setForm({ date: "", time: "", title: "", memo: "" });
+    setForm({ date: '', time: '', title: '', memo: '' });
   };
 
   const handleDelete = (id) => {

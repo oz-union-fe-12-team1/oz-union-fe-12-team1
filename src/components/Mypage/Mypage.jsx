@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getMeMock, updateMeMock } from '../../mockData';
 import { useOpenMyPage } from '../../store/useOpenMyPage';
 import PinkCard from './common/PinkCard';
-import Contact from './Contact';
+import Contact from './Contact/Contact';
 import MypageEdit from './MypageEdit';
 import Leave from './Leave';
 import { useNavigate } from 'react-router-dom';
