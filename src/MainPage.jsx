@@ -8,7 +8,6 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
-import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
@@ -102,15 +101,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {openAdminPage && openAdminDashboard ? (
-                <Admin />
-              ) : openFiveDay ? (
-                <FiveDayWeather />
-              ) : openFortune ? (
-                <TodayFortune />
-              ) : (
-                <span className="text-xl">메인</span>
-              )}
+              {content}
             </div>
           </div>
 
