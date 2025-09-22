@@ -32,6 +32,7 @@ export function Login() {
     } catch (err) {
       // 서버(=스토어) 에러 매핑: 일단 알림으로
       // 필요하면 여기에서 필드 에러로 내려줘도 됨.
+      console.log(err);
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
   }
