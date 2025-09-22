@@ -7,7 +7,7 @@ import { api } from "./client";
 
 
 
-// - - - - 이메일/패스워드 회원가입 - - - -
+// !- - - - 이메일/패스워드 회원가입 - - - -
 export async function registerUser (payload) {
   // 사용자가 적은 이메일/패스워드를 payload 매개변수로 받아와서 보냄
   const res = await api.post("/auth/register", payload);
@@ -20,7 +20,7 @@ export function useRegisterUser() {
     error: registerUserError,
     ...rest
   } = useMutation({ mutationFn: registerUser });
-  // useMuatation: 서버에 데이터 보낼 때. (주로 POST, PUT, PATCH, DELETE 요청)
+  // useMutation: 서버에 데이터 보낼 때. (주로 POST, PUT, PATCH, DELETE 요청)
   // mutationFn: 실행할 함수
   return { registerUserMutate, registerUserError, ...rest };
 }
@@ -30,10 +30,10 @@ export function useRegisterUser() {
 
 
 
-// - - - - 로그인(JWT 발급) - - - - 
+// !- - - - 로그인(JWT 발급) - - - - 
 export async function login (payload) {
   const res = await api.post("/auth/login", payload);
-  // 로그인 정보 
+  // 넘겨야 되는 로그인 정보 자체가 객체임. 그래서 따로 여기서 객체로 씌우지 않음. 
   return res.data;
 }
 export function useLogin () {
@@ -49,7 +49,7 @@ export function useLogin () {
 
 
 
-// - - - - 구글 소셜 로그인 - - - -
+// !- - - - 구글 소셜 로그인 - - - -
 export async function socialLogin (payload) {
   const res = await api.post("/auth/social", payload)
   return res.data;
@@ -57,16 +57,17 @@ export async function socialLogin (payload) {
 export function useSocialLogin () {
   const {
     mutate: socialLoginMutate,
-    error: socialLoginErrror,
+    error: socialLoginError,
     ...rest
   } = useMutation ({ mutationFn: socialLogin });
-  return { socialLoginMutate, socialLoginErrror, ...rest };
+  return { socialLoginMutate, socialLoginError, ...rest };
 }
 // const { socialLoginMutate, socialLoginError } = useSocialLogin();
+// socialLoginMutate(form)
 
 
 
-// - - - - 토큰 리프레시로 액세스 재발급 (다시 불러오기) - - - -
+// !- - - - 토큰 리프레시로 액세스 재발급 (다시 불러오기) - - - -
 export async function refreshToken (payload) {
   const res = await api.post("/auth/token/refresh", payload);
   return res.data;
@@ -87,7 +88,7 @@ export function useRefreshToken () {
 
 
 
-// - - - - 로그아웃(현재 jti 블랙리스트 등록) - - - -
+// !- - - - 로그아웃(현재 jti 블랙리스트 등록) - - - -
 export async function logout () {
   const res = await api.post("/auth/logout");
   return res.data;
@@ -111,17 +112,17 @@ export function useLogout () {
 
 
 
-// - - - - 인증 메일 재발송 - - - - 
-export async function resend () {
+// !- - - - 인증 메일 발송 - - - - 
+export async function emailSend () {
   const res = await api.post("/auth/email/resend");
   return res.data;
 }
-export function useResend () {
+export function useEmailSend () {
   const {
     mutate: resendMutate,
     error: resendError,
     ...rest
-  } =  useMutation ({ mutationFn: resend });
+  } =  useMutation ({ mutationFn: emailSend });
   return { resendMutate, resendError, ...rest };
 }
 // const { resendMutate, resendError } = useResend();
@@ -141,41 +142,78 @@ export function useResend () {
 
 
 
-// - - - - 이메일 인증 완료 - - - -
+// !- - - - 이메일 인증 완료 - - - - (인증번호 담아서 보내기)
 export async function verify (payload) {
   const res = await api.post("/auth/email/verify", payload);
   return res.data;
 }
 export function useVerify () {
-  return useMutation ({ mutationFn: verify });
+  const {
+    mutate: verifyMutate,
+    error: verifyError,
+    ...rest
+  } = useMutation ({ mutationFn: verify });
+  return { verifyMutate, verifyError, ...rest };
 }
+// const { verifyMutate, verifyError } = useVerify();
+// verifyMutate(form)
 
 
-// - - - - 비밀번호 변경 - - - - 
+
+//! - - - - 비밀번호 변경 - - - - 
 export async function passwordChange (payload) {
   const res = await api.post("/auth/password/change", payload);
   return res.data;
 }
 export function usePasswordChange () {
-  return useMutation ({ mutationFn: passwordChange });
+  const {
+    mutate: passwordChangeMutate,
+    error: passwordChangeError,
+    ...rest
+  } = useMutation ({ mutationFn: passwordChange });
+  return { passwordChangeMutate, passwordChangeError, ...rest };
 }
+// const { passwordChangeMutate, passwordChangeError } = usePasswordChange();
+// const handleChangePassword =()=> {
+//   passwordChangeMutate(
+//     { old_password: oldPassword,
+//       new_password: newPassword,
+//     },
+//   )
+// }
 
 
-// - - - - 비밀번호 초기화 메일 - - - - 
+
+// !- - - - 비밀번호 초기화 메일 - - - - 
 export async function passwordReset (payload) {
   const res = await api.post("/auth/password/reset-request", payload);
   return res.data;
 }
 export function usePasswordReset () {
-  return useMutation ({ mutationFn: passwordReset });
+  const {
+    mutate: passwordResetMutate,
+    error: passwordResetError,
+    ...rest
+  } = useMutation ({ mutationFn: passwordReset });
+  return { passwordResetMutate, passwordResetError, ...rest };
 }
+// const { passwordResetMutate, passwordResetError } = usePasswordReset();
+// passwordResetMutate({ email });
 
 
-// - - - - 새 비밀번호 설정(초기화 토큰으로 설정) - - - -
+
+// !- - - - 새 비밀번호 설정(초기화 토큰으로 설정) - - - -
 export async function confirmPasswordReset (payload) {
   const res = await api.post("/auth/password/reset-confirm", payload);
   return res.data;
 }
 export function useConfirmPasswordReset () {
-  return useMutation ({ mutationFn: confirmPasswordReset });
+  const {
+    mutate: confirmPasswordResetMutate, 
+    error: confirmPasswordResetError,
+    ...rest
+  } = useMutation ({ mutationFn: confirmPasswordReset });
+  return { confirmPasswordResetMutate, confirmPasswordResetError, ...rest };
 }
+// const { confirmPasswordResetMutate, confirmPasswordResetError } = useConfirmPasswordReset();
+// confirmPasswordResetMutate({ new_password });

@@ -6,74 +6,122 @@ import api from "./apiClient";
 // 3. 구조분해할당으로 데이터 꺼내오는 법
 
 
-// - - - - 내 문의 목록 조회 (쿼리: status=pending 등) - - - - 
+const inquiries = "inquiries";
+
+
+// !- - - - 내 문의 목록 조회 (쿼리: status=pending 등) - - - - 
 export async function getInquiries(params = {}) {
   const res = await api.get("/inquiries", { params });
   return res.data;
 }
 export function useInquiries(params) {
-  return useQuery({
-    queryKey: ["inquiries", params],
+  const {
+    data: inquiriesData,
+    isLoading: inquiriesIsLoading,
+    isError: inquiriesIsError,
+    ...rest
+  } = useQuery({
+    queryKey: [inquiries, params],
     queryFn: () => getInquiries(params),
     staleTime: 1000 * 60 * 5,
-    // 문의 달았을 때 createInguiry에서 캐시 초기화가 발생하기 때문에 새로고침돼서 바로바로 잘 나타나고, 그렇기에 오래 캐싱할 필요도 없음. 
+    // 문의 달았을 때 createInquiry에서 캐시 초기화가 발생하기 때문에 새로고침돼서 바로바로 잘 나타나고, 그렇기에 오래 캐싱할 필요도 없음. 
   });
+  return { inquiriesData, inquiriesIsLoading, inquiriesIsError, ...rest };
 }
+// const { inquiriesData, inquiriesIsLoading, inquiriesIsError } = useInquiries();   :   전체 조회
+// const { inquiriesData, inquiriesIsLoading, inquiriesIsError } = useInquiries({ status: "pending" });   :    pending 상태인 문의만 보여줌. 
 
-// - - - - 문의 등록 - - - - 
+
+
+
+// !- - - - 문의 등록 - - - - 
 export async function createInquiry(payload) {
   const res = await api.post("/inquiries", payload);
   return res.data;
 }
 export function useCreateInquiry() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const {
+    mutate: createInquiryMutate,
+    error: createInquiryError,
+    ...rest
+  } = useMutation({
     mutationFn: createInquiry,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inquiries"] });
+      queryClient.invalidateQueries({ queryKey: [inquiries] });
     },
   });
+  return { createInquiryMutate, createInquiryError, ...rest };
 }
+// const { createInquiryMutate, createInquiryError } = useCreateInquiry();
+// createInquiryMutate({ "title": "문의 등록", "message": "문의 등록하겠습니다."})
 
-// - - - - 문의 상세 조회 - - - - 
+
+
+// !- - - - 문의 상세 조회 - - - - 
 export async function getInquiryById(id) {
   const res = await api.get(`/inquiries/${id}`);
   return res.data;
 }
 export function useInquiry(id) {
-  return useQuery({
-    queryKey: ["inquiries", id],
+  const {
+    data: inquiryByIdData,
+    isLoading: inquiryByIdIsLoading,
+    isError: inquiryByIdIsError,
+    ...rest
+  } = useQuery({
+    queryKey: [inquiries, id],
     queryFn: () => getInquiryById(id),
     enabled: !!id,
   });
+  return { inquiryByIdData, inquiryByIdIsLoading, inquiryByIdIsError, ...rest };
 }
+// const { inquiryByIdData, inquiriesIsLoading, inquiriesIsError } = useInquiry(3);
 
-// - - - - 문의 수정 (pending 상태일 때만 가능) - - - - 
+
+
+// !- - - - 문의 수정 (pending 상태일 때만 가능) - - - - 
 export async function updateInquiry(id, payload) {
   const res = await api.patch(`/inquiries/${id}`, payload);
   return res.data;
 }
 export function useUpdateInquiry() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const {
+    mutate: updateInquiryMutate,
+    error: updateInquiryError,
+    ...rest
+  } = useMutation({
     mutationFn: ({ id, payload }) => updateInquiry(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inquiries"] });
+      queryClient.invalidateQueries({ queryKey: [inquiries] });
     },
   });
+  return { updateInquiryMutate, updateInquiryError, ...rest };
 }
+// const { updateInquiryMutate, updateInquiryError } = useUpdateInquiry();
+// updateInquiryMutate({ "title": "문의 수정", "message": "문의 수정하겠습니다."})
 
-// - - - - 문의 삭제 (pending 상태일 때만 가능) - - - - 
+
+
+// !- - - - 문의 삭제 (pending 상태일 때만 가능) - - - - 
 export async function deleteInquiry(id) {
   const res = await api.delete(`/inquiries/${id}`);
   return res.data;
 }
 export function useDeleteInquiry() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const {
+    mutate: deleteInquiryMutate,
+    error: deleteInquiryError,
+    ...rest
+  } = useMutation({
     mutationFn: deleteInquiry,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inquiries"] });
+      queryClient.invalidateQueries({ queryKey: [inquiries] });
     },
   });
+  return { deleteInquiryMutate, deleteInquiryError, ...rest };
 }
+// const { deleteInquiryMutate, deleteInquiryError } = useDeleteInquiry();
+// deleteInquiryMutate(id)
