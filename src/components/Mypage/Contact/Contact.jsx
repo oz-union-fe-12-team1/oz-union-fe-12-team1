@@ -22,7 +22,7 @@ export default function Contact({
   setTickets,
   expandedId,
   setExpandedId,
-  isAdmin = true,
+  isAdmin = true, //api 명세서 is_superuser로 교체 예정
 }) {
   // 검색/필터 상태
   const [statusFilter, setStatusFilter] = useState('all'); // all | 처리중 | 완료
