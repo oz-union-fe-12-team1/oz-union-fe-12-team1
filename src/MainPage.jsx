@@ -8,6 +8,7 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
+
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
@@ -91,27 +92,45 @@ export default function MainPage() {
             </div>
           </div>
 
-          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-center">
-            <span className="text-lg font-medium text-white flex flex-col gap-10">
-              <Button size="lg" variant="common">
-                Todo List
-              </Button>
-              <Button size="lg" variant="common">
-                일정 리스트
-              </Button>
-              <Button size="lg" variant="common" onClick={() => setOpenFiveDay(true)}>
-                5일 날씨
-              </Button>
-              <Button size="lg" variant="common" onClick={() => setOpenFortune(true)}>
-                오늘의 운세
-              </Button>
-              <Button size="lg" variant="common">
-                QUIZ
-              </Button>
-              <Button size="lg" variant="common">
-                푸쉬 설정
-              </Button>
-            </span>
+          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
+            {!openSchedule ? (
+              <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
+                <Button size="lg" variant="common">
+                  Todo List
+                </Button>
+                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
+                  일정 리스트
+                </Button>
+                <Button size="lg" variant="common">
+                  5일 날씨
+                </Button>
+                <Button size="lg" variant="common" onClick={() => setView('fortune')}>
+                  오늘의 운세
+                </Button>
+                <Button size="lg" variant="common">
+                  QUIZ
+                </Button>
+                <Button size="lg" variant="common">
+                  푸쉬 설정
+                </Button>
+              </span>
+            ) : (
+              <div className="w-full mt-6">
+                <Scheduleform
+                  form={form}
+                  onChange={handleChange}
+                  onAdd={handleAdd}
+                  openAdminDashboard={openAdminDashboard}
+                  openSchedule={openSchedule}
+                  setOpenSchedule={setOpenSchedule}
+                  list={list}
+                  handleDelete={handleDelete}
+                  openAdminPage={openAdminPage}
+                  // onEdit={onEdit}
+                />
+              </div>
+            )}
+
             <MyPage />
             <AdminMypage />
           </div>

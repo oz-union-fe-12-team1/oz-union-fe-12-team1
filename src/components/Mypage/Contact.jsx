@@ -117,9 +117,6 @@ export default function Contact(props) {
     const isOpen = expandedId === t.id;
     const isEditing = editingId === t.id;
 
-    //  답변 드래프트 기본값은 기존 answer 또는 빈 문자열
-    const replyDraft = replyDrafts[t.id] ?? t.answer ?? '';
-
     return (
       <div key={t.id} className="border rounded p-3">
         {/* 헤더: 클릭으로 토글 */}
@@ -169,7 +166,7 @@ export default function Contact(props) {
                 <div className="space-y-1 flex-1 flex flex-col">
                   <label className="text-xs text-slate-600">내용</label>
                   <textarea
-                    className="w-full min-h-32 border rounded p-2 text-sm"
+                    className="w-full min-h-[8rem] border rounded p-2 text-sm"
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
                     placeholder="문의 내용을 입력하세요."
@@ -210,7 +207,7 @@ export default function Contact(props) {
                   <div className="space-y-1">
                     <div className="text-slate-500 text-xs">처리 결과</div>
                     <div className="text-slate-800 whitespace-pre-wrap">
-                      {t.answer ?? '처리가 완료되었습니다.'}
+                      {t.answer ?? '완료된 문의입니다. 재답변 시 내용이 갱신됩니다.'}
                     </div>
                   </div>
                 )}
@@ -219,29 +216,39 @@ export default function Contact(props) {
                 {isReplyTab && (
                   <div className="mt-3 p-3 border rounded bg-slate-50">
                     <div className="text-xs text-slate-500 mb-2">관리자 답변</div>
-                    <textarea
-                      className="w-full min-h-28 border rounded p-2 text-sm"
-                      placeholder={
+                    {(() => {
+                      const replyPlaceholder =
                         t.status === '처리중'
                           ? '사용자에게 보낼 답변을 입력하세요.'
-                          : '완료된 문의입니다. 재답변 시 내용이 갱신됩니다.'
-                      }
-                      value={replyDraft}
-                      onChange={(e) =>
-                        setReplyDrafts((prev) => ({ ...prev, [t.id]: e.target.value }))
-                      }
-                    />
-                    <div className="mt-2 flex justify-end gap-2">
-                      <button
-                        className="btn-secondary"
-                        onClick={() => setReplyDrafts((prev) => ({ ...prev, [t.id]: '' }))}
-                      >
-                        취소
-                      </button>
-                      <button className="btn" onClick={() => submitReply(t)}>
-                        확인
-                      </button>
-                    </div>
+                          : '완료된 문의입니다. 재답변 시 내용이 갱신됩니다.';
+
+                      const valueForTextarea =
+                        replyDrafts[t.id] ?? (t.status === '처리중' ? (t.answer ?? '') : '');
+
+                      return (
+                        <>
+                          <textarea
+                            className="w-full min-h-[7rem] border rounded p-2 text-sm"
+                            placeholder={replyPlaceholder}
+                            value={valueForTextarea}
+                            onChange={(e) =>
+                              setReplyDrafts((prev) => ({ ...prev, [t.id]: e.target.value }))
+                            }
+                          />
+                          <div className="mt-2 flex justify-end gap-2">
+                            <button
+                              className="btn-secondary"
+                              onClick={() => setReplyDrafts((prev) => ({ ...prev, [t.id]: '' }))}
+                            >
+                              취소
+                            </button>
+                            <button className="btn" onClick={() => submitReply(t)}>
+                              확인
+                            </button>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
                 )}
               </>
@@ -318,7 +325,7 @@ export default function Contact(props) {
                 <div className="flex flex-col">
                   {/*  필터/검색 툴바 (질문박스 위쪽) */}
                   <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-2 -ml--1">
+                    <div className="flex items-center gap-2 -ml-[-1px]">
                       <select
                         className="border rounded px-2 py-1 text-sm"
                         value={statusFilter}
