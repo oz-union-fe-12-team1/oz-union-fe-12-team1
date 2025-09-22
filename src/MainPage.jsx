@@ -8,7 +8,6 @@ import { useOpenAdminPage } from './store/useOpenAdminPage';
 import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import Scheduleform from './components/layout/Scheduleform';
 import Admin from './components/adminPage/Admin';
-
 import { Link } from 'react-router-dom';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
@@ -18,8 +17,36 @@ export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  const [openFiveDay, setOpenFiveDay] = useState(false);
-  const [openFortune, setOpenFortune] = useState(false);
+
+  const [openSchedule, setOpenSchedule] = useState(false);
+
+  const [form, setForm] = useState({
+    date: '',
+    time: '',
+    title: '',
+    memo: '',
+  });
+  const [list, setList] = useState([]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return;
+
+    const newSchedule = { id: Date.now(), ...form };
+    setList((prev) => [...prev, newSchedule]);
+    setForm({ date: '', time: '', title: '', memo: '' });
+  };
+
+  const handleDelete = (id) => {
+    setList((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const [view, setView] = useState('main');
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -43,10 +70,7 @@ export default function MainPage() {
 
         <button
           className="underline"
-          className="underline"
           onClick={() => {
-            setOpenAdminPage(true);
-            setOpenMyPage(false);
             setOpenAdminPage(true);
             setOpenMyPage(false);
           }}
@@ -57,8 +81,6 @@ export default function MainPage() {
         <button
           className="w-10 h-10 rounded-full bg-blue-500 text-white"
           onClick={() => {
-            setOpenMyPage(true);
-            setOpenAdminPage(false);
             setOpenMyPage(true);
             setOpenAdminPage(false);
           }}
