@@ -2,6 +2,7 @@ import nyangBot from '/images/nyangbiseo-list-x.png';
 import { useState, useEffect } from 'react';
 import { dummySchedules } from '../api/dummySchedules';
 import { dummyTodos } from '../api/dummyTodos';
+import dayjs from 'dayjs';
 
 export default function Chatbot() {
   const [schedules, setSchedules] = useState([]);
@@ -43,7 +44,6 @@ export default function Chatbot() {
 
   return (
     <div className="w-full grid grid-cols-2 gap-12">
-      {/* 오늘의 Todo (왼쪽) */}
       <div className="flex flex-col items-center">
         <h2 className="font-semibold text-2xl mb-6 text-center border-b-2 border-gray-300 pb-2 w-[70%]">
           오늘의 Todo
@@ -75,7 +75,6 @@ export default function Chatbot() {
         )}
       </div>
 
-      {/* 오늘의 일정 (오른쪽) */}
       <div className="flex flex-col items-center">
         <h2 className="font-semibold text-2xl mb-6 text-center border-b-2 border-gray-300 pb-2 w-[70%]">
           오늘의 일정
@@ -85,7 +84,7 @@ export default function Chatbot() {
             {todaySchedules.map((item) => (
               <li key={item.id} className="flex flex-col">
                 <span className="font-medium text-gray-800">
-                  {item.date} {item.all_day ? '[종일]' : item.time}
+                  {dayjs(item.date).format('YYYY-MM-DD HH:mm')} {item.all_day ? '[종일]' : ''}
                 </span>
                 <span className="text-gray-900">{item.title}</span>
                 {item.memo && <span className="text-sm text-gray-500">{item.memo}</span>}
