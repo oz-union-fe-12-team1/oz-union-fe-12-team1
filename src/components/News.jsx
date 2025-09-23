@@ -31,8 +31,8 @@ export default function News() {
         <p className="text-sm text-slate-500">뉴스를 불러오는 중...</p>
       ) : (
         <ul className="flex-1 space-y-2 overflow-auto">
-          {currentItems.map((news) => (
-            <li key={news.url}>
+          {currentItems.map((news, idx) => (
+            <li key={`${news.url}-${idx}`}>
               <a
                 href={news.url}
                 target="_blank"

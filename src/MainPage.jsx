@@ -17,6 +17,7 @@ import { useMainPage } from './store/useMainPage';
 import { Quiz } from './components/quizPage/quiz';
 import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
+import BackButton from './components/ui/BackButton';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -36,9 +37,9 @@ export default function MainPage() {
     memo: '',
   });
   const [todoList, setTodoList] = useState([
-    { id: 1, title: "React 공부하기", completed: false },
-    { id: 2, title: "프로젝트 완성하기", completed: true },
-    { id: 3, title: "운동하기", completed: false }
+    { id: 1, title: 'React 공부하기', completed: false },
+    { id: 2, title: '프로젝트 완성하기', completed: true },
+    { id: 3, title: '운동하기', completed: false },
   ]);
   const [isEditingTodo, setIsEditingTodo] = useState(false);
   const [editingTodoId, setEditingTodoId] = useState(null);
@@ -71,24 +72,20 @@ export default function MainPage() {
     if (!todoForm.title.trim()) return;
 
     if (isEditingTodo) {
-      setTodoList((prev) => 
-        prev.map((item) => 
-          item.id === editingTodoId 
-            ? { ...item, ...todoForm }
-            : item
-        )
+      setTodoList((prev) =>
+        prev.map((item) => (item.id === editingTodoId ? { ...item, ...todoForm } : item)),
       );
       setIsEditingTodo(false);
       setEditingTodoId(null);
     } else {
-      const newTodo = { 
-        id: Date.now(), 
-        ...todoForm, 
-        completed: false 
+      const newTodo = {
+        id: Date.now(),
+        ...todoForm,
+        completed: false,
       };
       setTodoList((prev) => [...prev, newTodo]);
     }
-    
+
     setTodoForm({ title: '', memo: '' });
   };
 
@@ -102,12 +99,8 @@ export default function MainPage() {
   };
 
   const handleTodoToggle = (id) => {
-    setTodoList((prev) => 
-      prev.map((item) => 
-        item.id === id 
-          ? { ...item, completed: !item.completed }
-          : item
-      )
+    setTodoList((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, completed: !item.completed } : item)),
     );
   };
 
@@ -137,8 +130,22 @@ export default function MainPage() {
 
   const CONTENT_MAP = {
     admin: <Admin />,
-    five: <FiveDayWeather />,
-    fortune: <TodayFortune />,
+    five: (
+      <>
+        <div className="absolute top-2 right-2">
+          <BackButton onClose={() => setView('main')} />
+        </div>
+        <FiveDayWeather />
+      </>
+    ),
+    fortune: (
+      <>
+        <div className="absolute top-2 right-2">
+          <BackButton onClose={() => setView('main')} />
+        </div>
+        <TodayFortune />
+      </>
+    ),
     main: <Chatbot />,
     todo: <Chatbot />,
     schedule: <Chatbot />,
@@ -189,9 +196,7 @@ export default function MainPage() {
           <div className="grid grid-rows-[1fr_2fr] gap-4">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
               <div className="bg-white rounded-lg p-6 flex flex-col">
-                {openAdminDashboard ?
-                  <AdminNew data={adminData} />
-                : <News /> }
+                {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
                 <TodayWeather />
@@ -235,18 +240,10 @@ export default function MainPage() {
               </div>
             ) : (
               <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-                <Button 
-                  size="lg" 
-                  variant="common"
-                  onClick={() => setPageMode('todo')}
-                >
+                <Button size="lg" variant="common" onClick={() => setPageMode('todo')}>
                   Todo List
                 </Button>
-                <Button
-                  size="lg"
-                  variant="common"
-                  onClick={() => setPageMode('schedule')}
-                >
+                <Button size="lg" variant="common" onClick={() => setPageMode('schedule')}>
                   일정 리스트
                 </Button>
                 <Button size="lg" variant="common" onClick={() => setPageMode('five')}>
@@ -264,7 +261,6 @@ export default function MainPage() {
                 </Button>
               </span>
             )}
-
             <MyPage />
             <AdminMypage />
           </div>
