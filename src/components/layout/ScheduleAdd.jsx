@@ -16,9 +16,7 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
                 <div className="text-sm text-gray-700">
                   {item.date} {item.time}
                 </div>
-                {item.memo && (
-                  <div className="text-xs text-gray-500">{item.memo}</div>
-                )}
+                {item.memo && <div className="text-xs text-gray-500">{item.memo}</div>}
               </div>
               <div className="flex gap-2">
                 <button

@@ -4,6 +4,7 @@ import { LoginInput } from '../components/ui/LoginInput';
 import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
+import { useAuth } from '../store/useAuth';
 
 export function Login() {
   const navigate = useNavigate();
@@ -16,13 +17,24 @@ export function Login() {
     email: false,
     password: false,
   });
+  const login = useAuth((s) => s.login);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setTouched({
       email: true,
       password: true,
     });
+
+    try {
+      await login({ email: form.email, password: form.password }); // ← 인메모리 로그인
+      navigate('/main'); // 성공했을 때만 이동
+    } catch (err) {
+      // 서버(=스토어) 에러 매핑: 일단 알림으로
+      // 필요하면 여기에서 필드 에러로 내려줘도 됨.
+      console.log(err);
+      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+    }
   }
 
   const errors = newError(form);
@@ -31,20 +43,25 @@ export function Login() {
   const noError = !errors.email && !errors.password;
   const onButton = noError && mustFilled;
 
+  const googleLogin = () => {};
+
   const footer = () => {
     return (
       <div>
         <div className="buttons flex flex-col buttons w-full gap-2 pt-6">
           <LoginButton
             type="submit"
-            variant={onButton ? 'common' : 'cancle'}
+            variant={onButton ? 'common' : 'cancel'}
             size="md"
             disabled={!onButton}
             form="loginForm"
           >
             로그인
           </LoginButton>
-          <button className="flex justify-center items-center h-[40px] bg-[#f2f2f2] hover:bg-[#001d35]/[0.08] rounded-[0.6rem]">
+          <button
+            className="flex justify-center items-center h-[40px] bg-[#f2f2f2] hover:bg-[#001d35]/[0.08] rounded-[0.6rem]"
+            onClick={() => googleLogin()}
+          >
             <img className="w-6" src=".\src\assets\pngegg.png" alt="google" />
             구글로 시작하기
           </button>
@@ -52,11 +69,8 @@ export function Login() {
 
         <div className="flex justify-between mt-4">
           <div>
-            처음이신가요?{' '}
-            <button
-              className="text-[#3058bd] font-bold"
-              onClick={() => navigate('/signup')}
-            >
+            처음이신가요?
+            <button className="text-[#3058bd] font-bold" onClick={() => navigate('/signup')}>
               회원가입
             </button>
           </div>
@@ -93,11 +107,7 @@ export function Login() {
       </main>
 
       <LoginModal openModal={openModal} title="로그인" footer={footer()}>
-        <form
-          id="loginForm"
-          className="flex flex-col gap-1 mt-2"
-          onSubmit={handleSubmit}
-        >
+        <form id="loginForm" className="flex flex-col gap-1 mt-2" onSubmit={handleSubmit}>
           <div>
             <LoginInput
               label={'이메일'}
@@ -118,7 +128,7 @@ export function Login() {
             value={form.password}
             onChange={(e) => {
               const next = e.target.value;
-              setForm((p) => ({ ...p, password: next }));
+              setForm((password) => ({ ...password, password: next }));
               setTouched((t) => ({ ...t, password: true }));
             }}
             error={touched.password ? errors.password : ''}

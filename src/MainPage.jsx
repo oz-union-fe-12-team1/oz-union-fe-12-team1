@@ -11,6 +11,7 @@ import Admin from './components/adminPage/Admin';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
+import Chatbot from './components/Chatbot';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -47,21 +48,29 @@ export default function MainPage() {
 
   const [view, setView] = useState('main');
 
-
   useEffect(() => {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
-  let content;
-  if (openAdminPage && openAdminDashboard) {
-    content = <Admin />;
-  } else if (view === 'five') {
-    content = <FiveDayWeather />;
-  } else if (view === 'fortune') {
-    content = <TodayFortune />;
-  } else {
-    content = <span className="text-xl">메인</span>;
-  }
+  const CONTENT_MAP = {
+    admin: <Admin />,
+    five: <FiveDayWeather />,
+    fortune: <TodayFortune />,
+    main: <Chatbot />,
+  };
+
+  const contentKey = (() => {
+    if (openAdminPage && openAdminDashboard) {
+      return 'admin';
+    }
+    if (view === 'five') {
+      return 'five';
+    }
+    if (view === 'fortune') {
+      return 'fortune';
+    }
+    return 'main';
+  })();
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -102,38 +111,35 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {content}
+              {CONTENT_MAP[contentKey]}
             </div>
           </div>
 
           <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-              {!openSchedule ? (
-                <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-              <Button size="lg" variant="common">
-                Todo List
-              </Button>
-                <Button
-                  size="lg"
-                  variant="common"
-                  onClick={() => setOpenSchedule(true)}
-                >
+            {!openSchedule ? (
+              <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
+                <Button size="lg" variant="common">
+                  Todo List
+                </Button>
+                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
                   일정 리스트
                 </Button>
-                          <Button size="lg" variant="common">
-                5일 날씨
-              </Button>
-              <Button size="lg" variant="common" onClick={() => setView('fortune')}>
-                오늘의 운세
-              </Button>
-              <Button size="lg" variant="common">
-                QUIZ
-              </Button>
-              <Button size="lg" variant="common">
-                푸쉬 설정
-              </Button>
-            </span>
-              ) : (
-                <div className="w-full mt-6">
+                <Button size="lg" variant="common" onClick={() => setView('five')}>
+                  5일 날씨
+                </Button>
+                <Button size="lg" variant="common" onClick={() => setView('fortune')}>
+                  오늘의 운세
+                </Button>
+
+                <Button size="lg" variant="common">
+                  QUIZ
+                </Button>
+                <Button size="lg" variant="common">
+                  푸쉬 설정
+                </Button>
+              </span>
+            ) : (
+              <div className="w-full mt-6">
                 <Scheduleform
                   form={form}
                   onChange={handleChange}
@@ -147,7 +153,7 @@ export default function MainPage() {
                   // onEdit={onEdit}
                 />
               </div>
-              )}
+            )}
 
             <MyPage />
             <AdminMypage />
