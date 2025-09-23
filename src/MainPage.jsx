@@ -17,6 +17,7 @@ export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
+  const { pageMode, setPageMode } = useMainPage();
 
   const [openSchedule, setOpenSchedule] = useState(false);
   const [openTodo, setOpenTodo] = useState(false);
@@ -117,7 +118,7 @@ export default function MainPage() {
     setTodoForm({ title: '', memo: '' });
   };
 
-  const [view, setView] = useState('main');
+  // const [view, setView] = useState('main');
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -197,7 +198,7 @@ export default function MainPage() {
                 <Button size="lg" variant="common">
                   5일 날씨
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setView('fortune')}>
+                <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
                   오늘의 운세
                 </Button>
                 <Button size="lg" variant="common">

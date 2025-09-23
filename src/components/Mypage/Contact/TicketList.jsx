@@ -27,10 +27,10 @@ export default function TicketList({
 
   return (
     <div className="space-y-2">
-      {items.map((t) => (
+      {items.map((ticket) => (
         <TicketCard
-          key={t.id}
-          t={t}
+          key={ticket.id}
+          ticket={ticket}
           isReplyTab={isReplyTab}
           expandedId={expandedId}
           setExpandedId={setExpandedId}

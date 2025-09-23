@@ -1,22 +1,36 @@
 // src/components/Mypage/Contact/AskForm.jsx
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import Modal from '../../ui/Modal';
 
 export default function AskForm({ onCancel, onSubmit }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const bodyRef = useRef(null);
 
-  const submit = () => {
+  // 알림 모달 상태
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoTitle, setInfoTitle] = useState('알림');
+  const [infoMessage, setInfoMessage] = useState('');
+  const showInfo = (message, title = '알림') => {
+    setInfoTitle(title);
+    setInfoMessage(message);
+    setInfoOpen(true);
+  };
+  const closeInfo = () => setInfoOpen(false);
+
+  const submit = (e) => {
+    e.preventDefault(); // 새로고침 막기
     if (!title.trim() || !body.trim()) {
-      alert('제목과 내용을 입력해 주세요.');
+      showInfo('제목과 내용을 입력해 주세요.');
       return;
     }
-    onSubmit({ title, body });
+    onSubmit({ title: title.trim(), body: body.trim() }); //앞뒤 공백처리
     setTitle('');
     setBody('');
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <form className="flex flex-col h-full" onSubmit={submit}>
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-700">제목</label>
         <input
@@ -24,27 +38,53 @@ export default function AskForm({ onCancel, onSubmit }) {
           placeholder="제목을 입력하세요."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              // 제목에서 엔터 금지 + 본문으로 이동(선택)
+              e.preventDefault();
+              bodyRef.current?.focus();
+            }
+          }}
         />
       </div>
 
       <div className="space-y-2 mt-4 flex-1 flex flex-col">
         <label className="text-sm font-medium text-slate-700">내용</label>
         <textarea
+          ref={bodyRef}
           className="w-full flex-1 border rounded p-2 text-sm"
           placeholder="문의 내용을 입력하세요."
           value={body}
           onChange={(e) => setBody(e.target.value)}
+          onKeyDown={(e) => {
+            // 본문에서 Ctrl/Cmd + Enter 로만 제출되게
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+              submit(e);
+            }
+          }}
         />
       </div>
 
       <div className="mt-3 flex justify-end gap-2">
-        <button className="btn-secondary" onClick={onCancel}>
+        <button type="button" className="btn-secondary" onClick={onCancel}>
           취소
         </button>
-        <button className="btn" onClick={submit}>
+        <button type="submit" className="btn">
           보내기
         </button>
       </div>
-    </div>
+      <Modal
+        openModal={infoOpen}
+        title={infoTitle}
+        onClose={closeInfo}
+        footer={
+          <button type="button" className="btn" onClick={closeInfo}>
+            확인
+          </button>
+        }
+      >
+        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+      </Modal>
+    </form>
   );
 }
