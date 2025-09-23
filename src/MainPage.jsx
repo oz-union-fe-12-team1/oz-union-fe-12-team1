@@ -124,12 +124,13 @@ export default function MainPage() {
                 <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
                   일정 리스트
                 </Button>
-                <Button size="lg" variant="common">
+                <Button size="lg" variant="common" onClick={() => setView('five')}>
                   5일 날씨
                 </Button>
                 <Button size="lg" variant="common" onClick={() => setView('fortune')}>
                   오늘의 운세
                 </Button>
+
                 <Button size="lg" variant="common">
                   QUIZ
                 </Button>
