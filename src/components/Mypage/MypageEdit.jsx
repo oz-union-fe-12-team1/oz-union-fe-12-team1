@@ -34,18 +34,12 @@ export default function MypageEdit({
     };
   }, [profileImage]);
 
-  const apply = async () => {
-    // 선택이 필수라면 체크
-    if (!birthdate) {
-      showInfo('생년월일을 선택해 주세요.');
+  const applyProfile = async () => {
+    if (!username.trim()) {
+      showInfo('닉네임을 입력하세요.');
       return;
     }
-    // 범위 검증 (1900-01-01 ~ 오늘)
-    if (birthdate < '1900-01-01' || birthdate > today) {
-      showInfo('유효한 생년월일 범위를 선택해 주세요.');
-      return;
-    }
-    await onSubmit({ username, profile_image: profileImage, birthdate });
+    await onSubmit({ username: username.trim(), profile_image: profileImage, birthdate });
     showInfo('적용되었습니다.');
   };
 
@@ -83,7 +77,7 @@ export default function MypageEdit({
           onChange={(e) => setUsername(e.target.value)}
           placeholder="닉네임을 입력하세요."
         />
-        <button type="button" className="btn" onClick={apply}>
+        <button type="button" className="btn" onClick={applyProfile} disabled={!username.trim()}>
           적용
         </button>
       </div>
@@ -93,20 +87,20 @@ export default function MypageEdit({
         <input
           className="input flex-1"
           type="date"
-          value={birthdate || today}
+          value={birthdate} // today로 채우지 말고 그대로
           onChange={(e) => setBirthdate(e.target.value)}
           min="1900-01-01"
           max={today}
         />
+
         <button
           className="btn"
           onClick={async () => {
-            const val = birthdate || today;
-            if (val < '1900-01-01' || val > today) {
-              showInfo('유효한 생년월일 범위를 선택해 주세요.');
+            if (!birthdate) {
+              showInfo('생년월일을 선택해 주세요.');
               return;
             }
-            await onSubmit({ username, profile_image: profileImage, birthdate: val });
+            await onSubmit({ username, profile_image: profileImage, birthdate });
             showInfo('적용되었습니다.');
           }}
         >
