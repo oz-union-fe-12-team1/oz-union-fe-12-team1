@@ -15,23 +15,21 @@ export default function TicketCard({
   setEditBody,
   saveEdit,
 
-  replyDrafts,
+  replyDrafts = {},
   setReplyDrafts,
   submitReply,
 }) {
   const isOpen = expandedId === ticket.id;
   const isEditing = editingId === ticket.id;
+  const isPending = ticket?.status === '처리중';
 
   // 보기 영역에서 완료 문구(기존 답변 없으면 기본 문구)
-  const resultText = ticket.answer ?? '완료된 문의입니다. 재답변 시 내용이 갱신됩니다.';
+  const resultText = ticket.answer ?? '완료된 문의입니다.';
 
   // 답변함 textarea: 완료 상태일 때는 항상 빈값(플레이스홀더만 보여주기)
-  const replyPlaceholder =
-    ticket.status === '처리중'
-      ? '사용자에게 보낼 답변을 입력하세요.'
-      : '완료된 문의입니다. 재답변 시 내용이 갱신됩니다.';
-  const replyValue =
-    replyDrafts[ticket.id] ?? (ticket.status === '처리중' ? (ticket.answer ?? '') : '');
+  const replyPlaceholder = '사용자에게 보낼 답변을 입력하세요.'; // 완료건은 입력창 자체를 렌더하지 않음
+  const hasDraft = Object.prototype.hasOwnProperty.call(replyDrafts, ticket.id);
+  const replyValue = hasDraft ? replyDrafts[ticket.id] : isPending ? (ticket.answer ?? '') : '';
 
   return (
     <div className="border rounded p-3">
@@ -39,12 +37,13 @@ export default function TicketCard({
       <button
         type="button"
         aria-expanded={isOpen}
+        aria-controls={`ticket-panel-${ticket.id}`}
         onClick={() => {
           if (editingId && editingId !== ticket.id) cancelEdit();
           if (isEditing && isOpen) return; // 편집 중일 때 닫힘 방지
           setExpandedId(isOpen ? null : ticket.id);
         }}
-        className="w-full text-left cursor-pointer select-none"
+        className="w-full text-left cursor-pointer select-none focus:outline-none focus:ring-2 focus:ring-slate-400 rounded"
       >
         <div className="flex items-baseline justify-between gap-3">
           <div className="text-sm font-semibold">
@@ -57,21 +56,22 @@ export default function TicketCard({
 
       {/* 바디 */}
       <div
+        id={`ticket-panel-${ticket.id}`}
         className={[
           'mt-2 overflow-hidden transition-all duration-300',
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
+          isOpen ? 'max-h-[70vh] opacity-100' : 'max-h-0 opacity-0',
         ].join(' ')}
       >
         <div className="pt-2 border-t text-sm">
           {isEditing ? (
             // 편집 모드
-            <form className="flex flex-col gap-3">
+            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
               <div className="space-y-1">
                 <label className="text-xs text-slate-600">제목</label>
                 <input
                   className="w-full border rounded p-2 text-sm"
                   value={editTitle}
-                  onChange={(e) => setEditTitle(e.TargeTicket.value)}
+                  onChange={(e) => setEditTitle(e.target.value)}
                   placeholder="제목을 입력하세요."
                 />
               </div>
@@ -80,15 +80,15 @@ export default function TicketCard({
                 <textarea
                   className="w-full min-h-[8rem] border rounded p-2 text-sm"
                   value={editBody}
-                  onChange={(e) => setEditBody(e.TargeTicket.value)}
+                  onChange={(e) => setEditBody(e.target.value)}
                   placeholder="문의 내용을 입력하세요."
                 />
               </div>
               <div className="flex justify-end gap-2">
-                <button className="btn-secondary" onClick={cancelEdit}>
+                <button type="button" className="btn-secondary" onClick={cancelEdit}>
                   취소
                 </button>
-                <button className="btn" onClick={() => saveEdit(ticket)}>
+                <button type="button" className="btn" onClick={() => saveEdit(ticket)}>
                   완료
                 </button>
               </div>
@@ -106,7 +106,10 @@ export default function TicketCard({
                     <div className="mt-3 flex justify-end">
                       <button
                         className="text-xs text-slate-600 underline"
-                        onClick={() => startEdit(ticket)}
+                        onClick={() => {
+                          if (!isOpen) setExpandedId(ticket.id);
+                          startEdit(ticket);
+                        }}
                       >
                         수정
                       </button>
@@ -121,7 +124,7 @@ export default function TicketCard({
               )}
 
               {/* 관리자 답변 영역 (답변함 탭 전용) */}
-              {isReplyTab && (
+              {isReplyTab && isPending && (
                 <div className="mt-3 p-3 border rounded bg-slate-50">
                   <div className="text-xs text-slate-500 mb-2">관리자 답변</div>
                   <textarea
@@ -129,20 +132,37 @@ export default function TicketCard({
                     placeholder={replyPlaceholder}
                     value={replyValue}
                     onChange={(e) =>
-                      setReplyDrafts((prev) => ({ ...prev, [ticket.id]: e.TargeTicket.value }))
+                      setReplyDrafts((prev) => ({ ...prev, [ticket.id]: e.target.value ?? '' }))
                     }
+                    onKeyDown={(e) => {
+                      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                        const trimmed = (replyDrafts[ticket.id] ?? '').trim();
+                        if (trimmed) submitReply(ticket);
+                      }
+                    }}
                   />
                   <div className="mt-2 flex justify-end gap-2">
                     <button
+                      type="button"
                       className="btn-secondary"
                       onClick={() => setReplyDrafts((prev) => ({ ...prev, [ticket.id]: '' }))}
                     >
                       취소
                     </button>
-                    <button className="btn" onClick={() => submitReply(ticket)}>
+                    <button
+                      type="button"
+                      className="btn"
+                      disabled={!(replyDrafts[ticket.id] ?? '').trim()}
+                      onClick={() => submitReply(ticket)}
+                    >
                       확인
                     </button>
                   </div>
+                </div>
+              )}
+              {isReplyTab && !isPending && (
+                <div className="mt-3 p-3 border rounded bg-slate-50 text-slate-600 text-sm">
+                  이 티켓은 이미 완료되었습니다.
                 </div>
               )}
             </>

@@ -39,6 +39,7 @@ export default function AskForm({ onCancel, onSubmit }) {
       <div className="space-y-2 mt-4 flex-1 flex flex-col">
         <label className="text-sm font-medium text-slate-700">내용</label>
         <textarea
+          ref={bodyRef}
           className="w-full flex-1 border rounded p-2 text-sm"
           placeholder="문의 내용을 입력하세요."
           value={body}
@@ -53,10 +54,10 @@ export default function AskForm({ onCancel, onSubmit }) {
       </div>
 
       <div className="mt-3 flex justify-end gap-2">
-        <button className="btn-secondary" onClick={onCancel}>
+        <button type="button" className="btn-secondary" onClick={onCancel}>
           취소
         </button>
-        <button className="btn" onClick={submit}>
+        <button type="submit" className="but">
           보내기
         </button>
       </div>

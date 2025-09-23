@@ -9,9 +9,9 @@ export default function MypageEdit({
   onAskDelete,
   onPreview,
 }) {
-  const [username] = useState(defaultUsername);
-  const [birthdate, setBirthdate] = useState(defaultBirthdate); // YYYY-MM-DD
-  const [profileImage, setProfileImage] = useState(defaultProfileImage);
+  const [username, setUsername] = useState(defaultUsername ?? '');
+  const [birthdate, setBirthdate] = useState(defaultBirthdate ?? ''); // YYYY-MM-DD
+  const [profileImage, setProfileImage] = useState(defaultProfileImage ?? '');
   const [profileFileName, setProfileFileName] = useState('');
 
   useEffect(() => {
@@ -19,6 +19,15 @@ export default function MypageEdit({
       if (profileImage?.startsWith?.('blob:')) URL.revokeObjectURL(profileImage);
     };
   }, [profileImage]);
+
+  const apply = async () => {
+    if (birthdate && !/^\d{4}-\d{2}-\d{2}$/.test(birthdate)) {
+      alert('생년월일은 YYYY-MM-DD 형식이어야 합니다.');
+      return;
+    }
+    await onSubmit({ username, profile_image: profileImage, birthdate });
+    alert('적용되었습니다.');
+  };
 
   return (
     <div className="space-y-4">
@@ -35,13 +44,28 @@ export default function MypageEdit({
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file) return;
+            if (profileImage?.startsWith?.('blob:')) URL.revokeObjectURL(profileImage);
             setProfileFileName(file.name);
             const url = URL.createObjectURL(file);
             setProfileImage(url);
             onPreview?.(url);
           }}
         />
-        <label htmlFor="profile-file" className="btn cursor-pointer">파일선택</label>
+        <label htmlFor="profile-file" className="btn cursor-pointer">
+          파일선택
+        </label>
+      </div>
+      <div>
+        <Label>닉네임 변경</Label>
+        <input
+          className="input"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="닉네임을 입력하세요."
+        />
+        <button type="button" className="btn" onClick={apply}>
+          적용
+        </button>
       </div>
 
       <Label>생년월일 변경</Label>
@@ -51,7 +75,7 @@ export default function MypageEdit({
           placeholder="YYYY-MM-DD"
           type="text"
           inputMode="numeric"
-          pattern="\d{4}-\d{2}-\d{2}"
+          pattern="\\d{4}-\\d{2}-\\d{2}"
           value={birthdate}
           onChange={(e) =>
             setBirthdate(
@@ -70,7 +94,7 @@ export default function MypageEdit({
               alert('생년월일은 YYYY-MM-DD 형식이어야 합니다.');
               return;
             }
-            await onSubmit({ username, profile_image: profileImage, birthdate });
+            await onSubmit({ username, profile_image: profileImage, birthdate: birthdate || null });
             alert('적용되었습니다.');
           }}
         >
@@ -84,7 +108,9 @@ export default function MypageEdit({
         <input className="input" placeholder="새로운 비밀번호" type="password" />
         <div className="flex gap-2">
           <input className="input flex-1" placeholder="새로운 비밀번호 확인" type="password" />
-          <button className="btn" onClick={() => alert('적용되었습니다.')}>적용</button>
+          <button type="button" className="btn" onClick={() => alert('적용되었습니다.')}>
+            적용
+          </button>
         </div>
       </div>
 
