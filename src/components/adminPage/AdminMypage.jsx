@@ -18,7 +18,7 @@ export default function AdminMypage() {
   const [contactTab, setContactTab] = useState('reply');
   const [expandedId, setExpandedId] = useState(null);
   const { tickets, setTickets } = useTicketsStore();
-  const { setPages } = useMainPage();
+  const { setPageMode } = useMainPage();
 
   return (
     <>
@@ -49,9 +49,9 @@ export default function AdminMypage() {
             onClick={() => {
               setOpenAdminDashboard(!openAdminDashboard);
               if (openAdminDashboard) {
-                setPages('main');
+                setPageMode('main');
               } else {
-                setPages('admin');
+                setPageMode('admin');
               }
             }}
           >

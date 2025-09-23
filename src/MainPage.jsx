@@ -18,7 +18,7 @@ export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
-  const { mainPage, setPages } = useMainPage();
+  const { pageMode, setPageMode } = useMainPage();
 
   const [openSchedule, setOpenSchedule] = useState(false);
 
@@ -113,7 +113,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {CONTENT_MAP[mainPage]}
+              {CONTENT_MAP[pageMode]}
             </div>
           </div>
 
@@ -128,15 +128,15 @@ export default function MainPage() {
                   variant="common"
                   onClick={() => {
                     setOpenSchedule(true);
-                    setPages('main');
+                    setPageMode('main');
                   }}
                 >
                   일정 리스트
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setPages('five')}>
+                <Button size="lg" variant="common" onClick={() => setPageMode('five')}>
                   5일 날씨
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setPages('fortune')}>
+                <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
                   오늘의 운세
                 </Button>
 
