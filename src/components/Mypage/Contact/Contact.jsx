@@ -1,6 +1,7 @@
 // src/components/Mypage/Contact/Contact.jsx
 import ModalPortal from '../common/ModalPortal';
-import { useMemo, useState } from 'react';
+import Modal from '../../ui/Modal';
+import { useEffect, useMemo, useState } from 'react';
 import AskForm from './AskForm';
 import TicketToolbar from './TicketToolbar';
 import TicketList from './TicketList';
@@ -22,8 +23,20 @@ export default function Contact({
   setTickets,
   expandedId,
   setExpandedId,
-  isAdmin = true,
+  isAdmin = false, //api 명세서 is_superuser로 교체 예정
+  adminOnlyReply = false,
 }) {
+  // 알림 모달
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoTitle, setInfoTitle] = useState('알림');
+  const [infoMessage, setInfoMessage] = useState('');
+  const showInfo = (message, title = '알림') => {
+    setInfoMessage(message);
+    setInfoTitle(title);
+    setInfoOpen(true);
+  };
+  const closeInfo = () => setInfoOpen(false);
+
   // 검색/필터 상태
   const [statusFilter, setStatusFilter] = useState('all'); // all | 처리중 | 완료
   const [searchInput, setSearchInput] = useState('');
@@ -61,7 +74,7 @@ export default function Contact({
     ]);
     setTab('inbox');
     setExpandedId(newId);
-    alert('문의가 접수되었습니다.');
+    showInfo('문의가 접수되었습니다.');
   };
 
   // 사용자 편집(제목/내용)
@@ -77,7 +90,7 @@ export default function Contact({
   };
   const saveEdit = (t) => {
     if (!editTitle.trim() || !editBody.trim()) {
-      alert('제목과 내용을 입력해 주세요.');
+      showInfo('제목과 내용을 입력해 주세요.');
       return;
     }
     setTickets((prev) =>
@@ -86,35 +99,44 @@ export default function Contact({
       ),
     );
     setEditingId(null);
-    alert('수정이 반영되었습니다.');
+    showInfo('수정이 반영되었습니다.');
   };
 
   // 관리자 답변 등록
   const submitReply = (t) => {
     const draft = (replyDrafts[t.id] || '').trim();
     if (!draft) {
-      alert('답변 내용을 입력해 주세요.');
+      showInfo('답변 내용을 입력해 주세요.');
       return;
     }
     setTickets((prev) =>
       prev.map((it) => (it.id === t.id ? { ...it, status: '완료', answer: draft } : it)),
     );
     setReplyDrafts((prev) => ({ ...prev, [t.id]: '' }));
-    alert('답변이 등록되었습니다.');
+    showInfo('답변이 등록되었습니다.');
   };
 
   // 탭 목록
-  const tabs = [
-    { key: 'ask', label: '문의하기' },
-    { key: 'inbox', label: '문의함' },
-    ...(isAdmin ? [{ key: 'reply', label: '답변함' }] : []),
-  ];
+  const tabs = adminOnlyReply
+    ? [{ key: 'reply', label: '답변함' }]
+    : [
+        { key: 'ask', label: '문의하기' },
+        { key: 'inbox', label: '문의함' },
+        ...(isAdmin ? [{ key: 'reply', label: '답변함' }] : []),
+      ];
+
+  // 관리자 전용 모드일 땐 탭을 강제로 'reply'로 유지
+  useEffect(() => {
+    if (open && adminOnlyReply && tab !== 'reply') {
+      setTab('reply');
+    }
+  }, [open, adminOnlyReply, tab, setTab]);
 
   if (!open) return null;
 
   return (
     <ModalPortal>
-      <div className="fixed inset-0 z-[999] bg-black/40">
+      <div className={`fixed inset-0 ${infoOpen ? 'z-40' : 'z-[999]'} bg-black/40`}>
         <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2">
           <div className="bg-white rounded-lg shadow-lg w-full h-[min(90vh,800px)] p-5 flex flex-col">
             {/* 헤더 */}
@@ -144,7 +166,7 @@ export default function Contact({
 
             {/* 컨텐츠 */}
             <div className="flex-1 min-h-0 overflow-y-auto">
-              {tab === 'ask' ? (
+              {tab === 'ask' && !adminOnlyReply ? (
                 <AskForm onCancel={onClose} onSubmit={submitAsk} />
               ) : (
                 <div className="flex flex-col">
@@ -181,6 +203,19 @@ export default function Contact({
           </div>
         </div>
       </div>
+      {/*공통 Modal로 알림 표시 */}
+      <Modal
+        openModal={infoOpen}
+        title={infoTitle}
+        onClose={closeInfo}
+        footer={
+          <button type="button" className="btn" onClick={closeInfo}>
+            확인
+          </button>
+        }
+      >
+        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+      </Modal>
     </ModalPortal>
   );
 }

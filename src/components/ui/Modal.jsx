@@ -13,13 +13,11 @@ export default function Modal({ openModal, title, children, onClose, footer }) {
       >
         {/* 모달 제목 */}
         {title && <h2 className="text-xl font-semibold text-black">{title}</h2>}
-        {title && <h2 className="text-xl font-semibold text-black">{title}</h2>}
 
         {/* 모달 본문 */}
         <div className="text-gray-800">{children}</div>
 
         {/* 확인/취소 버튼 부분 */}
-        {footer && <div className="flex justify-end">{footer}</div>}
         {footer && <div className="flex justify-end">{footer}</div>}
       </div>
     </div>

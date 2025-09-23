@@ -8,10 +8,14 @@ export default function Leave({ onCancel }) {
         보내기는 싫지만… 가신다면 어쩔 수 없죠… 정말 떠나실건가요?
       </div>
       <div className="flex gap-2 justify-end">
-        <button className="btn-secondary" onClick={onCancel}>취소</button>
+        <button className="btn-secondary" onClick={onCancel}>
+          취소
+        </button>
         <button
-          className="btn"
-          onClick={() => { window.location.href = 'http://localhost:5173/'; }}
+          type="button"
+          onClick={() => {
+            window.location.href = 'http://localhost:5173/';
+          }}
         >
           확인
         </button>
@@ -19,4 +23,3 @@ export default function Leave({ onCancel }) {
     </div>
   );
 }
-

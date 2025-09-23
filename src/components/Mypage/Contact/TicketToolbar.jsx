@@ -8,7 +8,7 @@ export default function TicketToolbar({
 }) {
   return (
     <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-      <div className="flex items-center gap-2 -ml-px">
+      <div className="flex items-center gap-2 ml-2">
         <select
           className="border rounded px-2 py-1 text-sm"
           value={statusFilter}
