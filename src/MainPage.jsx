@@ -12,6 +12,8 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import Todo from './components/layout/Todo';
+import Chatbot from './components/Chatbot';
+import { useMainPage } from './store/useMainPage';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -39,6 +41,7 @@ export default function MainPage() {
   ]);
   const [isEditingTodo, setIsEditingTodo] = useState(false);
   const [editingTodoId, setEditingTodoId] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -56,6 +59,7 @@ export default function MainPage() {
   const handleDelete = (id) => {
     setList((prev) => prev.filter((item) => item.id !== id));
   };
+
   const handleTodoChange = (e) => {
     const { name, value } = e.target;
     setTodoForm((prev) => ({ ...prev, [name]: value }));
@@ -118,22 +122,16 @@ export default function MainPage() {
     setTodoForm({ title: '', memo: '' });
   };
 
-  // const [view, setView] = useState('main');
-
   useEffect(() => {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
-  let content;
-  if (openAdminPage && openAdminDashboard) {
-    content = <Admin />;
-  } else if (view === 'five') {
-    content = <FiveDayWeather />;
-  } else if (view === 'fortune') {
-    content = <TodayFortune />;
-  } else {
-    content = <span className="text-xl">메인</span>;
-  }
+  const CONTENT_MAP = {
+    admin: <Admin />,
+    five: <FiveDayWeather />,
+    fortune: <TodayFortune />,
+    main: <Chatbot />,
+  };
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -174,7 +172,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {content}
+              {CONTENT_MAP[pageMode]}
             </div>
           </div>
 
@@ -191,11 +189,14 @@ export default function MainPage() {
                 <Button
                   size="lg"
                   variant="common"
-                  onClick={() => setOpenSchedule(true)}
+                  onClick={() => {
+                    setOpenSchedule(true);
+                    setPageMode('main');
+                  }}
                 >
                   일정 리스트
                 </Button>
-                <Button size="lg" variant="common">
+                <Button size="lg" variant="common" onClick={() => setPageMode('five')}>
                   5일 날씨
                 </Button>
                 <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
