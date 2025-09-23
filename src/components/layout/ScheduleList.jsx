@@ -7,7 +7,7 @@ export default function ScheduleList({ openAdminDashboard , openAdminPage , open
                 openSchedule ? (
                     <ScheduleAdd list={list} onDelete={handleDelete} />
                 ) : (
-                    <span className="text-xl font-medium text-slate-700">메인</span>
+                    <span className="text-xl font-medium text-slate-700">ë©”ì¸</span>
                 )
             ) : (
                 <Admin />

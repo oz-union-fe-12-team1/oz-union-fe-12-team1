@@ -11,7 +11,7 @@ import Admin from './components/adminPage/Admin';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
-import Chatbot from './components/Chatbot';
+import Todo from './components/layout/Todo';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -19,7 +19,7 @@ export default function MainPage() {
   const { openAdminDashboard } = useOpenAdminDashboard();
 
   const [openSchedule, setOpenSchedule] = useState(false);
-
+  const [openTodo, setOpenTodo] = useState(false);
   const [form, setForm] = useState({
     date: '',
     time: '',
@@ -27,7 +27,17 @@ export default function MainPage() {
     memo: '',
   });
   const [list, setList] = useState([]);
-
+  const [todoForm, setTodoForm] = useState({
+    title: '',
+    memo: '',
+  });
+  const [todoList, setTodoList] = useState([
+    { id: 1, title: "React 공부하기", completed: false },
+    { id: 2, title: "프로젝트 완성하기", completed: true },
+    { id: 3, title: "운동하기", completed: false }
+  ]);
+  const [isEditingTodo, setIsEditingTodo] = useState(false);
+  const [editingTodoId, setEditingTodoId] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -45,6 +55,67 @@ export default function MainPage() {
   const handleDelete = (id) => {
     setList((prev) => prev.filter((item) => item.id !== id));
   };
+  const handleTodoChange = (e) => {
+    const { name, value } = e.target;
+    setTodoForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTodoAdd = (e) => {
+    e.preventDefault();
+    if (!todoForm.title.trim()) return;
+
+    if (isEditingTodo) {
+      setTodoList((prev) => 
+        prev.map((item) => 
+          item.id === editingTodoId 
+            ? { ...item, ...todoForm }
+            : item
+        )
+      );
+      setIsEditingTodo(false);
+      setEditingTodoId(null);
+    } else {
+      const newTodo = { 
+        id: Date.now(), 
+        ...todoForm, 
+        completed: false 
+      };
+      setTodoList((prev) => [...prev, newTodo]);
+    }
+    
+    setTodoForm({ title: '', memo: '' });
+  };
+
+  const handleTodoDelete = (id) => {
+    setTodoList((prev) => prev.filter((item) => item.id !== id));
+    if (editingTodoId === id) {
+      setIsEditingTodo(false);
+      setEditingTodoId(null);
+      setTodoForm({ title: '', memo: '' });
+    }
+  };
+
+  const handleTodoToggle = (id) => {
+    setTodoList((prev) => 
+      prev.map((item) => 
+        item.id === id 
+          ? { ...item, completed: !item.completed }
+          : item
+      )
+    );
+  };
+
+  const handleTodoEdit = (item) => {
+    setTodoForm({ title: item.title, memo: item.memo || '' });
+    setIsEditingTodo(true);
+    setEditingTodoId(item.id);
+  };
+
+  const handleTodoCancelEdit = () => {
+    setIsEditingTodo(false);
+    setEditingTodoId(null);
+    setTodoForm({ title: '', memo: '' });
+  };
 
   const [view, setView] = useState('main');
 
@@ -52,25 +123,16 @@ export default function MainPage() {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
 
-  const CONTENT_MAP = {
-    admin: <Admin />,
-    five: <FiveDayWeather />,
-    fortune: <TodayFortune />,
-    main: <Chatbot />,
-  };
-
-  const contentKey = (() => {
-    if (openAdminPage && openAdminDashboard) {
-      return 'admin';
-    }
-    if (view === 'five') {
-      return 'five';
-    }
-    if (view === 'fortune') {
-      return 'fortune';
-    }
-    return 'main';
-  })();
+  let content;
+  if (openAdminPage && openAdminDashboard) {
+    content = <Admin />;
+  } else if (view === 'five') {
+    content = <FiveDayWeather />;
+  } else if (view === 'fortune') {
+    content = <TodayFortune />;
+  } else {
+    content = <span className="text-xl">메인</span>;
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -111,26 +173,33 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {CONTENT_MAP[contentKey]}
+              {content}
             </div>
           </div>
 
           <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-            {!openSchedule ? (
+            {!openSchedule && !openTodo ? (
               <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-                <Button size="lg" variant="common">
+                <Button 
+                  size="lg" 
+                  variant="common"
+                  onClick={() => setOpenTodo(true)}
+                >
                   Todo List
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
+                <Button
+                  size="lg"
+                  variant="common"
+                  onClick={() => setOpenSchedule(true)}
+                >
                   일정 리스트
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setView('five')}>
+                <Button size="lg" variant="common">
                   5일 날씨
                 </Button>
                 <Button size="lg" variant="common" onClick={() => setView('fortune')}>
                   오늘의 운세
                 </Button>
-
                 <Button size="lg" variant="common">
                   QUIZ
                 </Button>
@@ -138,7 +207,22 @@ export default function MainPage() {
                   푸쉬 설정
                 </Button>
               </span>
-            ) : (
+            ) : openTodo ? (
+              <div className="w-full mt-6">
+                <Todo
+                  form={todoForm}
+                  onChange={handleTodoChange}
+                  onAdd={handleTodoAdd}
+                  onCancelEdit={handleTodoCancelEdit}
+                  isEditing={isEditingTodo}
+                  list={todoList}
+                  handleDelete={handleTodoDelete}
+                  onToggle={handleTodoToggle}
+                  onEdit={handleTodoEdit}
+                  setOpenTodo={setOpenTodo}
+                />
+              </div>
+            ) : openSchedule ? (
               <div className="w-full mt-6">
                 <Scheduleform
                   form={form}
@@ -150,10 +234,9 @@ export default function MainPage() {
                   list={list}
                   handleDelete={handleDelete}
                   openAdminPage={openAdminPage}
-                  // onEdit={onEdit}
                 />
               </div>
-            )}
+            ) : null}
 
             <MyPage />
             <AdminMypage />
