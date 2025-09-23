@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import dummyNews from '../api/NewsData';
+import dummyNews from '../api/dummyNews';
 
 export default function News() {
   const [newsData, setNewsData] = useState([]);
