@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Label from './common/Label';
+import Modal from '../ui/Modal';
 
 export default function MypageEdit({
   defaultUsername,
@@ -9,10 +10,23 @@ export default function MypageEdit({
   onAskDelete,
   onPreview,
 }) {
+  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date());
+
   const [username, setUsername] = useState(defaultUsername ?? '');
-  const [birthdate, setBirthdate] = useState(defaultBirthdate ?? ''); // YYYY-MM-DD
+  const [birthdate, setBirthdate] = useState(defaultBirthdate ?? '');
   const [profileImage, setProfileImage] = useState(defaultProfileImage ?? '');
   const [profileFileName, setProfileFileName] = useState('');
+
+  // 알림 모달 상태
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoTitle, setInfoTitle] = useState('알림');
+  const [infoMessage, setInfoMessage] = useState('');
+  const showInfo = (message, title = '알림') => {
+    setInfoTitle(title);
+    setInfoMessage(message);
+    setInfoOpen(true);
+  };
+  const closeInfo = () => setInfoOpen(false);
 
   useEffect(() => {
     return () => {
@@ -21,12 +35,18 @@ export default function MypageEdit({
   }, [profileImage]);
 
   const apply = async () => {
-    if (birthdate && !/^\d{4}-\d{2}-\d{2}$/.test(birthdate)) {
-      alert('생년월일은 YYYY-MM-DD 형식이어야 합니다.');
+    // 선택이 필수라면 체크
+    if (!birthdate) {
+      showInfo('생년월일을 선택해 주세요.');
+      return;
+    }
+    // 범위 검증 (1900-01-01 ~ 오늘)
+    if (birthdate < '1900-01-01' || birthdate > today) {
+      showInfo('유효한 생년월일 범위를 선택해 주세요.');
       return;
     }
     await onSubmit({ username, profile_image: profileImage, birthdate });
-    alert('적용되었습니다.');
+    showInfo('적용되었습니다.');
   };
 
   return (
@@ -72,30 +92,22 @@ export default function MypageEdit({
       <div className="flex gap-2">
         <input
           className="input flex-1"
-          placeholder="YYYY-MM-DD"
-          type="text"
-          inputMode="numeric"
-          pattern="\\d{4}-\\d{2}-\\d{2}"
-          value={birthdate}
-          onChange={(e) =>
-            setBirthdate(
-              e.target.value
-                .replace(/[^\d-]/g, '')
-                .replace(/^(\d{4})(\d)/, '$1-$2')
-                .replace(/^(\d{4}-\d{2})(\d)/, '$1-$2')
-                .slice(0, 10),
-            )
-          }
+          type="date"
+          value={birthdate || today}
+          onChange={(e) => setBirthdate(e.target.value)}
+          min="1900-01-01"
+          max={today}
         />
         <button
           className="btn"
           onClick={async () => {
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(birthdate)) {
-              alert('생년월일은 YYYY-MM-DD 형식이어야 합니다.');
+            const val = birthdate || today;
+            if (val < '1900-01-01' || val > today) {
+              showInfo('유효한 생년월일 범위를 선택해 주세요.');
               return;
             }
-            await onSubmit({ username, profile_image: profileImage, birthdate: birthdate || null });
-            alert('적용되었습니다.');
+            await onSubmit({ username, profile_image: profileImage, birthdate: val });
+            showInfo('적용되었습니다.');
           }}
         >
           적용
@@ -108,7 +120,7 @@ export default function MypageEdit({
         <input className="input" placeholder="새로운 비밀번호" type="password" />
         <div className="flex gap-2">
           <input className="input flex-1" placeholder="새로운 비밀번호 확인" type="password" />
-          <button type="button" className="btn" onClick={() => alert('적용되었습니다.')}>
+          <button type="button" className="btn" onClick={() => showInfo('적용되었습니다.')}>
             적용
           </button>
         </div>
@@ -117,6 +129,18 @@ export default function MypageEdit({
       <button className="text-xs text-slate-700 underline" onClick={onAskDelete}>
         회원탈퇴
       </button>
+      <Modal
+        openModal={infoOpen}
+        title={infoTitle}
+        onClose={closeInfo}
+        footer={
+          <button type="button" className="btn" onClick={closeInfo}>
+            확인
+          </button>
+        }
+      >
+        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+      </Modal>
     </div>
   );
 }

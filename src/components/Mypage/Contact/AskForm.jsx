@@ -1,18 +1,30 @@
 // src/components/Mypage/Contact/AskForm.jsx
 import { useRef, useState } from 'react';
+import Modal from '../../ui/Modal';
 
 export default function AskForm({ onCancel, onSubmit }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const bodyRef = useRef(null);
 
+  // 알림 모달 상태
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoTitle, setInfoTitle] = useState('알림');
+  const [infoMessage, setInfoMessage] = useState('');
+  const showInfo = (message, title = '알림') => {
+    setInfoTitle(title);
+    setInfoMessage(message);
+    setInfoOpen(true);
+  };
+  const closeInfo = () => setInfoOpen(false);
+
   const submit = (e) => {
     e.preventDefault(); // 새로고침 막기
     if (!title.trim() || !body.trim()) {
-      alert('제목과 내용을 입력해 주세요.');
+      showInfo('제목과 내용을 입력해 주세요.');
       return;
     }
-    onSubmit({ title, body });
+    onSubmit({ title: title.trim(), body: body.trim() }); //앞뒤 공백처리
     setTitle('');
     setBody('');
   };
@@ -57,10 +69,22 @@ export default function AskForm({ onCancel, onSubmit }) {
         <button type="button" className="btn-secondary" onClick={onCancel}>
           취소
         </button>
-        <button type="submit" className="but">
+        <button type="submit" className="btn">
           보내기
         </button>
       </div>
+      <Modal
+        openModal={infoOpen}
+        title={infoTitle}
+        onClose={closeInfo}
+        footer={
+          <button type="button" className="btn" onClick={closeInfo}>
+            확인
+          </button>
+        }
+      >
+        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+      </Modal>
     </form>
   );
 }
