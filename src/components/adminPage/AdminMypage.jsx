@@ -6,6 +6,7 @@ import { useOpenAdminDashboard } from '../../store/useOpenAdminDashboard';
 import Contact from '../Mypage/Contact/Contact';
 import { useState } from 'react';
 import { useTicketsStore } from '../../store/useTicketsStore';
+import { useMainPage } from '../../store/useMainPage';
 
 export default function AdminMypage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -17,6 +18,7 @@ export default function AdminMypage() {
   const [contactTab, setContactTab] = useState('reply');
   const [expandedId, setExpandedId] = useState(null);
   const { tickets, setTickets } = useTicketsStore();
+  const { setPageMode } = useMainPage();
 
   return (
     <>
@@ -46,6 +48,11 @@ export default function AdminMypage() {
             variant="common"
             onClick={() => {
               setOpenAdminDashboard(!openAdminDashboard);
+              if (openAdminDashboard) {
+                setPageMode('main');
+              } else {
+                setPageMode('admin');
+              }
             }}
           >
             {openAdminDashboard ? <p>숨기기</p> : <p>유저 목록</p>}

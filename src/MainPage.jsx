@@ -12,11 +12,13 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import Chatbot from './components/Chatbot';
+import { useMainPage } from './store/useMainPage';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
+  const { pageMode, setPageMode } = useMainPage();
 
   const [openSchedule, setOpenSchedule] = useState(false);
 
@@ -46,7 +48,7 @@ export default function MainPage() {
     setList((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const [view, setView] = useState('main');
+  // const [view, setView] = useState('main');
 
   useEffect(() => {
     console.log(openAdminDashboard);
@@ -59,18 +61,18 @@ export default function MainPage() {
     main: <Chatbot />,
   };
 
-  const contentKey = (() => {
-    if (openAdminPage && openAdminDashboard) {
-      return 'admin';
-    }
-    if (view === 'five') {
-      return 'five';
-    }
-    if (view === 'fortune') {
-      return 'fortune';
-    }
-    return 'main';
-  })();
+  // const contentKey = (() => {
+  //   if (openAdminPage && openAdminDashboard) {
+  //     return 'admin';
+  //   }
+  //   if (view === 'five') {
+  //     return 'five';
+  //   }
+  //   if (view === 'fortune') {
+  //     return 'fortune';
+  //   }
+  //   return 'main';
+  // })();
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -111,7 +113,7 @@ export default function MainPage() {
             </div>
 
             <div className="flex items-center justify-center rounded-lg bg-white p-6">
-              {CONTENT_MAP[contentKey]}
+              {CONTENT_MAP[pageMode]}
             </div>
           </div>
 
@@ -121,13 +123,20 @@ export default function MainPage() {
                 <Button size="lg" variant="common">
                   Todo List
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setOpenSchedule(true)}>
+                <Button
+                  size="lg"
+                  variant="common"
+                  onClick={() => {
+                    setOpenSchedule(true);
+                    setPageMode('main');
+                  }}
+                >
                   일정 리스트
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setView('five')}>
+                <Button size="lg" variant="common" onClick={() => setPageMode('five')}>
                   5일 날씨
                 </Button>
-                <Button size="lg" variant="common" onClick={() => setView('fortune')}>
+                <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
                   오늘의 운세
                 </Button>
 
