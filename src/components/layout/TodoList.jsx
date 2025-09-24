@@ -16,7 +16,16 @@ export default function TodoList({
   };
 
   return (
-    <div className="bg-white rounded-3xl p-4 text-black w-full h-193 flex flex-col border-2 border-gray-300">
+    <div className="bg-white rounded-3xl p-4 text-black w-full h-193 flex flex-col border-2 border-gray-300 relative">
+      {/* X 버튼을 상단 우측에 위치 */}
+      <button
+        type="button"
+        onClick={() => setOpenTodo(false)}
+        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center font-bold text-gray-800 text-lg z-10 shadow-sm border border-gray-300"
+      >
+        X
+      </button>
+
       {/* Todo List 제목 */}
       <h2 className="text-lg font-semibold mb-4 text-center text-black">Todo List</h2>
       
@@ -93,15 +102,6 @@ export default function TodoList({
               취소
             </button>
           )}
-          
-          {/* 닫기 버튼 */}
-          <button
-            type="button"
-            onClick={() => setOpenTodo(false)}
-            className="px-3 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs font-medium"
-          >
-            X
-          </button>
         </div>
       </div>
     </div>
