@@ -16,22 +16,24 @@ export function AdminInquiries () {
       <span className="text-[1.1rem] font-bold m-1">
         답변을 기다리는 문의
       </span>
-      <div className="flex w-full justify-center">
-        {
-          allInquiriesIsLoading ? (
-            <div>로딩 중</div>
-          )
-          : allInquiriesIsError ? (
-            <div>오류 발생</div>
-          ) 
-          : (
-            <div>
-              <span className="text-[#d82121] font-semibold text-[3.5rem]">{pendingData.length}</span> 
-              <span className="text-2xl"> / </span> <span className="relative top-3 text-[1.8rem]">{inquiryData.total}</span>
-            </div>
-          )
-        }
-      </div>
+      <div className="flex justify-center">
+        <div className="flex w-auto p-6 justify-center items-center bg-[#eee] rounded-[100%] aspect-[1/1]">
+          {
+            allInquiriesIsLoading ? (
+              <div>로딩 중</div>
+            )
+            : allInquiriesIsError ? (
+              <div>오류 발생</div>
+            ) 
+            : (
+              <div>
+                <span className="relative bottom-2 text-[#d82121] font-semibold text-[3.5rem]">{pendingData.length}</span> 
+                <span className="text-2xl"> / </span> <span className="relative top-2 text-[1.8rem]">{inquiryData.total}</span>
+              </div>
+            )
+          }
+        </div>
+      </div>  
       <div></div>
     </div>
   </>)
