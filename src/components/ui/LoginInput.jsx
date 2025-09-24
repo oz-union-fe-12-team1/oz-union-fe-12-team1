@@ -12,8 +12,8 @@ export function LoginInput({
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
   const errorMessage = error
-    ? 'text-red-500 text-[14px] mt-1 select-none'
-    : 'text-white text-[14px] mt-1 select-none';
+    ? 'text-red-500 text-[12px] mt-1 select-none'
+    : 'text-white text-[12px] mt-1 select-none';
 
   return (
     <div className="flex flex-col flex-1">
