@@ -18,6 +18,7 @@ import { Quiz } from './components/quizPage/quiz';
 import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
+import { AdminInquiries } from './components/adminPage/AdminInquiries';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -206,7 +207,7 @@ export default function MainPage() {
                 {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
-                <TodayWeather />
+                {openAdminDashboard ? <AdminInquiries/> : <TodayWeather />}
               </div>
             </div>
 
