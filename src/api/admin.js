@@ -57,6 +57,8 @@ export function useUsers (params) {
 // if (usersIsLoading) return <p>불러오는 중...</p>;
 
 
+
+//! - - - - 특정 유저 조회 - - - -
 export async function getUserSearch (userId) {
   const res = await api.get(`/users/${userId}`);
   return res.data;
@@ -75,6 +77,8 @@ export function useUserSearch(userId) {
   return { userSearchData, userSearchIsLoading, userSearchIsError, ...rest };
 }
 //const {userSearchData, userSearchIsLoading, userSearchIsError } = userUserSearch(userId);
+
+
 
 // !- - - - 특정 유저 수정 (관리자) - - - -
 export async function updateUser(userId, payload) {

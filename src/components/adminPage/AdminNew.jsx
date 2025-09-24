@@ -48,8 +48,8 @@ export function AdminNew({ data }) {
       <div className="flex flex-col justify-between">
         <h2 className="text-lg font-bold">유저 가입 현황</h2>
         <div className="text-left flex flex-col gap-1">
-          <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#d82121] font-bold text-2xl">{totalCount}</span></p>
-          <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#10b610] font-bold text-2xl">{todayCount}</span></p>
+          <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#d82121] font-bold text-[2rem]">{totalCount}</span></p>
+          <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#10b610] font-bold text-[2rem]">{todayCount}</span></p>
         </div>
       </div>
         <Chart options={options} series={series} type="radialBar" height={250} />
