@@ -21,8 +21,6 @@ export default function MainPage() {
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
 
-  const [openSchedule, setOpenSchedule] = useState(false);
-  const [openTodo, setOpenTodo] = useState(false);
   const [form, setForm] = useState({
     date: '',
     time: '',
@@ -122,6 +120,14 @@ export default function MainPage() {
     setTodoForm({ title: '', memo: '' });
   };
 
+  // Todo 뒤로가기
+  const handleBackToMain = () => {
+    setPageMode('main');
+    setIsEditingTodo(false);
+    setEditingTodoId(null);
+    setTodoForm({ title: '', memo: '' });
+  };
+
   useEffect(() => {
     console.log(openAdminDashboard);
   }, [openAdminDashboard]);
@@ -131,6 +137,8 @@ export default function MainPage() {
     five: <FiveDayWeather />,
     fortune: <TodayFortune />,
     main: <Chatbot />,
+    todo: <Chatbot />,
+    schedule: <Chatbot />,
   };
 
   return (
@@ -177,22 +185,48 @@ export default function MainPage() {
           </div>
 
           <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-            {!openSchedule && !openTodo ? (
+            {pageMode === 'todo' ? (
+              <div className="w-full mt-6">
+                <Todo
+                  form={todoForm}
+                  onChange={handleTodoChange}
+                  onAdd={handleTodoAdd}
+                  onCancelEdit={handleTodoCancelEdit}
+                  isEditing={isEditingTodo}
+                  list={todoList}
+                  handleDelete={handleTodoDelete}
+                  onToggle={handleTodoToggle}
+                  onEdit={handleTodoEdit}
+                  setOpenTodo={handleBackToMain}
+                />
+              </div>
+            ) : pageMode === 'schedule' ? (
+              <div className="w-full mt-6">
+                <Scheduleform
+                  form={form}
+                  onChange={handleChange}
+                  onAdd={handleAdd}
+                  openAdminDashboard={openAdminDashboard}
+                  openSchedule={true}
+                  setOpenSchedule={handleBackToMain}
+                  list={list}
+                  handleDelete={handleDelete}
+                  openAdminPage={openAdminPage}
+                />
+              </div>
+            ) : (
               <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
                 <Button 
                   size="lg" 
                   variant="common"
-                  onClick={() => setOpenTodo(true)}
+                  onClick={() => setPageMode('todo')}
                 >
                   Todo List
                 </Button>
                 <Button
                   size="lg"
                   variant="common"
-                  onClick={() => {
-                    setOpenSchedule(true);
-                    setPageMode('main');
-                  }}
+                  onClick={() => setPageMode('schedule')}
                 >
                   일정 리스트
                 </Button>
@@ -209,36 +243,7 @@ export default function MainPage() {
                   푸쉬 설정
                 </Button>
               </span>
-            ) : openTodo ? (
-              <div className="w-full mt-6">
-                <Todo
-                  form={todoForm}
-                  onChange={handleTodoChange}
-                  onAdd={handleTodoAdd}
-                  onCancelEdit={handleTodoCancelEdit}
-                  isEditing={isEditingTodo}
-                  list={todoList}
-                  handleDelete={handleTodoDelete}
-                  onToggle={handleTodoToggle}
-                  onEdit={handleTodoEdit}
-                  setOpenTodo={setOpenTodo}
-                />
-              </div>
-            ) : openSchedule ? (
-              <div className="w-full mt-6">
-                <Scheduleform
-                  form={form}
-                  onChange={handleChange}
-                  onAdd={handleAdd}
-                  openAdminDashboard={openAdminDashboard}
-                  openSchedule={openSchedule}
-                  setOpenSchedule={setOpenSchedule}
-                  list={list}
-                  handleDelete={handleDelete}
-                  openAdminPage={openAdminPage}
-                />
-              </div>
-            ) : null}
+            )}
 
             <MyPage />
             <AdminMypage />
