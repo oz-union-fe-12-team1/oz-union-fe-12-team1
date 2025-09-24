@@ -10,7 +10,7 @@ export const todayWeatherDummy = {
 
 export const fiveDayWeatherDummy = [
   {
-    date: '2025-09-19T00:00:00+09:00', // ISO8601
+    date: '2025-09-19T00:00:00+09:00',
     temp_min: 21.3,
     temp_max: 27.8,
     description: '구름 많음',

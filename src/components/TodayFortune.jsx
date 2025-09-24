@@ -1,4 +1,4 @@
-import { todayFortuneDummy } from '../api/fortune';
+import { todayFortuneDummy } from '../api/dummyfortune';
 
 export default function TodayFortune() {
   const { birthday, fortune, created_at } = todayFortuneDummy.data;

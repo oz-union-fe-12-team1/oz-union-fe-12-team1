@@ -1,4 +1,5 @@
-import { fiveDayWeatherDummy } from '../../api/weather';
+import { fiveDayWeatherDummy } from '../../api/dummyweather';
+import dayjs from 'dayjs';
 
 export default function FiveDayWeather() {
   return (
@@ -9,7 +10,9 @@ export default function FiveDayWeather() {
             key={i}
             className="rounded-lg border border-slate-200 bg-white p-4 shadow flex flex-col items-center text-center"
           >
-            <div className="text-sm font-semibold text-slate-700">{d.date}</div>
+            <div className="text-sm font-semibold text-slate-700">
+              {dayjs(d.date).format('MM/DD (ddd)')}
+            </div>
             <div className="text-base">{d.description}</div>
             <div className="text-sm text-slate-600">
               {d.temp_min}°C ~ {d.temp_max}°C
