@@ -147,8 +147,8 @@ export function SignUp() {
               value={form.email}
               onChange={(e) => {
                 setForm((email) => ({ ...email, email: e.target.value }));
-              }} //state 업데이트
-              onBlur={() => setTouched((t) => ({ ...t, email: true }))} //유효성검사 메세지 출력
+              }}
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
               error={touched.email ? errors.email : ''}
             />
             <button
@@ -172,7 +172,7 @@ export function SignUp() {
               value={form.code}
               onChange={(e) => {
                 setForm((code) => ({ ...code, code: e.target.value }));
-              }} //state 업데이트
+              }}
               disabled={isCodeInput}
             />
             <button
