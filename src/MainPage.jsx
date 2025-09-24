@@ -133,7 +133,7 @@ export default function MainPage() {
     five: (
       <>
         <div className="absolute top-2 right-2">
-          <BackButton onClose={() => setView('main')} />
+          <BackButton onClose={() => setPageMode('main')} />
         </div>
         <FiveDayWeather />
       </>
@@ -141,7 +141,7 @@ export default function MainPage() {
     fortune: (
       <>
         <div className="absolute top-2 right-2">
-          <BackButton onClose={() => setView('main')} />
+          <BackButton onClose={() => setPageMode('main')} />
         </div>
         <TodayFortune />
       </>
@@ -203,7 +203,7 @@ export default function MainPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center rounded-lg bg-white p-6">
+            <div className="flex items-center justify-center rounded-lg bg-white p-6 relative">
               {CONTENT_MAP[pageMode]}
             </div>
           </div>
