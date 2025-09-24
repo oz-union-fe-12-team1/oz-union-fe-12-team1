@@ -6,6 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 
+const CONTENT = {
+  title: '[필수] 개인정보 수집·이용 동의',
+  items: [
+    '수집항목: 이메일, 비밀번호, 이름, 생년월일',
+    '이용목적: 회원가입, 본인확인, 서비스 제공 및 문의 대응',
+    '보유기간: 회원 탈퇴 시 또는 관련 법령에 따른 보관기간 경과 후 파기',
+    '동의를 거부할 권리 및 불이익: 동의를 거부할 수 있으나, 서비스 이용이 제한될 수 있습니다.',
+  ],
+};
+
 export function SignUp() {
   const navigate = useNavigate();
   const openModal = true;
@@ -32,6 +42,7 @@ export function SignUp() {
   const [isSendModal, setIsSendModal] = useState(false);
   const [modalConfirm, setModalConfirm] = useState('');
   const [isModalConfirm, setIsModalConfirm] = useState(false);
+  const [isConsent, setIsConsent] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -81,7 +92,7 @@ export function SignUp() {
         >
           회원가입
         </LoginButton>
-        <div>
+        <div className="text-[12px]">
           생각해보니 가입했었네!?
           <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
             돌아가기
@@ -94,17 +105,15 @@ export function SignUp() {
   const close = () => {
     return (
       <div className="mt-6">
-        <Button variant="common" size="md" onClick={() => setIsSendModal(false)}>
-          닫기
-        </Button>
-      </div>
-    );
-  };
-
-  const confirmClose = () => {
-    return (
-      <div className="mt-6">
-        <Button variant="common" size="md" onClick={() => setIsModalConfirm(false)}>
+        <Button
+          variant="common"
+          size="md"
+          onClick={() => {
+            setIsSendModal(false);
+            setIsModalConfirm(false);
+            setIsConsent(false);
+          }}
+        >
           닫기
         </Button>
       </div>
@@ -153,7 +162,7 @@ export function SignUp() {
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[35px] border-[1px]
+              className="flex justify-center items-center h-[30px] border-[1px]
                 rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
               disabled={!(form.email.length && !errors.email)}
               onClick={() => {
@@ -172,12 +181,12 @@ export function SignUp() {
               value={form.code}
               onChange={(e) => {
                 setForm((code) => ({ ...code, code: e.target.value }));
-              }}
+              }} //state 업데이트
               disabled={isCodeInput}
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[35px] border-[1px]
+              className="flex justify-center items-center h-[30px] border-[1px]
                 rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
               disabled={!form.code.length}
               onClick={() => codeConfirm(form.code)}
@@ -238,9 +247,16 @@ export function SignUp() {
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
             ></input>
-            <label htmlFor="cb" className="select-none">
+            <label htmlFor="cb" className="select-none text-[12px]">
               개인 정보 수집 이용 동의 (필수)
             </label>
+            <button
+              type="button"
+              className="text-[12px] text-blue-500"
+              onClick={() => setIsConsent(true)}
+            >
+              자세히보기
+            </button>
           </div>
         </form>
       </LoginModal>
@@ -249,8 +265,17 @@ export function SignUp() {
         인증번호를 발송했습니다.
       </LoginModal>
 
-      <LoginModal openModal={isModalConfirm} footer={confirmClose()}>
+      <LoginModal openModal={isModalConfirm} footer={close()}>
         {modalConfirm}
+      </LoginModal>
+
+      <LoginModal openModal={isConsent} footer={close()}>
+        <h1 className="text-[20px] pb-7 font-bold">{CONTENT.title}</h1>
+        <ul className="flex flex-col gap-[10px] text-[13px] list-disc ">
+          {CONTENT.items.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </LoginModal>
     </div>
   );

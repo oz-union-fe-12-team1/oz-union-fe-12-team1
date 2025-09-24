@@ -46,7 +46,7 @@ export function Login() {
   const footer = () => {
     return (
       <div>
-        <div className="buttons flex flex-col buttons w-full gap-2 pt-6">
+        <div className="buttons flex flex-col buttons w-full gap-2 pt-3">
           <LoginButton
             type="submit"
             variant={onButton ? 'common' : 'cancel'}
@@ -65,7 +65,7 @@ export function Login() {
           </button>
         </div>
 
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 text-[12px]">
           <div>
             처음이신가요?
             <button className="text-[#3058bd] font-bold" onClick={() => navigate('/signup')}>

@@ -28,7 +28,7 @@ export function LoginInput({
           type={type}
           onChange={onChange}
           onBlur={onBlur}
-          className="border px-3 rounded-sm h-[35px] border-gray-400 w-full"
+          className="border px-3 rounded-sm h-[30px] border-gray-400 w-full"
           disabled={disabled}
           {...rest}
         />
