@@ -17,7 +17,7 @@ export function AdminInquiries () {
         답변을 기다리는 문의
       </span>
       <div className="flex justify-center">
-        <div className="flex w-auto p-6 justify-center items-center bg-[#eee] rounded-[100%] aspect-[1/1]">
+        <div className="flex w-auto p-6 justify-center items-center bg-[#f5f5f5] rounded-[100%] aspect-[1/1]">
           {
             allInquiriesIsLoading ? (
               <div>로딩 중</div>
