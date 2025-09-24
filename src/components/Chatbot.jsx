@@ -5,13 +5,17 @@ import { dummyTodos } from '../api/dummyTodos';
 import dayjs from 'dayjs';
 
 export default function Chatbot() {
-  const [schedules, setSchedules] = useState([]);
-  const [todos, setTodos] = useState([]);
+  const [schedules, setSchedules] = useState(null);
+  const [todos, setTodos] = useState(null);
 
   useEffect(() => {
     setSchedules(dummySchedules);
     setTodos(dummyTodos);
   }, []);
+
+  if (schedules === null || todos === null) {
+    return null;
+  }
 
   const today = new Date().toISOString().split('T')[0];
   const todaySchedules = schedules.filter((item) => item.date === today);

@@ -12,7 +12,7 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import Todo from './components/layout/Todo';
-import Chatbot from './components/Chatbot';
+import BriefingSection from './components/briefing/BriefingSection';
 import { useMainPage } from './store/useMainPage';
 import { Quiz } from './components/quizPage/quiz';
 import { adminData } from './components/adminPage/adminData';
@@ -146,10 +146,17 @@ export default function MainPage() {
         <TodayFortune />
       </>
     ),
-    main: <Chatbot />,
-    todo: <Chatbot />,
-    schedule: <Chatbot />,
-    quiz: <Quiz />,
+    main: <BriefingSection />,
+    todo: <BriefingSection />,
+    schedule: <BriefingSection />,
+    quiz: (
+      <>
+        <div className="absolute top-2 right-2">
+          <BackButton onClose={() => setPageMode('main')} />
+        </div>
+        <Quiz />
+      </>
+    ),
   };
 
   // const contentKey = (() => {
