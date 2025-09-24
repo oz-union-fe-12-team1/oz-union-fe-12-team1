@@ -15,6 +15,8 @@ import Todo from './components/layout/Todo';
 import Chatbot from './components/Chatbot';
 import { useMainPage } from './store/useMainPage';
 import { Quiz } from './components/quizPage/quiz';
+import { adminData } from './components/adminPage/adminData';
+import { AdminNew } from './components/adminPage/AdminNew';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -187,7 +189,9 @@ export default function MainPage() {
           <div className="grid grid-rows-[1fr_2fr] gap-4">
             <div className="grid grid-cols-[2fr_1fr] gap-4">
               <div className="bg-white rounded-lg p-6 flex flex-col">
-                <News />
+                {openAdminDashboard ?
+                  <AdminNew data={adminData} />
+                : <News /> }
               </div>
               <div className="flex items-center justify-center rounded-lg bg-white p-6">
                 <TodayWeather />

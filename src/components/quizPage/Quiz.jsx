@@ -45,7 +45,7 @@ export function Quiz () {
       </button>
 
       <div className="flex flex-col w-full h-full items-center  gap-20 justify-center">
-        <h1 className="text-[1.8rem] font-semibold select-none">
+        <h1 className="text-[1.8rem] font-semibold select-none break-keep">
           {data.id}.&nbsp;&nbsp;{data.question}
         </h1>
         <div className="flex flex-col gap-10 items-center">
