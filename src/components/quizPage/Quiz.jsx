@@ -44,29 +44,31 @@ export function Quiz () {
         <AiFillCaretLeft size={40}/>
       </button>
 
-      <div className="flex flex-col gap-15 w-full items-center">
-        <h1 className="text-[1.6rem] font-semibold select-none">
+      <div className="flex flex-col w-full h-full items-center  justify-between">
+        <h1 className="text-[1.8rem] font-semibold select-none">
           {data.id}.&nbsp;&nbsp;{data.question}
         </h1>
-        <div className="flex justify-around w-full select-none">
-          {data.options.map((option, idx)=>(
-            <p 
-              key={idx}
-              className={`shadow-md rounded-2xl px-4 py-1 text-[1.4rem]
-                ${handleBackgroundColor(option)}
-                `}
-              onClick={()=>(
-                handleOptionClick(option)
-              )}
-            >
-              {option}
-            </p>
-          ))}
-        </div>
+        <div className="flex flex-col gap-10">
+          <div className="flex flex-col justify-around w-full select-none lg:flex-row gap-5 items-center">
+            {data.options.map((option, idx)=>(
+              <p 
+                key={idx}
+                className={`shadow-md rounded-2xl px-4 py-1 text-[1.4rem] text-center max-w-[12rem] min-w-[7rem] ${handleBackgroundColor(option)}
+                  `}
+                onClick={()=>(
+                  handleOptionClick(option)
+                )}
+              >
+                {option}
+              </p>
+            ))}
+          </div>
 
-        <span>
-          {message}
-        </span>
+          <p className="text-[1.4rem] text-[#999]">
+            {message}
+          </p>
+
+        </div>
         
       </div>
 
