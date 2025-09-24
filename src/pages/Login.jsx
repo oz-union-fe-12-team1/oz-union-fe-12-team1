@@ -17,6 +17,7 @@ export function Login() {
     email: false,
     password: false,
   });
+
   const login = useAuth((s) => s.login);
 
   async function handleSubmit(e) {
@@ -27,11 +28,9 @@ export function Login() {
     });
 
     try {
-      await login({ email: form.email, password: form.password }); // ← 인메모리 로그인
-      navigate('/main'); // 성공했을 때만 이동
+      await login({ email: form.email, password: form.password });
+      navigate('/main');
     } catch (err) {
-      // 서버(=스토어) 에러 매핑: 일단 알림으로
-      // 필요하면 여기에서 필드 에러로 내려줘도 됨.
       console.log(err);
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
@@ -48,7 +47,7 @@ export function Login() {
   const footer = () => {
     return (
       <div>
-        <div className="buttons flex flex-col buttons w-full gap-2 pt-6">
+        <div className="buttons flex flex-col buttons w-full gap-2 pt-3">
           <LoginButton
             type="submit"
             variant={onButton ? 'common' : 'cancel'}
@@ -67,7 +66,7 @@ export function Login() {
           </button>
         </div>
 
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 text-[12px]">
           <div>
             처음이신가요?
             <button className="text-[#3058bd] font-bold" onClick={() => navigate('/signup')}>

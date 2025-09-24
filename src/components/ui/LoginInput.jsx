@@ -12,8 +12,8 @@ export function LoginInput({
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
   const errorMessage = error
-    ? 'text-red-500 text-[14px] mt-1 select-none'
-    : 'text-white text-[14px] mt-1 select-none';
+    ? 'text-red-500 text-[12px] mt-1 select-none'
+    : 'text-white text-[12px] mt-1 select-none';
 
   return (
     <div className="flex flex-col flex-1">
@@ -28,7 +28,7 @@ export function LoginInput({
           type={type}
           onChange={onChange}
           onBlur={onBlur}
-          className="border px-3 rounded-sm h-[35px] border-gray-400 w-full"
+          className="border px-3 rounded-sm h-[30px] border-gray-400 w-full"
           disabled={disabled}
           {...rest}
         />

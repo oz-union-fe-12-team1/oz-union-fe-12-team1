@@ -64,17 +64,17 @@ export function PwConfirm() {
 
   const footer = () => {
     return (
-      <div className="flex flex-col buttons w-full gap-2 pt-6">
+      <div className="flex flex-col buttons w-full gap-2 pt-3">
         <LoginButton
           type="submit"
-          variant={onButton ? 'common' : 'cancle'}
+          variant={onButton ? 'common' : 'cancel'}
           size="md"
           form="pwConfirmForm"
           disabled={!onButton}
         >
           변경하기
         </LoginButton>
-        <div>
+        <div className="text-[12px]">
           비밀번호 생각났어요!
           <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
             돌아가기
@@ -130,13 +130,13 @@ export function PwConfirm() {
               value={form.email}
               onChange={(e) => {
                 setForm((email) => ({ ...email, email: e.target.value }));
-              }} //state 업데이트
-              onBlur={() => setTouched((t) => ({ ...t, email: true }))} //유효성검사 메세지 출력
+              }}
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
               error={touched.email ? errors.email : ''}
             ></LoginInput>
             <button
               type="button"
-              className="flex justify-center items-center w-auto h-[35px] border-[1px]
+              className="flex justify-center items-center w-auto h-[30px] border-[1px]
                 rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
               onClick={() => emailConfirm(form.email)}
             >
