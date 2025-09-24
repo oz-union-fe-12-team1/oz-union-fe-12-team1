@@ -5,6 +5,8 @@ import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import { useAuth } from '../store/useAuth';
+import { useUser } from '../store/useUser';
+import { useLogin } from '../api/auth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
 
@@ -22,6 +24,9 @@ export function Login() {
 
   const login = useAuth((s) => s.login);
 
+  const { loginMutate, loginError } = useLogin();
+  const { getUser } = useUser();
+
   async function handleSubmit(e) {
     e.preventDefault();
     setTouched({
@@ -36,6 +41,14 @@ export function Login() {
       console.log(err);
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
+
+    loginMutate(form, {
+      onSuccess: async () => {
+        await getUser();
+        navigate('/main');
+      },
+      onError: () => {},
+    });
   }
 
   const errors = newError(form);
