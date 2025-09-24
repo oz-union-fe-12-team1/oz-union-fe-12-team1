@@ -1,26 +1,53 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import { adminData } from "./adminData";
+import { Input } from '../ui/Input';
+import { IoSearch } from "react-icons/io5";
+import { useDebounce } from "../../store/useDebounce";
+import { useUserSearch } from "../../api/admin";
+
 
 export default function Admin () {
   const [mode, setMode] = useState("all");
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue);
+
+  const { userSearchData, userSearchIsLoading, userSearchIsError } = useUserSearch(debouncedValue);
+
+
   const filteredUsers = mode === "connecting"
     ? adminData.items.filter((u) => u.is_active)
     : adminData.items;
 
+  const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
+
   return (<>
     <div className="flex flex-col gap-3">
-      <div className="justify-start w-45">
-        <label className="sr-only">조건 선택</label>
-        <select
-          value={mode}
-          onChange={(e) => setMode(e.target.value)}
-          className="w-full border rounded px-3 py-2"
-        >
-          <option value="" disabled hidden>조건 선택</option>
-          <option value="all">전체 유저 조회</option>
-          <option value="connecting">접속 중인 유저 조회</option>
-        </select>
+      <div className="flex justify-between">
+        <div className="flex w-45">
+          <label className="sr-only">조건 선택</label>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            className="w-full border rounded px-3 py-1"
+          >
+            <option value="" disabled hidden>조건 선택</option>
+            <option value="all">전체 유저 조회</option>
+            <option value="connecting">접속 중인 유저 조회</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-1">
+          <Input
+            label="유저 검색"
+            type="text"
+            placeholder="유저를 검색하세요"
+            value={inputValue}
+            onChange={(e)=>setInputValue(e.target.value)}
+            classNames="rounded-sm border px-3 py-1"
+          />
+          {/* rounded-sm border px-3 */}
+          <IoSearch />
+        </div>
       </div>
       <div className="w-full overflow-x-auto">
         <div className="rounded-lg overflow-hidden shadow-md border border-gray-200 w-full  max-w-[80rem] mx-auto  h-[20rem] overflow-y-scroll">
@@ -37,14 +64,26 @@ export default function Admin () {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.length === 0 ? (
+              {userSearchIsLoading ? (
                 <tr>
                   <td colSpan={7} className="text-center py-4 text-gray-500">
-                    접속 중인 유저가 없습니다.
+                    로딩 중입니다.
+                  </td>
+                </tr>
+              ) : userSearchIsError ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-4 text-gray-500">
+                    조회 중 오류 발생
+                  </td>
+                </tr>
+              ) : searchedUser.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-4 text-gray-500">
+                    조회된 유저가 없습니다.
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => (
+                searchedUser.map((user) => (
                 <tr 
                   key={user.id}
                 >

@@ -57,6 +57,24 @@ export function useUsers (params) {
 // if (usersIsLoading) return <p>불러오는 중...</p>;
 
 
+export async function getUserSearch (userId) {
+  const res = await api.get(`/users/${userId}`);
+  return res.data;
+}
+export function useUserSearch(userId) {
+  const {
+    data: userSearchData,
+    isLoading: userSearchIsLoading,
+    isError: userSearchIsError,
+    ...rest
+  } = useQuery ({
+    queryKey: ["userSearch", userId],
+    queryFn: () => getUserSearch(userId),
+    enabled: !!userId,
+  })
+  return { userSearchData, userSearchIsLoading, userSearchIsError, ...rest };
+}
+//const {userSearchData, userSearchIsLoading, userSearchIsError } = userUserSearch(userId);
 
 // !- - - - 특정 유저 수정 (관리자) - - - -
 export async function updateUser(userId, payload) {
