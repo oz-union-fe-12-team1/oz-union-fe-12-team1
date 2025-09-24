@@ -19,7 +19,16 @@ export default function ScheduleForm({
   };
   
   return (
-    <div className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col">
+    <div className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col relative">
+      {/* X 버튼을 상단 우측에 위치 */}
+      <button
+        type="button"
+        onClick={onBack}
+        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center font-bold text-gray-800 text-lg z-10 shadow-sm border border-gray-300"
+      >
+        X
+      </button>
+
       {/* 일정리스트 섹션 - 박스 안에 꽉 차게 */}
       <div className="flex-1 overflow-hidden flex flex-col">
         <div className="text-center py-2 font-semibold mb-2">
@@ -95,17 +104,6 @@ export default function ScheduleForm({
               취소
             </button>
           )}
-
-          <button
-            type="button"
-            onClick={() => {
-              console.log('aaa');
-              onBack();
-            }}
-            className="px-4 rounded-xl bg-blue-600 hover:bg-blue-700 py-2 font-semibold text-white"
-          >
-            X
-          </button>
         </div>
       </form>
     </div>
