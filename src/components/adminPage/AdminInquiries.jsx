@@ -4,7 +4,6 @@ import { inquiryData } from "../../api/dummyInquiries";
 
 export function AdminInquiries () {
   // const { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError } = useAllInquiries();
-  // const { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError } = useAllInquiries();
 
   const [allInquiriesIsLoading] = useState(false);
   const [allInquiriesIsError] = useState(false);
