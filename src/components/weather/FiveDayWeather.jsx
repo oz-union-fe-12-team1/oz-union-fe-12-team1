@@ -1,4 +1,4 @@
-import { fiveDayWeatherDummy } from '../../api/dummyweather';
+import { fiveDayWeatherDummy } from '../../api/dummyWeather';
 import dayjs from 'dayjs';
 
 export default function FiveDayWeather() {
