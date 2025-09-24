@@ -78,7 +78,7 @@ export default function TodoList({
 
         <div className="flex gap-2 w-full">
           <button
-            type="submit" // ✅ 여기만 있으면 됨
+            type="submit"
             disabled={!form.title.trim()}
             className="flex-1 px-4 py-3 bg-blue-800 hover:bg-blue-900 disabled:bg-gray-400 text-white rounded-lg text-sm font-medium disabled:cursor-not-allowed"
           >
