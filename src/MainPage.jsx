@@ -14,6 +14,7 @@ import TodayFortune from './components/TodayFortune';
 import Todo from './components/layout/Todo';
 import Chatbot from './components/Chatbot';
 import { useMainPage } from './store/useMainPage';
+import { Quiz } from './components/quizPage/quiz';
 
 export default function MainPage() {
   const { setOpenMyPage } = useOpenMyPage();
@@ -139,7 +140,21 @@ export default function MainPage() {
     main: <Chatbot />,
     todo: <Chatbot />,
     schedule: <Chatbot />,
+    quiz: <Quiz />,
   };
+
+  // const contentKey = (() => {
+  //   if (openAdminPage && openAdminDashboard) {
+  //     return 'admin';
+  //   }
+  //   if (view === 'five') {
+  //     return 'five';
+  //   }
+  //   if (view === 'fortune') {
+  //     return 'fortune';
+  //   }
+  //   return 'main';
+  // })();
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -236,7 +251,8 @@ export default function MainPage() {
                 <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
                   오늘의 운세
                 </Button>
-                <Button size="lg" variant="common">
+
+                <Button size="lg" variant="common" onClick={() => setPageMode('quiz')}>
                   QUIZ
                 </Button>
                 <Button size="lg" variant="common">
