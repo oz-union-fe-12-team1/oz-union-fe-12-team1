@@ -136,7 +136,7 @@ export function PwConfirm() {
             ></LoginInput>
             <button
               type="button"
-              className="flex justify-center items-center w-auto h-[35px] border-[1px]
+              className="flex justify-center items-center w-auto h-[30px] border-[1px]
                 rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
               onClick={() => emailConfirm(form.email)}
             >

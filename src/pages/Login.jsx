@@ -17,6 +17,7 @@ export function Login() {
     email: false,
     password: false,
   });
+
   const login = useAuth((s) => s.login);
 
   async function handleSubmit(e) {
