@@ -30,7 +30,7 @@ export function Quiz () {
 
 
   return (<>
-    <div className="flex justify-between w-full">
+    <div className="flex justify-between w-full h-full">
       
       <button
         onClick={()=>{
@@ -44,16 +44,16 @@ export function Quiz () {
         <AiFillCaretLeft size={40}/>
       </button>
 
-      <div className="flex flex-col w-full h-full items-center  justify-between">
+      <div className="flex flex-col w-full h-full items-center  gap-20 justify-center">
         <h1 className="text-[1.8rem] font-semibold select-none">
           {data.id}.&nbsp;&nbsp;{data.question}
         </h1>
-        <div className="flex flex-col gap-10">
-          <div className="flex flex-col justify-around w-full select-none lg:flex-row gap-5 items-center">
+        <div className="flex flex-col gap-10 items-center">
+          <div className="flex flex-col justify-around w-full select-none lg:flex-row gap-7 items-center">
             {data.options.map((option, idx)=>(
               <p 
                 key={idx}
-                className={`shadow-md rounded-2xl px-4 py-1 text-[1.4rem] text-center max-w-[12rem] min-w-[7rem] ${handleBackgroundColor(option)}
+                className={`shadow-md rounded-2xl px-5 py-1 text-[1.4rem] text-center max-w-[14rem] min-w-[7rem] ${handleBackgroundColor(option)}
                   `}
                 onClick={()=>(
                   handleOptionClick(option)
@@ -64,7 +64,7 @@ export function Quiz () {
             ))}
           </div>
 
-          <p className="text-[1.4rem] text-[#999]">
+          <p className="text-[1.2rem] text-[#999]">
             {message}
           </p>
 
