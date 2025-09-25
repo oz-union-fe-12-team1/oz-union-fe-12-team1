@@ -4,6 +4,7 @@ import { inquiryData } from "../../api/dummyInquiries";
 
 export function AdminInquiries () {
   // const { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError } = useAllInquiries();
+  // api 들어오면 inquiryData를 allInquiriesData로 변경하면 됨. 
 
   const [allInquiriesIsLoading] = useState(false);
   const [allInquiriesIsError] = useState(false);
@@ -26,8 +27,24 @@ export function AdminInquiries () {
             ) 
             : (
               <div>
-                <span className="relative bottom-2 text-[#d82121] font-semibold text-[3.5rem]">{pendingData.length}</span> 
-                <span className="text-2xl"> / </span> <span className="relative top-2 text-[1.8rem]">{inquiryData.total}</span>
+                <span className={`relative bottom-2 font-semibold text-[3.5rem]
+                ${ 
+                  pendingData.length === 0
+                  ? "text-[#1b99f9]"
+                  : inquiryData.total*0.3 >= pendingData.length
+                  ? "text-[#10b610]"
+                  : inquiryData.total*0.6 >= pendingData.length
+                  ? "text-[#f80]"
+                  : inquiryData.total*0.6 < pendingData.length
+                  ? "text-[#d82121]"
+                  : "text-black"}  
+                `}>
+                  {pendingData.length}
+                </span> 
+                <span className="text-2xl"> / </span> 
+                <span className="relative top-2 text-[1.8rem]">
+                  {inquiryData.total}
+                </span>
               </div>
             )
           }
