@@ -24,31 +24,31 @@ export default function News() {
   }, [category]);
 
   return (
-    <section className="h-full rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-100 overflow-hidden">
-      <div className="h-full flex flex-col p-4 gap-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-white">뉴스</h2>
-          <div className="flex gap-2">
-            {Object.keys(CATEGORY_LABELS).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                  cat === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600'
-                }`}
-              >
-                {CATEGORY_LABELS[cat]}
-              </button>
-            ))}
-          </div>
+    <div className="flex flex-col gap-4 h-full min-h-0">
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold text-white">뉴스</h2>
+        <div className="flex gap-2">
+          {Object.keys(CATEGORY_LABELS).map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategory(cat)}
+              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                cat === category
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600'
+              }`}
+            >
+              {CATEGORY_LABELS[cat]}
+            </button>
+          ))}
         </div>
+      </div>
 
-        {newsData.length === 0 ? (
-          <p className="text-sm text-neutral-400">뉴스를 불러오는 중...</p>
-        ) : (
-          <ul className="flex-1 space-y-2 overflow-auto">
+      {newsData.length === 0 ? (
+        <p className="text-sm text-neutral-400">뉴스를 불러오는 중...</p>
+      ) : (
+        <div className="flex-1 min-h-0 overflow-auto">
+          <ul className="space-y-2">
             {newsData.map((news, idx) => (
               <li
                 key={`${news.url}-${idx}`}
@@ -65,8 +65,8 @@ export default function News() {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+    </div>
   );
 }
