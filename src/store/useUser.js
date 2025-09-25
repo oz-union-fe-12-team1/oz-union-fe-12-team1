@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { getMyProfile } from '../api/users';
-import { queryClient } from '@tanstack/react-query';
+import { queryClient } from '../queryClient';
 
 export const useUser = create((set) => ({
   user: null,
-  isLoding: false,
+  isLoading: false,
 
   setUser: (user) => set({ user }),
 
@@ -14,9 +14,9 @@ export const useUser = create((set) => ({
         queryKey: ['myProfile'],
         queryFn: getMyProfile,
       });
-      set({ user: userProfile, isLoding: true });
+      set({ user: userProfile, isLoading: true });
     } catch (error) {
-      set({ user: null, isLoding: false });
+      set({ user: null, isLoading: false });
     }
   },
 
