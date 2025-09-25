@@ -1,4 +1,3 @@
-import nyangBot from '/images/nyangbiseo-list-x.png';
 import { useState, useEffect } from 'react';
 import { dummySchedules } from '../api/dummySchedules';
 import { dummyTodos } from '../api/dummyTodos';
@@ -41,7 +40,6 @@ export default function Chatbot() {
           <p className="text-xl text-gray-600">새로 등록해주세요!</p>
           <div className="absolute right-[-12px] bottom-6 w-6 h-6 bg-slate-200 rotate-45"></div>
         </div>
-        <img src={nyangBot} alt="냥비서" className="absolute bottom-0 right-0 w-72 h-72" />
       </div>
     );
   }
