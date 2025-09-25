@@ -230,6 +230,29 @@ export function SignUp() {
             error={touched.birth ? errors.birth : ''}
             disabled={isFormInput}
           />
+          <div className='flex justify-end gap-1 mr-1'>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#d85a5a]"
+                : passwordPower===2 ? "bg-[#ffc848]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#e3e3e3]"
+                : passwordPower===2 ? "bg-[#ffc848]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#e3e3e3]"
+                : passwordPower===2 ? "bg-[#e3e3e3]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+          </div>
           <LoginInputPassword
             label={'비밀번호'}
             placeholder="비밀번호 입력"
@@ -243,6 +266,7 @@ export function SignUp() {
             error={touched.password ? errors.password : ''}
             disabled={isFormInput}
           />
+          
           <LoginInputPassword
             label={'비밀번호 확인'}
             placeholder="비밀번호 입력 확인"
