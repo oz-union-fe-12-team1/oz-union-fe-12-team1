@@ -54,6 +54,9 @@ export function SignUp() {
     return power;
   }, [form.password]);
 
+  // const { registerUserMutate, registerUserError } = useRegisterUser();
+  // const { resendMutate } = useEmailSend();
+
   function handleSubmit(e) {
     e.preventDefault();
     setTouched({
@@ -63,6 +66,24 @@ export function SignUp() {
       password: true,
       confirm: true,
     });
+
+    // const payload = {
+    //   email: form.email,
+    //   password: form.password,
+    //   password_check: form.confirm,
+    //   username: form.name,
+    //   birthday: form.birth,
+    // };
+
+    // registerUserMutate(payload, {
+    //   onSuccess: () => {
+    //     navigate('/');
+    //   },
+    //   onError: (error) => {
+    //     setModalConfirm('오류');
+    //     setIsModalConfirm(true);
+    //   },
+    // });
   }
 
   const errors = newError(form);
@@ -89,6 +110,13 @@ export function SignUp() {
     }
   };
 
+  // const emailsend = () => {
+  //   const payload = { email: form.email }
+  //   resendMutate{payload,
+
+  //   }
+  // }
+
   const footer = () => {
     return (
       <div className="flex flex-col buttons w-full gap-2 pt-6">
@@ -98,7 +126,6 @@ export function SignUp() {
           size="md"
           disabled={!onButton}
           form="signupForm"
-          onClick={() => navigate('/')}
         >
           회원가입
         </LoginButton>
