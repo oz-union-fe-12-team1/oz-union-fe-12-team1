@@ -30,10 +30,12 @@ export function AdminInquiries () {
                 <span className={`relative bottom-2 font-semibold text-[3.5rem]
                 ${ 
                   pendingData.length === 0
-                  ? "text-[#10b610]"
+                  ? "text-[#1b99f9]"
                   : inquiryData.total*0.3 >= pendingData.length
-                  ? "text-[#f80]"
+                  ? "text-[#10b610]"
                   : inquiryData.total*0.6 >= pendingData.length
+                  ? "text-[#f80]"
+                  : inquiryData.total*0.6 < pendingData.length
                   ? "text-[#d82121]"
                   : "text-black"}  
                 `}>
