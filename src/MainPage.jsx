@@ -37,11 +37,7 @@ export default function MainPage() {
     title: '',
     memo: '',
   });
-  const [todoList, setTodoList] = useState([
-    { id: 1, title: 'React 공부하기', completed: false },
-    { id: 2, title: '프로젝트 완성하기', completed: true },
-    { id: 3, title: '운동하기', completed: false },
-  ]);
+  const [todoList, setTodoList] = useState([]);
   const [isEditingTodo, setIsEditingTodo] = useState(false);
   const [editingTodoId, setEditingTodoId] = useState(null);
 
@@ -117,17 +113,12 @@ export default function MainPage() {
     setTodoForm({ title: '', memo: '' });
   };
 
-  // Todo 뒤로가기
   const handleBackToMain = () => {
     setPageMode('main');
     setIsEditingTodo(false);
     setEditingTodoId(null);
     setTodoForm({ title: '', memo: '' });
   };
-
-  useEffect(() => {
-    console.log(openAdminDashboard);
-  }, [openAdminDashboard]);
 
   const CONTENT_MAP = {
     admin: <Admin />,
