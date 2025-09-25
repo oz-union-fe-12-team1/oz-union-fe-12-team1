@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function Button({
   children,
   variant = '',
-  size = 's',
+  size = 'sm',
   disabled = false,
   ...rest
 }) {
@@ -13,6 +13,7 @@ export default function Button({
     common: 'bg-[#3456AF] hover:bg-[#24469d] disabled:bg-[#214294]',
     cancel: 'bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060]',
     confirm: 'bg-[#3058bd] hover:bg-[#1f45a5] disabled:bg-[#1c3063]',
+    mini: "bg-[#eee] hover:bg-[#ddd] disabled:bg-[#ccc]",
   };
 
   const sizes = {
@@ -23,6 +24,7 @@ export default function Button({
     // w-32
     lg: 'px-6 py-3 text-lg rounded-[0.7rem] w-full min-w-40',
     //w-40 
+    mini: "h-[30px] w-[30px] p-1 rounded-r-[0.3rem] border-y border-r border-gray-400",
   };
 
   const disabledClasses = disabled ? 'cursor-not-allowed opacity-70' : '';

@@ -5,6 +5,7 @@ import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
+import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -143,9 +144,8 @@ export function PwConfirm() {
               이메일 확인
             </button>
           </div>
-          <LoginInput
+          <LoginInputPassword
             label={'비밀번호'}
-            type={'password'}
             placeholder="비밀번호 입력"
             value={form.password}
             disabled={!isInput}
@@ -155,10 +155,9 @@ export function PwConfirm() {
               setTouched((t) => ({ ...t, password: true }));
             }}
             error={touched.password ? errors.password : ''}
-          ></LoginInput>
-          <LoginInput
+          />
+          <LoginInputPassword
             label={'비밀번호 확인'}
-            type={'password'}
             placeholder="비밀번호 입력 확인"
             value={form.confirm}
             disabled={!isInput}
@@ -168,7 +167,7 @@ export function PwConfirm() {
               setTouched((t) => ({ ...t, confirm: true }));
             }}
             error={touched.confirm ? errors.confirm : ''}
-          ></LoginInput>
+          />
         </form>
       </LoginModal>
 
