@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginModal from '../components/ui/LoginModal';
 import LoginButton from '../components/ui/LoginButtons';
 import { LoginInput } from '../components/ui/LoginInput';
@@ -44,6 +44,21 @@ export function SignUp() {
   const [modalConfirm, setModalConfirm] = useState('');
   const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [isConsent, setIsConsent] = useState(false);
+
+  const [passwordPower, setPasswordPower] = useState(0);
+
+
+  const checkPasswordPower = (pw)=> {
+    let power = 0;
+    if(pw.length >=8) power += 1;
+    if(/[A-Za-z]/.test(pw)) power += 1;
+    if (/\d/.test(pw)) power += 1;
+    setPasswordPower(power);
+  }
+
+  useEffect(()=> {
+    console.log(passwordPower);
+  }, [passwordPower])
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -223,6 +238,7 @@ export function SignUp() {
               const next = e.target.value;
               setForm((password) => ({ ...password, password: next }));
               setTouched((t) => ({ ...t, password: true }));
+              checkPasswordPower(next)
             }}
             error={touched.password ? errors.password : ''}
             disabled={isFormInput}
