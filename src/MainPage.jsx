@@ -1,68 +1,109 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
 import News from './components/News';
-import Button from './components/ui/Button';
-import { useOpenMyPage } from './store/useOpenMyPage';
-import MyPage from './components/Mypage/Mypage';
-import AdminMypage from './components/adminPage/AdminMypage';
-import { useOpenAdminPage } from './store/useOpenAdminPage';
-import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
-import Scheduleform from './components/layout/Scheduleform';
-import Admin from './components/adminPage/Admin';
 import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
-import Todo from './components/layout/Todo';
-import BriefingSection from './components/briefing/BriefingSection';
-import { useMainPage } from './store/useMainPage';
+import Chatbot from './components/Chatbot';
 import { Quiz } from './components/quizPage/quiz';
-import { adminData } from './components/adminPage/adminData';
+import { useOpenAdminDashboard } from './store/useOpenAdminDashboard';
 import { AdminNew } from './components/adminPage/AdminNew';
-import BackButton from './components/ui/BackButton';
-import { AdminInquiries } from './components/adminPage/AdminInquiries';
+import { adminData } from './components/adminPage/adminData';
+import Admin from './components/adminPage/Admin';
+
+import MyPage from './components/Mypage/Mypage';
+import AdminMypage from './components/adminPage/AdminMypage';
+
+import TodoList from './components/layout/TodoList';
+
+import Scheduleform from './components/layout/Scheduleform';
+
+import { dummyTodos as TODOS_SRC } from './api/dummyTodos';
+import { dummySchedules as SCHEDULES_SRC } from './api/dummySchedules';
+
+//공용 버튼
+const DarkButton = ({ children, className = '', ...props }) => (
+  <button
+    {...props}
+    className={`w-full h-full rounded-xl border border-neutral-700 bg-neutral-800 text-neutral-100
+                hover:bg-neutral-700/80 active:bg-neutral-700 px-4 py-4 text-2xl font-extrabold transition
+                flex items-center justify-center text-center ${className}`}
+  >
+    {children}
+  </button>
+);
 
 export default function MainPage() {
-  const { setOpenMyPage } = useOpenMyPage();
-  const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
-  const { openAdminDashboard } = useOpenAdminDashboard();
-  const { pageMode, setPageMode } = useMainPage();
+  const [Panel, setPanel] = useState('mypage'); // 'mypage' | 'admin'
+  const [mode, setMode] = useState('summary'); // 'summary' | 'five' | 'fortune' | 'quiz'
 
-  const [form, setForm] = useState({
-    date: '',
-    time: '',
-    title: '',
-    memo: '',
-  });
-  const [list, setList] = useState([]);
-  const [todoForm, setTodoForm] = useState({
-    title: '',
-    memo: '',
-  });
-  const [todoList, setTodoList] = useState([
-    { id: 1, title: 'React 공부하기', completed: false },
-    { id: 2, title: '프로젝트 완성하기', completed: true },
-    { id: 3, title: '운동하기', completed: false },
-  ]);
+  const { openAdminDashboard } = useOpenAdminDashboard();
+
+  const [todos, setTodos] = useState([]);
+  const [todoForm, setTodoForm] = useState({ title: '', memo: '' });
   const [isEditingTodo, setIsEditingTodo] = useState(false);
   const [editingTodoId, setEditingTodoId] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const [schedules, setSchedules] = useState([]);
+  const [form, setForm] = useState({ date: '', time: '', title: '', memo: '' });
+  // const [isEditingSchedule, setIsEditingSchedule] = useState(false); //일정수정 기능 미구현
+  // const [editingScheduleId, setEditingScheduleId] = useState(null);
+
+  const [openTodoOverlay, setOpenTodoOverlay] = useState(false);
+  const [openScheduleOverlay, setOpenScheduleOverlay] = useState(false);
+
+  const quizWrapRef = useRef(null);
+  const [quizScale, setQuizScale] = useState(1);
+  const QUIZ_BASE_WIDTH = 1000;
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (!quizWrapRef.current) return;
+      const available = quizWrapRef.current.clientWidth || 0;
+      const next = Math.min(1, available / QUIZ_BASE_WIDTH);
+      setQuizScale(next);
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
+  //더미데이터 불러오기
+  useEffect(() => {
+    setTodos(
+      (TODOS_SRC ?? []).map((t) => ({
+        id: t.id,
+        title: t.title,
+        memo: t.description ?? '',
+        completed: !!t.is_completed,
+      })),
+    );
+    setSchedules(
+      (SCHEDULES_SRC ?? []).map((s) => ({
+        id: s.id,
+        date: s.date,
+        time: s.time ?? '',
+        title: s.title,
+        memo: s.memo ?? '',
+        all_day: !!s.all_day,
+      })),
+    );
+  }, []);
+
+  useEffect(() => {
+    if (Panel === 'admin' && openAdminDashboard) {
+      setMode('adminUsers');
+    } else if (mode === 'adminUsers') {
+      // 유저목록이 꺼지면 요약(챗봇)으로 복귀
+      setMode('summary');
+    }
+  }, [Panel, openAdminDashboard, mode]);
+
+  const togglePanel = () => {
+    setPanel((prev) => (prev === 'mypage' ? 'admin' : 'mypage'));
   };
 
-  const handleAdd = (e) => {
-    e.preventDefault();
-    if (!form.title.trim()) return;
-
-    const newSchedule = { id: Date.now(), ...form };
-    setList((prev) => [...prev, newSchedule]);
-    setForm({ date: '', time: '', title: '', memo: '' });
-  };
-
-  const handleDelete = (id) => {
-    setList((prev) => prev.filter((item) => item.id !== id));
-  };
-
+  //Todo
   const handleTodoChange = (e) => {
     const { name, value } = e.target;
     setTodoForm((prev) => ({ ...prev, [name]: value }));
@@ -73,25 +114,26 @@ export default function MainPage() {
     if (!todoForm.title.trim()) return;
 
     if (isEditingTodo) {
-      setTodoList((prev) =>
-        prev.map((item) => (item.id === editingTodoId ? { ...item, ...todoForm } : item)),
+      setTodos((prev) =>
+        prev.map((item) =>
+          item.id === editingTodoId
+            ? { ...item, title: todoForm.title, memo: todoForm.memo ?? '' }
+            : item,
+        ),
       );
       setIsEditingTodo(false);
       setEditingTodoId(null);
     } else {
-      const newTodo = {
-        id: Date.now(),
-        ...todoForm,
-        completed: false,
-      };
-      setTodoList((prev) => [...prev, newTodo]);
+      setTodos((prev) => [
+        ...prev,
+        { id: Date.now(), title: todoForm.title, memo: todoForm.memo ?? '', completed: false },
+      ]);
     }
-
     setTodoForm({ title: '', memo: '' });
   };
 
   const handleTodoDelete = (id) => {
-    setTodoList((prev) => prev.filter((item) => item.id !== id));
+    setTodos((prev) => prev.filter((it) => it.id !== id));
     if (editingTodoId === id) {
       setIsEditingTodo(false);
       setEditingTodoId(null);
@@ -100,7 +142,7 @@ export default function MainPage() {
   };
 
   const handleTodoToggle = (id) => {
-    setTodoList((prev) =>
+    setTodos((prev) =>
       prev.map((item) => (item.id === id ? { ...item, completed: !item.completed } : item)),
     );
   };
@@ -117,162 +159,161 @@ export default function MainPage() {
     setTodoForm({ title: '', memo: '' });
   };
 
-  // Todo 뒤로가기
-  const handleBackToMain = () => {
-    setPageMode('main');
-    setIsEditingTodo(false);
-    setEditingTodoId(null);
-    setTodoForm({ title: '', memo: '' });
+  //일정
+  const handleScheduleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    console.log(openAdminDashboard);
-  }, [openAdminDashboard]);
+  const handleScheduleAdd = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return;
 
-  const CONTENT_MAP = {
-    admin: <Admin />,
-    five: (
-      <>
-        <div className="absolute top-2 right-2">
-          <BackButton onClose={() => setPageMode('main')} />
-        </div>
-        <FiveDayWeather />
-      </>
-    ),
-    fortune: (
-      <>
-        <div className="absolute top-2 right-2">
-          <BackButton onClose={() => setPageMode('main')} />
-        </div>
-        <TodayFortune />
-      </>
-    ),
-    main: <BriefingSection />,
-    todo: <BriefingSection />,
-    schedule: <BriefingSection />,
-    quiz: (
-      <>
-        <div className="absolute top-2 right-2">
-          <BackButton onClose={() => setPageMode('main')} />
-        </div>
-        <Quiz />
-      </>
-    ),
+    const newSchedule = {
+      id: Date.now(),
+      date: form.date,
+      time: form.time,
+      title: form.title,
+      memo: form.memo ?? '',
+      all_day: !form.time,
+    };
+    setSchedules((prev) => [...prev, newSchedule]);
+    setForm({ date: '', time: '', title: '', memo: '' });
   };
 
-  // const contentKey = (() => {
-  //   if (openAdminPage && openAdminDashboard) {
-  //     return 'admin';
-  //   }
-  //   if (view === 'five') {
-  //     return 'five';
-  //   }
-  //   if (view === 'fortune') {
-  //     return 'fortune';
-  //   }
-  //   return 'main';
-  // })();
+  const handleScheduleDelete = (id) => {
+    setSchedules((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
-    <div className="flex h-screen w-screen flex-col">
-      <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
-        <h1 className="text-lg font-medium">Logo</h1>
+    <div className="w-screen h-dvh bg-neutral-900 text-neutral-100 overflow-hidden">
+      <header className="h-16 px-6 flex items-center justify-between border-b border-neutral-800 bg-black/40 backdrop-blur">
+        <h1 className="text-lg font-semibold">Logo</h1>
 
         <button
-          className="underline"
-          onClick={() => {
-            setOpenAdminPage(true);
-            setOpenMyPage(false);
-          }}
+          className="px-3 py-1.5 rounded-md border border-white/20 text-white hover:bg-white/10"
+          onClick={togglePanel}
+          title="마이페이지/어드민 전환"
         >
-          Admin
-        </button>
-
-        <button
-          className="w-10 h-10 rounded-full bg-blue-500 text-white"
-          onClick={() => {
-            setOpenMyPage(true);
-            setOpenAdminPage(false);
-          }}
-        >
-          마이페이지
+          {Panel === 'mypage' ? '어드민' : '마이페이지'}
         </button>
       </header>
 
-      <main className="flex-1 bg-slate-100 p-4">
-        <div className="grid h-full grid-cols-[3fr_1fr] gap-4">
-          <div className="grid grid-rows-[1fr_2fr] gap-4">
-            <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="bg-white rounded-lg p-6 flex flex-col">
-                {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
+      <main className="h-[calc(100dvh-4rem)] grid grid-cols-[minmax(0,1fr)_360px] gap-6 p-6 min-h-0 overflow-hidden">
+        {' '}
+        {/* 메인 */}
+        <div className="order-1 grid grid-rows-[minmax(0,2fr)_minmax(0,3fr)] gap-6 h-full min-h-0 overflow-hidden">
+          {/* 상단: 날씨(좌) / 뉴스(우) */}
+          <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,4fr)] gap-6 min-h-0">
+            {/* (왼) 날씨 박스 */}
+            <section className="h-full rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-100 overflow-hidden">
+              <div className="h-full p-3 rounded-xl border border-neutral-800/60 bg-black/30">
+                <TodayWeather />
               </div>
-              <div className="flex items-center justify-center rounded-lg bg-white p-6">
-                {openAdminDashboard ? <AdminInquiries/> : <TodayWeather />}
-              </div>
-            </div>
+            </section>
 
-            <div className="flex items-center justify-center rounded-lg bg-white p-6 relative">
-              {CONTENT_MAP[pageMode]}
-            </div>
+            {/* (오른) 뉴스: 내부 박스 없이 바로 렌더 */}
+            <section className="rounded-2xl overflow-hidden bg-[#0f0f10] border border-neutral-800 p-5 min-h-0">
+              <News />
+            </section>
           </div>
 
-          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start">
-            {pageMode === 'todo' ? (
-              <div className="w-full mt-6">
-                <Todo
-                  form={todoForm}
-                  onChange={handleTodoChange}
-                  onAdd={handleTodoAdd}
-                  onCancelEdit={handleTodoCancelEdit}
-                  isEditing={isEditingTodo}
-                  list={todoList}
-                  handleDelete={handleTodoDelete}
-                  onToggle={handleTodoToggle}
-                  onEdit={handleTodoEdit}
-                  setOpenTodo={handleBackToMain}
-                />
-              </div>
-            ) : pageMode === 'schedule' ? (
-              <div className="w-full mt-6">
-                <Scheduleform
-                  form={form}
-                  onChange={handleChange}
-                  onAdd={handleAdd}
-                  openAdminDashboard={openAdminDashboard}
-                  openSchedule={true}
-                  setOpenSchedule={handleBackToMain}
-                  list={list}
-                  handleDelete={handleDelete}
-                  openAdminPage={openAdminPage}
-                />
-              </div>
-            ) : (
-              <span className="text-lg font-medium text-white flex flex-col gap-4 w-full">
-                <Button size="lg" variant="common" onClick={() => setPageMode('todo')}>
-                  Todo List
-                </Button>
-                <Button size="lg" variant="common" onClick={() => setPageMode('schedule')}>
-                  일정 리스트
-                </Button>
-                <Button size="lg" variant="common" onClick={() => setPageMode('five')}>
-                  5일 날씨
-                </Button>
-                <Button size="lg" variant="common" onClick={() => setPageMode('fortune')}>
-                  오늘의 운세
-                </Button>
-
-                <Button size="lg" variant="common" onClick={() => setPageMode('quiz')}>
-                  QUIZ
-                </Button>
-                <Button size="lg" variant="common">
+          {/* 하단: 버튼(좌) / 콘텐츠(우) */}
+          <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,4fr)] gap-6 min-h-0 overflow-hidden">
+            {/* 버튼 박스 */}
+            <section className="relative rounded-2xl bg-neutral-950 border border-neutral-800 p-5 flex h-full min-h-0 min-w-0 overflow-hidden">
+              <div className="grid grid-cols-2 gap-4 w-full items-stretch h-full">
+                <DarkButton onClick={() => setOpenTodoOverlay(true)}>투두 리스트</DarkButton>
+                <DarkButton onClick={() => setOpenScheduleOverlay(true)}>일정 리스트</DarkButton>
+                <DarkButton onClick={() => setMode('five')}>5일 날씨</DarkButton>
+                <DarkButton onClick={() => setMode('fortune')}>오늘의 운세</DarkButton>
+                <DarkButton onClick={() => setMode('quiz')}>QUIZ</DarkButton>
+                <DarkButton
+                  onClick={() => {
+                    /* TODO: 푸쉬 설정 연결 */
+                  }}
+                >
                   푸쉬 설정
-                </Button>
-              </span>
-            )}
-            <MyPage />
-            <AdminMypage />
+                </DarkButton>
+              </div>
+
+              {/* 버튼박스 위 오버레이: 투두 */}
+              {openTodoOverlay && (
+                <div className="absolute inset-0 z-20 overflow-auto">
+                  <div className="w-full h-full">
+                    <TodoList
+                      form={todoForm}
+                      onChange={handleTodoChange}
+                      onAdd={handleTodoAdd}
+                      onCancelEdit={handleTodoCancelEdit}
+                      isEditing={isEditingTodo}
+                      list={todos}
+                      handleDelete={handleTodoDelete}
+                      onToggle={handleTodoToggle}
+                      onEdit={handleTodoEdit}
+                      setOpenTodo={setOpenTodoOverlay}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* 버튼박스 위 오버레이: 일정 */}
+              {openScheduleOverlay && (
+                <div className="absolute inset-0 z-20 overflow-auto">
+                  <div className="w-full h-full">
+                    <Scheduleform
+                      form={form}
+                      onChange={handleScheduleChange}
+                      onAdd={handleScheduleAdd}
+                      openAdminDashboard={false}
+                      openSchedule={true}
+                      setOpenSchedule={setOpenScheduleOverlay}
+                      list={schedules}
+                      handleDelete={handleScheduleDelete}
+                      openAdminPage={false}
+                    />
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* 우측 하단 콘텐츠 */}
+            <section className="h-full rounded-2xl bg-[#101010] text-white border border-white/10 p-6 flex flex-col min-h-0 min-w-0">
+              <div className="w-full h-full min-w-0 overflow-hidden">
+                {mode === 'adminUsers' && <Admin data={adminData} />}
+                {/* 유저목록 */}
+                {mode === 'adminStatistics' && <AdminNew data={adminData} />} {/* 통계 */}
+                {mode === 'summary' && <Chatbot />}
+                {mode === 'five' && <FiveDayWeather />}
+                {mode === 'fortune' && (
+                  <div className="w-full h-full overflow-auto">
+                    <TodayFortune />
+                  </div>
+                )}
+                {mode === 'quiz' && (
+                  <div
+                    ref={quizWrapRef}
+                    className="w-full h-full overflow-x-auto overflow-y-hidden flex items-center justify-center"
+                  >
+                    <div
+                      style={{
+                        width: `${QUIZ_BASE_WIDTH}px`,
+                        transform: `scale(${quizScale})`,
+                        transformOrigin: 'inline-block',
+                      }}
+                    >
+                      <Quiz />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
           </div>
         </div>
+        {/* 오른쪽: 마이페이지 or 어드민 (항상 임베드, 하나만 렌더) */}
+        <aside className="order-2 h-full rounded-2xl bg-neutral-950 border border-neutral-800 overflow-hidden min-h-0 flex flex-col">
+          {Panel === 'mypage' ? <MyPage embedded /> : <AdminMypage embedded />}
+        </aside>
       </main>
     </div>
   );
