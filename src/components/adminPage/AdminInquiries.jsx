@@ -29,11 +29,11 @@ export function AdminInquiries () {
               <div>
                 <span className={`relative bottom-2 font-semibold text-[3.5rem]
                 ${ 
-                  inquiryData.total*0.3 >= pendingData.length
+                  pendingData.length === 0
                   ? "text-[#10b610]"
-                  : inquiryData.total*0.6 >= pendingData.length
+                  : inquiryData.total*0.3 >= pendingData.length
                   ? "text-[#f80]"
-                  : inquiryData.total >= pendingData.length
+                  : inquiryData.total*0.6 >= pendingData.length
                   ? "text-[#d82121]"
                   : "text-black"}  
                 `}>
