@@ -1,12 +1,5 @@
-import NyangErrorSimple from '../components/NyangError';
+import ErrorView from '../components/ErrorView';
 
 export default function ErrorPage() {
-  return (
-    <NyangErrorSimple
-      status={404}
-      imgSrc="/images/nyangbiseo-cry.png"
-      homeHref="/"
-      onRetry={() => window.location.reload()}
-    />
-  );
+  return <ErrorView status={404} homeHref="/" onRetry={() => window.location.reload()} />;
 }

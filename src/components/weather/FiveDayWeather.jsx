@@ -1,27 +1,42 @@
-import { fiveDayWeatherDummy } from '../../api/dummyweather';
 import dayjs from 'dayjs';
+import { fiveDayWeatherDummy } from '../../api/dummyWeather';
 
 export default function FiveDayWeather() {
+  const data = fiveDayWeatherDummy;
+
   return (
-    <div>
-      <div className="grid grid-cols-5 gap-4">
-        {fiveDayWeatherDummy.map((d, i) => (
-          <div
-            key={i}
-            className="rounded-lg border border-slate-200 bg-white p-4 shadow flex flex-col items-center text-center"
-          >
-            <div className="text-sm font-semibold text-slate-700">
-              {dayjs(d.date).format('MM/DD (ddd)')}
-            </div>
-            <div className="text-base">{d.description}</div>
-            <div className="text-sm text-slate-600">
-              {d.temp_min}°C ~ {d.temp_max}°C
-            </div>
-            <div className="text-xs text-slate-500">
-              습도 {d.humidity}%, 강수 {d.precipitation}mm
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col gap-4 h-full min-h-0">
+      <div className="flex-1 min-h-0 overflow-auto custom-scroll">
+        <div className="flex justify-center gap-6">
+          {data.slice(0, 2).map((d, i) => (
+            <WeatherCard key={i} d={d} />
+          ))}
+        </div>
+
+        <div className="flex justify-center gap-6">
+          {data.slice(2, 5).map((d, i) => (
+            <WeatherCard key={i + 2} d={d} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WeatherCard({ d }) {
+  return (
+    <div className="w-40 rounded-xl bg-neutral-800/70 border border-neutral-700 px-3 py-5 flex flex-col items-center justify-center text-center">
+      <div className="text-sm font-semibold text-neutral-200 mb-2">
+        {dayjs(d.date).format('MM/DD (ddd)')}
+      </div>
+      <div className="text-base text-white mb-2">{d.description}</div>
+      <div className="text-sm font-medium mb-2">
+        <span className="text-red-400 font-bold">최고 {d.temp_max}°</span> /{' '}
+        <span className="text-blue-400 font-bold">최저 {d.temp_min}°</span>
+      </div>
+      <div className="flex flex-col items-center text-base text-neutral-400">
+        <span>습도 {d.humidity}%</span>
+        <span>강수 {d.precipitation}mm</span>
       </div>
     </div>
   );
