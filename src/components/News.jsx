@@ -13,92 +13,60 @@ const CATEGORY_LABELS = {
 export default function News() {
   const [category, setCategory] = useState('life');
   const [newsData, setNewsData] = useState([]);
-  const [page, setPage] = useState(0);
-
-  const ITEMS_PER_PAGE = 6;
 
   useEffect(() => {
-    setNewsData(dummyNews[category] || []);
-    setPage(0);
+    const allNews = dummyNews[category] || [];
+
+    const shuffled = [...allNews].sort(() => Math.random() - 0.5);
+    const limited = shuffled.slice(0, 6);
+
+    setNewsData(limited);
   }, [category]);
 
-  const totalPages = Math.ceil(newsData.length / ITEMS_PER_PAGE);
-  const startIndex = page * ITEMS_PER_PAGE;
-  const currentItems = newsData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  const handlePrev = () => {
-    setPage((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setPage((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
-  };
-
   return (
-    <div className="flex flex-col h-full">
-      <h2 className="text-lg font-bold mb-2 text-slate-800 underline">뉴스</h2>
-
-      <div className="flex space-x-2 mb-3">
-        {Object.keys(CATEGORY_LABELS).map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className={`px-2 py-1 rounded text-sm ${
-              cat === category ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'
-            }`}
-          >
-            {CATEGORY_LABELS[cat]}
-          </button>
-        ))}
-      </div>
-
-      {newsData.length === 0 ? (
-        <p className="text-sm text-slate-500">뉴스를 불러오는 중...</p>
-      ) : (
-        <ul className="flex-1 space-y-2 overflow-auto">
-          {currentItems.map((news, idx) => (
-            <li key={`${news.url}-${idx}`}>
-              <a
-                href={news.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-sm text-slate-800 hover:text-blue-600 hover:underline"
-              >
-                {news.headline}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center mt-3 space-x-3">
-          <button
-            onClick={handlePrev}
-            className="bg-slate-100 hover:bg-slate-200 w-7 h-7 rounded-full flex items-center justify-center text-slate-600"
-          >
-            &lt;
-          </button>
-
-          <div className="flex space-x-2">
-            {Array.from({ length: totalPages }).map((_, idx) => (
-              <div
-                key={idx}
-                className={`w-2.5 h-2.5 rounded-full ${
-                  idx === page ? 'bg-blue-600' : 'bg-slate-400'
+    <section className="h-full rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-100 overflow-hidden">
+      <div className="h-full flex flex-col p-4 gap-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-white">뉴스</h2>
+          <div className="flex gap-2">
+            {Object.keys(CATEGORY_LABELS).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  cat === category
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600'
                 }`}
-              />
+              >
+                {CATEGORY_LABELS[cat]}
+              </button>
             ))}
           </div>
-
-          <button
-            onClick={handleNext}
-            className="bg-slate-100 hover:bg-slate-200 w-7 h-7 rounded-full flex items-center justify-center text-slate-600"
-          >
-            &gt;
-          </button>
         </div>
-      )}
-    </div>
+
+        {newsData.length === 0 ? (
+          <p className="text-sm text-neutral-400">뉴스를 불러오는 중...</p>
+        ) : (
+          <ul className="flex-1 space-y-2 overflow-auto">
+            {newsData.map((news, idx) => (
+              <li
+                key={`${news.url}-${idx}`}
+                className="rounded-lg bg-neutral-800/60 px-3 py-2 hover:bg-neutral-700 transition-colors"
+              >
+                <a
+                  href={news.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-sm text-neutral-100 hover:text-blue-400"
+                >
+                  {news.headline}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
   );
 }
