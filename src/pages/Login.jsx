@@ -24,8 +24,8 @@ export function Login() {
 
   const login = useAuth((s) => s.login);
 
-  const { loginMutate, loginError } = useLogin();
-  const { getUser } = useUser();
+  // const { loginMutate } = useLogin();
+  // const { getUser } = useUser();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,13 +42,15 @@ export function Login() {
       alert('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
 
-    loginMutate(form, {
-      onSuccess: async () => {
-        await getUser();
-        navigate('/main');
-      },
-      onError: () => {},
-    });
+    // loginMutate(form, {
+    //   onSuccess: async () => {
+    //     await getUser();
+    //     navigate('/main');
+    //   },
+    //   onError: () => {
+    //     alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+    //   },
+    // });
   }
 
   const errors = newError(form);
