@@ -5,6 +5,7 @@ import { LoginInput } from '../components/ui/LoginInput';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
+import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 
 const CONTENT = {
   title: '[필수] 개인정보 수집·이용 동의',
@@ -176,7 +177,7 @@ export function SignUp() {
           <div className="flex justify-between gap-2">
             <LoginInput
               label={'인증번호'}
-              type={'password'}
+              type={'text'}
               placeholder="인증번호를 입력하세요"
               value={form.code}
               onChange={(e) => {
@@ -214,9 +215,8 @@ export function SignUp() {
             error={touched.birth ? errors.birth : ''}
             disabled={isFormInput}
           />
-          <LoginInput
+          <LoginInputPassword
             label={'비밀번호'}
-            type={'password'}
             placeholder="비밀번호 입력"
             value={form.password}
             onChange={(e) => {
@@ -227,9 +227,8 @@ export function SignUp() {
             error={touched.password ? errors.password : ''}
             disabled={isFormInput}
           />
-          <LoginInput
+          <LoginInputPassword
             label={'비밀번호 확인'}
-            type={'password'}
             placeholder="비밀번호 입력 확인"
             value={form.confirm}
             onChange={(e) => {
