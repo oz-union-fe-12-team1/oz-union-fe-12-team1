@@ -6,8 +6,6 @@ export default function FiveDayWeather() {
 
   return (
     <div className="flex flex-col gap-4 h-full min-h-0">
-      <h2 className="text-lg font-semibold text-white">5일 날씨</h2>
-
       <div className="flex-1 min-h-0 overflow-auto custom-scroll">
         <div className="flex justify-center gap-6">
           {data.slice(0, 2).map((d, i) => (
