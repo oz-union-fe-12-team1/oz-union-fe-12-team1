@@ -6,6 +6,7 @@ export function SignIn() {
   const [emailError, setEmailError] = useState('');
   const [password, setPassWord] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [passwordPower, setPasswordPower] = useState(0);
 
   //이메일 유효성 검사
   const handleEmail = () => {
@@ -31,6 +32,11 @@ export function SignIn() {
       setPasswordError('');
     }
   };
+
+  const handlePasswordPower =()=> {
+    /[a-zA-Z]/.test(password) && setPasswordPower(prev=>prev+=1);
+    /[0-9]/.test(password) && setPasswordPower(prev=>prev+=1);
+  }
 
   return (
     <div className="flex flex-col gap-5">

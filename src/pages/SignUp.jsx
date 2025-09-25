@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginModal from '../components/ui/LoginModal';
 import LoginButton from '../components/ui/LoginButtons';
 import { LoginInput } from '../components/ui/LoginInput';
@@ -44,6 +44,21 @@ export function SignUp() {
   const [modalConfirm, setModalConfirm] = useState('');
   const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [isConsent, setIsConsent] = useState(false);
+
+  const [passwordPower, setPasswordPower] = useState(0);
+
+
+  const checkPasswordPower = (pw)=> {
+    let power = 0;
+    if(pw.length >=8) power += 1;
+    if(/[A-Za-z]/.test(pw)) power += 1;
+    if (/\d/.test(pw)) power += 1;
+    setPasswordPower(power);
+  }
+
+  useEffect(()=> {
+    console.log(passwordPower);
+  }, [passwordPower])
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -215,6 +230,29 @@ export function SignUp() {
             error={touched.birth ? errors.birth : ''}
             disabled={isFormInput}
           />
+          <div className='flex justify-end gap-1 mr-1'>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#d85a5a]"
+                : passwordPower===2 ? "bg-[#ffc848]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#e3e3e3]"
+                : passwordPower===2 ? "bg-[#ffc848]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+            <div className={`${
+              passwordPower===0 ? "bg-[#e3e3e3]"
+                : passwordPower===1 ? "bg-[#e3e3e3]"
+                : passwordPower===2 ? "bg-[#e3e3e3]"
+                : passwordPower===3 && "bg-[#72e46a]"
+              } w-5 h-[0.15rem]`}>
+            </div>
+          </div>
           <LoginInputPassword
             label={'비밀번호'}
             placeholder="비밀번호 입력"
@@ -223,10 +261,12 @@ export function SignUp() {
               const next = e.target.value;
               setForm((password) => ({ ...password, password: next }));
               setTouched((t) => ({ ...t, password: true }));
+              checkPasswordPower(next)
             }}
             error={touched.password ? errors.password : ''}
             disabled={isFormInput}
           />
+          
           <LoginInputPassword
             label={'비밀번호 확인'}
             placeholder="비밀번호 입력 확인"
