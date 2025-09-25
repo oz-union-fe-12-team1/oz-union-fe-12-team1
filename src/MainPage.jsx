@@ -21,6 +21,9 @@ import Scheduleform from './components/layout/Scheduleform';
 import { dummyTodos as TODOS_SRC } from './api/dummyTodos';
 import { dummySchedules as SCHEDULES_SRC } from './api/dummySchedules';
 
+import { useOpenMyPage } from './store/useOpenMyPage';
+import { useOpenAdminPage } from './store/useOpenAdminPage';
+
 //공용 버튼
 const DarkButton = ({ children, className = '', ...props }) => (
   <button
@@ -34,10 +37,12 @@ const DarkButton = ({ children, className = '', ...props }) => (
 );
 
 export default function MainPage() {
-  const [Panel, setPanel] = useState('mypage'); // 'mypage' | 'admin'
+  // const [Panel, setPanel] = useState('mypage'); // 'mypage' | 'admin'
   const [mode, setMode] = useState('summary'); // 'summary' | 'five' | 'fortune' | 'quiz'
 
   const { openAdminDashboard } = useOpenAdminDashboard();
+  const { openMyPage, setOpenMyPage } = useOpenMyPage();
+  const { setOpenAdminPage } = useOpenAdminPage();
 
   const [todos, setTodos] = useState([]);
   const [todoForm, setTodoForm] = useState({ title: '', memo: '' });
@@ -91,17 +96,10 @@ export default function MainPage() {
   }, []);
 
   useEffect(() => {
-    if (Panel === 'admin' && openAdminDashboard) {
-      setMode('adminUsers');
-    } else if (mode === 'adminUsers') {
-      // 유저목록이 꺼지면 요약(챗봇)으로 복귀
-      setMode('summary');
-    }
-  }, [Panel, openAdminDashboard, mode]);
-
-  const togglePanel = () => {
-    setPanel((prev) => (prev === 'mypage' ? 'admin' : 'mypage'));
-  };
+    setMode((prev) =>
+      openAdminDashboard ? 'adminUsers' : prev === 'adminUsers' ? 'summary' : prev,
+    );
+  }, [openAdminDashboard]);
 
   //Todo
   const handleTodoChange = (e) => {
@@ -190,13 +188,24 @@ export default function MainPage() {
       <header className="h-16 px-6 flex items-center justify-between border-b border-neutral-800 bg-black/40 backdrop-blur">
         <h1 className="text-lg font-semibold">Logo</h1>
 
-        <button
-          className="px-3 py-1.5 rounded-md border border-white/20 text-white hover:bg-white/10"
-          onClick={togglePanel}
-          title="마이페이지/어드민 전환"
-        >
-          {Panel === 'mypage' ? '어드민' : '마이페이지'}
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="px-3 py-1.5 rounded-md border border-white/20 text-white hover:bg-white/10"
+            onClick={() => {
+              if (openMyPage) {
+                setOpenMyPage(false);
+                setOpenAdminPage(true);
+              } else {
+                setOpenAdminPage(false);
+                setOpenMyPage(true);
+              }
+            }}
+            title={openMyPage ? '어드민 마이페이지 열기' : '마이페이지 열기'}
+          >
+            {/* 라벨은 항상 “지금 열려있는 쪽의 반대편”을 표시 */}
+            {openMyPage ? '어드민' : '마이페이지'}
+          </button>
+        </div>
       </header>
 
       <main className="h-[calc(100dvh-4rem)] grid grid-cols-[minmax(0,1fr)_360px] gap-6 p-6 min-h-0 overflow-hidden">
@@ -310,11 +319,12 @@ export default function MainPage() {
             </section>
           </div>
         </div>
-        {/* 오른쪽: 마이페이지 or 어드민 (항상 임베드, 하나만 렌더) */}
-        <aside className="order-2 h-full rounded-2xl bg-neutral-950 border border-neutral-800 overflow-hidden min-h-0 flex flex-col">
-          {Panel === 'mypage' ? <MyPage embedded /> : <AdminMypage embedded />}
+        <aside className="order-2 h-full rounded-2xl bg-neutral-950 border border-neutral-800 overflow-hidden min-h-0 p-4">
+          {/* 필요시 내용 채워 넣기 */}
         </aside>
       </main>
+      <MyPage />
+      <AdminMypage />
     </div>
   );
 }
