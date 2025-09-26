@@ -1,6 +1,5 @@
 import News from './components/News';
 import Button from './components/ui/Button';
-import { useOpenMyPage } from './store/useOpenMyPage';
 import MyPage from './components/Mypage/Mypage';
 import AdminMypage from './components/adminPage/AdminMypage';
 import { useOpenAdminPage } from './store/useOpenAdminPage';
@@ -16,12 +15,12 @@ import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
+import Header from './components/ui/header';
 import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
 
 export default function MainPage() {
-  const { setOpenMyPage } = useOpenMyPage();
-  const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
+  const { openAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
 
@@ -58,62 +57,46 @@ export default function MainPage() {
     ),
   };
 
-  // const contentKey = (() => {
-  //   if (openAdminPage && openAdminDashboard) {
-  //     return 'admin';
-  //   }
-  //   if (view === 'five') {
-  //     return 'five';
-  //   }
-  //   if (view === 'fortune') {
-  //     return 'fortune';
-  //   }
-  //   return 'main';
-  // })();
-
   return (
-    <div className="flex h-screen w-screen flex-col">
-      <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6">
-        <h1 className="text-lg font-medium">Logo</h1>
+    <div className="flex h-screen w-screen flex-col ">
+      
 
-        <button
-          className="underline"
-          onClick={() => {
-            setOpenAdminPage(true);
-            setOpenMyPage(false);
-          }}
-        >
-          Admin
-        </button>
+      <main className="flex-1 bg-[#090909] p-4">
 
-        <button
-          className="w-10 h-10 rounded-full bg-blue-500 text-white"
-          onClick={() => {
-            setOpenMyPage(true);
-            setOpenAdminPage(false);
-          }}
-        >
-          마이페이지
-        </button>
-      </header>
+          {/* 본문 vs 마이페이지 */}
+        <div className="grid h-full grid-cols-[4fr_1fr] gap-4">
 
-      <main className="flex-1 bg-slate-100 p-4">
-        <div className="grid h-full grid-cols-[3fr_1fr] gap-4 overflow-y-auto">
-          <div className="grid grid-rows-[1fr_2fr] gap-4">
-            <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="bg-white rounded-lg p-6 flex flex-col">
+          {/* 헤더 vs 본문*/}
+          <div className="grid grid-rows-[auto_2fr] gap-4 h-screen">
+            <Header/>
+
+            {/* 본문 윗부분 왼오 */}
+            <div className="grid grid-cols-[3fr_2fr] gap-4">
+                
+              {/* 본문 윗부분 왼 */}
+              <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto">
                 {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
               </div>
-              <div className="flex items-center justify-center rounded-lg bg-white p-6">
-                {openAdminDashboard ? <AdminInquiries /> : <TodayWeather />}
+              <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto">
+                {openAdminDashboard ? <AdminInquiries/> : <TodayWeather />}
               </div>
             </div>
-            <div className="flex items-center justify-center rounded-lg bg-white p-6 relative">
-              {CONTENT_MAP[pageMode]}
+            
+            <div className='grid grid-cols-[1fr_2fr] gap-4'>
+              {/* 본문 아랫부분 */}
+              <div className='flex bg-[#22222295]  items-center justify-center shadow-3d rounded-lg'>
+                시계
+              </div>
+
+              {/* 대시보드 */}
+              <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative overflow-y-auto shadow-3d">
+                {CONTENT_MAP[pageMode]}
+              </div>
+
             </div>
           </div>
 
-          <div className="relative flex flex-col gap-5 bg-blue-600 rounded-lg p-6 items-center justify-start " >
+          <div className="relative flex flex-col gap-5  bg-[#22222295] shadow-3d  rounded-lg p-6 items-center justify-start">
             {pageMode === 'todo' && (
               <Todo setOpenTodo={handleBackToMain} />
             )}

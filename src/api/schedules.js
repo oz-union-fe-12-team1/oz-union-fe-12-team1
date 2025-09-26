@@ -27,6 +27,7 @@ export function useSchedules() {
 // const { schedulesData, schedulesIsLoading, schedulesIsError } = useSchedules();
 
 
+
 // ! - - - - 일정 생성 - - - - 
 export async function createSchedule(payload) {
   const res = await api.post("/schedules", payload);
@@ -47,8 +48,10 @@ export function useCreateSchedule() {
   return { createScheduleMutate, createScheduleError, ...rest };
 }
 // const { createScheduleMutate, createScheduleError } = useCreateSchedule();
+
 // createScheduleMutate(form) 
 // 여기서 payload는 객체이기 때문에, form도 객체로 내용 작성해야 함. (API 명세서에 있는 것처럼)
+
 
 
 // !- - - - 일정 상세 조회 - - - - 
@@ -93,7 +96,8 @@ export function useUpdateSchedule() {
   return { updateScheduleMutate, updateScheduleError, ...rest };
 }
 // const { updateScheduleMutate, updateScheduleError } = useUpdateSchedule();
-// updateScheduleError({ 
+
+// updateScheduleMutate({ 
 //   id:1, 
 //   payload: {
 //     title: "제목",
