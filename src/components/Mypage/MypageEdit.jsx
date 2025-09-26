@@ -46,15 +46,15 @@ export default function MypageEdit({
   return (
     <div className="space-y-4">
       <Label>이미지 변경</Label>
-      <div className="flex items-center gap-2">
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2">
         {profileFileName && (
-          <span className="text-sm text-slate-700 max-w-[60%] truncate">{profileFileName}</span>
+          <span className="text-sm text-neutral-300 max-w-[60%] truncate">{profileFileName}</span>
         )}
         <input
           id="profile-file"
           type="file"
           accept="image/*"
-          className="sr-only"
+          className="sr-only "
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file) return;
@@ -69,15 +69,21 @@ export default function MypageEdit({
           파일선택
         </label>
       </div>
-      <div>
-        <Label>닉네임 변경</Label>
+
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+        <Label className="col-span-2">닉네임 변경</Label>
         <input
-          className="input"
+          className="input flex-1 min-w-0"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="닉네임을 입력하세요."
         />
-        <button type="button" className="btn" onClick={applyProfile} disabled={!username.trim()}>
+        <button
+          type="button"
+          className="btn shrink-0 whitespace-nowrap"
+          onClick={applyProfile}
+          disabled={!username.trim()}
+        >
           적용
         </button>
       </div>
@@ -120,7 +126,7 @@ export default function MypageEdit({
         </div>
       </div>
 
-      <button className="text-xs text-slate-700 underline" onClick={onAskDelete}>
+      <button className="text-xs text-neutral-300 underline" onClick={onAskDelete}>
         회원탈퇴
       </button>
       <Modal
@@ -133,7 +139,7 @@ export default function MypageEdit({
           </button>
         }
       >
-        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+        <p className="mt-2 text-sm text-neutral-200">{infoMessage}</p>
       </Modal>
     </div>
   );

@@ -28,3 +28,29 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
+
+@layer components {
+  /* 기본 버튼(Primary) - 다크 기본 */
+  .btn {
+    @apply inline-flex items-center justify-center rounded
+           px-4 py-2 text-sm text-white
+           bg-sky-600 hover:bg-sky-500
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* 세컨더리 버튼 - 다크 기본 */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded px-4 py-2 text-sm
+           border border-white/10 text-neutral-100 bg-neutral-800 hover:bg-neutral-700
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* 입력 공통 - 다크 기본 */
+  .input {
+    @apply w-full rounded px-3 py-2 text-sm
+           bg-neutral-900 text-white
+           border border-white/30
+           placeholder-white/60
+           focus:outline-none focus:ring-2 focus:ring-white focus:border-white;
+  }
+}
