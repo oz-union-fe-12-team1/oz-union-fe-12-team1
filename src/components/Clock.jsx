@@ -13,7 +13,7 @@ const Ani = ({ children }) => {
 
   return (
     <div
-      className={`bg-neutral-800 rounded-[4px] p-5 transition-all duration-300 ease-out relative ${
+      className={` w-[5rem] bg-neutral-800 rounded-[4px] p-5 transition-all duration-300 ease-out relative ${
         isShown ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
       }`}
     >
@@ -38,8 +38,8 @@ export default function Clock() {
         <Ani key={time.hour()}>{String(time.hour()).padStart(2, '0')}</Ani>
       </div>
       <div className="text-4xl">
-        <Ani key={time.minute()}>
-          {String(time.minute()).padStart(2, '0')}
+        <Ani key={time.second()}>
+          {String(time.second()).padStart(2, '0')}
           {/* <div className="text-xs absolute bottom-1 right-1">
             {String(time.second()).padStart(2, '0')}
           </div> */}
