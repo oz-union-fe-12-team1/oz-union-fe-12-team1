@@ -77,18 +77,22 @@ export default function MainPage() {
               <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto">
                 {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
               </div>
+
+              {/* 본문 윗부분 오 */}
               <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto">
                 {openAdminDashboard ? <AdminInquiries/> : <TodayWeather />}
               </div>
             </div>
             
+            {/* 본문 아랫부분 */}
             <div className='grid grid-cols-[1fr_2fr] gap-4'>
-              {/* 본문 아랫부분 */}
+
+              {/* 본문 아랫부분 왼 */}
               <div className='flex bg-[#22222295]  items-center justify-center shadow-3d rounded-lg'>
                 시계
               </div>
 
-              {/* 대시보드 */}
+              {/* 대시보드 = 본문 아랫부분 오 */}
               <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative overflow-y-auto shadow-3d">
                 {CONTENT_MAP[pageMode]}
               </div>

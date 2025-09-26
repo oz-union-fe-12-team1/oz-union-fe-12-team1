@@ -22,9 +22,9 @@ export default function Briefing() {
       </div>
 
       {mode === 'morning' ? (
-        <p className="text-slate-700 whitespace-pre-line">{dummyMorning.summary}</p>
+        <p className="color-light whitespace-pre-line">{dummyMorning.summary}</p>
       ) : (
-        <p className="text-slate-700 whitespace-pre-line">{dummyEvening.summary}</p>
+        <p className="color-light whitespace-pre-line">{dummyEvening.summary}</p>
       )}
     </div>
   );
