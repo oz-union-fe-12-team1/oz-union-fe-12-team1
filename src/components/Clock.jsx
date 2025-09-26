@@ -38,8 +38,8 @@ export default function Clock() {
         <Ani key={time.hour()}>{String(time.hour()).padStart(2, '0')}</Ani>
       </div>
       <div className="text-4xl">
-        <Ani key={time.second()}>
-          {String(time.second()).padStart(2, '0')}
+        <Ani key={time.minute()}>
+          {String(time.minute()).padStart(2, '0')}
           {/* <div className="text-xs absolute bottom-1 right-1">
             {String(time.second()).padStart(2, '0')}
           </div> */}
