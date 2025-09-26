@@ -1,29 +1,43 @@
-import TodoList from "./Todolist";
+import TodoList from "./TodoList";
+import { useTodo } from "../../store/useTodo";
 
-export default function Todo({ 
-  form, 
-  onChange, 
-  onAdd, 
-  onCancelEdit, 
-  isEditing,
-  list, 
-  handleDelete,
-  onToggle,
-  onEdit,
-  setOpenTodo
-}) {
+export default function Todo({ setOpenTodo }) {
+  const {
+    form,
+    list,
+    isEditing,
+    setForm,
+    addTodo,
+    deleteTodo,
+    toggleTodo,
+    startEdit,
+    cancelEdit,
+  } = useTodo();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    addTodo();
+  };
+
   return (
-    <TodoList 
-      form={form} 
-      onChange={onChange} 
-      onAdd={onAdd} 
-      onCancelEdit={onCancelEdit}
+    <div className="w-full mt-6">
+    <TodoList
+      form={form}
+      onChange={handleChange}
+      onAdd={handleAdd}
+      onCancelEdit={cancelEdit}
       isEditing={isEditing}
-      list={list} 
-      handleDelete={handleDelete}
-      onToggle={onToggle}
-      onEdit={onEdit}
+      list={list}
+      handleDelete={deleteTodo}
+      onToggle={toggleTodo}
+      onEdit={startEdit}
       setOpenTodo={setOpenTodo}
     />
+    </div>
   );
 }

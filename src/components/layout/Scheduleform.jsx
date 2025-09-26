@@ -1,26 +1,38 @@
-import ScheduleList from './ScheduleList';
+import ScheduleList from "./ScheduleList";
+import { useSchedule } from "../../store/useSchedule";
 
 export default function ScheduleForm({
-  form,
-  onChange,
-  onAdd,
-  onCancelEdit,
-  isEditing,
+  setOpenSchedule,
   openAdminDashboard,
   openAdminPage,
   openSchedule,
-  list,
-  handleDelete,
-  setOpenSchedule,
 }) {
-  const onBack = () => {
-    console.log('asd');
-    setOpenSchedule(false);
+  const {
+    form,
+    list,
+    isEditing,
+    setForm,
+    addSchedule,
+    deleteSchedule,
+    startEdit,
+    cancelEdit,
+  } = useSchedule();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
-  
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    addSchedule();
+  };
+
+  const onBack = () => setOpenSchedule(false);
+
   return (
     <div className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col relative">
-      {/* X 버튼을 상단 우측에 위치 */}
+      {/* 닫기 버튼 */}
       <button
         type="button"
         onClick={onBack}
@@ -29,10 +41,10 @@ export default function ScheduleForm({
         X
       </button>
 
-      {/* 일정리스트 섹션 - 박스 안에 꽉 차게 */}
+      {/* 일정 리스트 */}
       <div className="flex-1 overflow-hidden flex flex-col">
         <div className="text-center py-2 font-semibold mb-2">
-          {isEditing ? '일정 수정' : '일정 리스트'}
+          {isEditing ? "일정 수정" : "일정 리스트"}
         </div>
         <div className="flex-1 overflow-y-auto">
           <ScheduleList
@@ -40,14 +52,13 @@ export default function ScheduleForm({
             openAdminPage={openAdminPage}
             openSchedule={openSchedule}
             list={list}
-            handleDelete={handleDelete}
+            handleDelete={deleteSchedule}
           />
         </div>
       </div>
 
-      {/* 일정추가 폼 섹션 */}
-      <form onSubmit={onAdd} className="space-y-3">
-        {/* 일정추가 타이틀 */}
+      {/* 일정 추가/수정 폼 */}
+      <form onSubmit={handleAdd} className="space-y-3">
         <div className="text-center py-2 font-semibold text-gray-800">
           일정추가
         </div>
@@ -56,34 +67,31 @@ export default function ScheduleForm({
           type="date"
           name="date"
           value={form.date}
-          onChange={onChange}
+          onChange={handleChange}
           className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
           required
         />
-
         <input
           type="time"
           name="time"
           value={form.time}
-          onChange={onChange}
+          onChange={handleChange}
           className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
         />
-
         <input
           type="text"
           name="title"
           placeholder="제목"
           value={form.title}
-          onChange={onChange}
+          onChange={handleChange}
           className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
           required
         />
-
         <textarea
           name="memo"
           placeholder="메모"
           value={form.memo}
-          onChange={onChange}
+          onChange={handleChange}
           className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
         />
 
@@ -92,13 +100,12 @@ export default function ScheduleForm({
             type="submit"
             className="flex-1 rounded-xl bg-gray-800 hover:bg-black py-2 font-semibold text-white"
           >
-            {isEditing ? '수정완료' : '등록'}
+            {isEditing ? "수정완료" : "등록"}
           </button>
-
           {isEditing && (
             <button
               type="button"
-              onClick={onCancelEdit}
+              onClick={cancelEdit}
               className="px-4 rounded-xl bg-gray-500 hover:bg-gray-600 py-2 font-semibold text-white"
             >
               취소
