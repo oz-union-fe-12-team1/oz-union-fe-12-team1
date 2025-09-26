@@ -32,9 +32,9 @@ export default function AskForm({ onCancel, onSubmit }) {
   return (
     <form className="flex flex-col h-full" onSubmit={submit}>
       <div className="space-y-2">
-        <label className="text-sm font-medium text-slate-700">제목</label>
+        <label className="text-sm font-medium text-neutral-200">제목</label>
         <input
-          className="w-full border rounded p-2 text-sm"
+          className="input"
           placeholder="제목을 입력하세요."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -49,10 +49,10 @@ export default function AskForm({ onCancel, onSubmit }) {
       </div>
 
       <div className="space-y-2 mt-4 flex-1 flex flex-col">
-        <label className="text-sm font-medium text-slate-700">내용</label>
+        <label className="text-sm font-medium text-neutral-200">내용</label>
         <textarea
           ref={bodyRef}
-          className="w-full flex-1 border rounded p-2 text-sm"
+          className="input flex-1"
           placeholder="문의 내용을 입력하세요."
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -83,7 +83,7 @@ export default function AskForm({ onCancel, onSubmit }) {
           </button>
         }
       >
-        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+        <p className="mt-2 text-sm text-neutral-200">{infoMessage}</p>
       </Modal>
     </form>
   );

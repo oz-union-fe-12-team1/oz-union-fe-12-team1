@@ -40,7 +40,7 @@ export default function MypageOverlay() {
       <div className="flex items-center justify-between">
         {mode !== 'view' ? (
           <button
-            className="text-black/80 hover:text-black text-xl"
+            className="text-neutral-300 hover:text-white text-xl"
             onClick={() => setMode('view')}
             aria-label="back"
           >
@@ -51,7 +51,7 @@ export default function MypageOverlay() {
         )}
 
         <button
-          className="ml-auto text-black/80 hover:text-black text-xl"
+          className="ml-auto text-neutral-300 hover:text-white text-xl"
           onClick={() => setOpenMyPage(false)}
           aria-label="close"
         >
@@ -70,25 +70,13 @@ export default function MypageOverlay() {
             />
           )}
         </div>
-        <span className="mt-2 text-sm text-slate-800">{me?.email ?? '-'}</span>
+        <span className="mt-2 text-sm text-neutral-300">{me?.email ?? '-'}</span>
       </div>
 
-      <hr className="my-4 border-black/20" />
+      <hr className="my-4 border-white/10" />
 
       {/* 문의함 버튼: view 모드에서만 노출 */}
-      {mode === 'view' && (
-        <div className="flex justify-end -mt-2">
-          <button
-            className="text-xs px-2 py-1 rounded bg-white/60 hover:bg-white shadow-sm border"
-            onClick={() => {
-              setAskTab('inbox');
-              setAskOpen(true);
-            }}
-          >
-            문의함
-          </button>
-        </div>
-      )}
+      {mode === 'view' && <div className="flex justify-end -mt-2"></div>}
 
       {/* 본문(모드별) */}
       <div className="flex-1">
@@ -163,13 +151,19 @@ export default function MypageOverlay() {
 
 function MainView({ onAsk, name, birthdate }) {
   return (
-    <div className="flex-1 space-y-4 text-center">
+    <div className="flex-1 text-center space-y-4  mt-3">
       <p className="text-lg font-semibold">{(name ?? '회원') + '님 어서오세요!'}</p>
-      <p className="text-sm text-slate-700">생년월일: {birthdate ?? '—'}</p>
-      <p className="text-sm text-slate-700">
+      <br />
+      <p className="text-sm  text-neutral-100">생년월일: {birthdate ?? '—'}</p>
+      <br />
+      <p className="text-sm text-neutral-100">
         도움이 필요하신가요?
-        <button className="ml-2 px-2 py-1 bg-slate-200 rounded text-sm" onClick={onAsk}>
-          문의하기
+        <button
+          className="ml-3 text-xs px-2 py-1 rounded border border-white/10
+                     bg-neutral-800 hover:bg-neutral-700 text-neutral-100"
+          onClick={onAsk}
+        >
+          고객센터
         </button>
       </p>
     </div>

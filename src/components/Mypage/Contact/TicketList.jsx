@@ -22,7 +22,7 @@ export default function TicketList({
   submitReply,
 }) {
   if (items.length === 0) {
-    return <div className="text-sm text-slate-500">해당 조건의 문의가 없습니다.</div>;
+    return <div className="text-sm text-neutral-400">해당 조건의 문의가 없습니다.</div>;
   }
 
   return (

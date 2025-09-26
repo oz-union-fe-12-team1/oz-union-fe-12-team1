@@ -54,14 +54,31 @@ export default function Contact({
   // 티켓 필터링(제목/본문/답변에 검색어 포함)
   const filteredTickets = useMemo(() => {
     const q = searchQuery.toLowerCase();
-    return tickets.filter((t) => {
-      const statusOk = statusFilter === 'all' || t.status === statusFilter;
+    return tickets.filter((ticket) => {
+      const statusOk = statusFilter === 'all' || ticket.status === statusFilter;
       if (!statusOk) return false;
       if (!q) return true;
-      const hay = `${t.title}\n${t.body}\n${t.answer ?? ''}`.toLowerCase();
+      const hay = `${ticket.title}\n${ticket.body}\n${ticket.answer ?? ''}`.toLowerCase();
       return hay.includes(q);
     });
   }, [tickets, statusFilter, searchQuery]);
+
+  // 입력창이 비면 자동으로 전체 보기
+  useEffect(() => {
+    if (searchInput.trim() === '') setSearchQuery('');
+  }, [searchInput]);
+
+  // 문의함 탭일 때 첫 번째 항목 자동 펼치기
+  useEffect(() => {
+    if (!open) return;
+    if (tab !== 'inbox') return;
+    if (filteredTickets.length === 0) return;
+
+    const exists = filteredTickets.some((ticket) => ticket.id === expandedId);
+    if (!exists) {
+      setExpandedId(filteredTickets[0].id);
+    }
+  }, [open, tab, filteredTickets, expandedId, setExpandedId]);
 
   // 문의 제출
   const submitAsk = ({ title, body }) => {
@@ -72,30 +89,30 @@ export default function Contact({
       { id: newId, status: '처리중', title: title.trim(), time, body: body.trim() },
       ...prev,
     ]);
-    setTab('inbox');
-    setExpandedId(newId);
+    // setTab('inbox');
+    // setExpandedId(newId);
     showInfo('문의가 접수되었습니다.');
   };
 
   // 사용자 편집(제목/내용)
-  const startEdit = (t) => {
-    setEditingId(t.id);
-    setEditTitle(t.title);
-    setEditBody(t.body);
+  const startEdit = (ticket) => {
+    setEditingId(ticket.id);
+    setEditTitle(ticket.title);
+    setEditBody(ticket.body);
   };
   const cancelEdit = () => {
     setEditingId(null);
     setEditTitle('');
     setEditBody('');
   };
-  const saveEdit = (t) => {
+  const saveEdit = (ticket) => {
     if (!editTitle.trim() || !editBody.trim()) {
       showInfo('제목과 내용을 입력해 주세요.');
       return;
     }
     setTickets((prev) =>
       prev.map((it) =>
-        it.id === t.id ? { ...it, title: editTitle.trim(), body: editBody.trim() } : it,
+        it.id === ticket.id ? { ...it, title: editTitle.trim(), body: editBody.trim() } : it,
       ),
     );
     setEditingId(null);
@@ -103,16 +120,16 @@ export default function Contact({
   };
 
   // 관리자 답변 등록
-  const submitReply = (t) => {
-    const draft = (replyDrafts[t.id] || '').trim();
+  const submitReply = (ticket) => {
+    const draft = (replyDrafts[ticket.id] || '').trim();
     if (!draft) {
       showInfo('답변 내용을 입력해 주세요.');
       return;
     }
     setTickets((prev) =>
-      prev.map((it) => (it.id === t.id ? { ...it, status: '완료', answer: draft } : it)),
+      prev.map((it) => (it.id === ticket.id ? { ...it, status: '완료', answer: draft } : it)),
     );
-    setReplyDrafts((prev) => ({ ...prev, [t.id]: '' }));
+    setReplyDrafts((prev) => ({ ...prev, [ticket.id]: '' }));
     showInfo('답변이 등록되었습니다.');
   };
 
@@ -127,78 +144,85 @@ export default function Contact({
 
   // 관리자 전용 모드일 땐 탭을 강제로 'reply'로 유지
   useEffect(() => {
-    if (open && adminOnlyReply && tab !== 'reply') {
-      setTab('reply');
-    }
-  }, [open, adminOnlyReply, tab, setTab]);
+    if (!open) return;
+    if (!adminOnlyReply) return;
+    if (!isAdmin) return;
+
+    setTab('reply');
+  }, [open, adminOnlyReply, isAdmin, tab, setTab]);
 
   if (!open) return null;
 
   return (
     <ModalPortal>
-      <div className={`fixed inset-0 ${infoOpen ? 'z-40' : 'z-[999]'} bg-black/40`}>
+      <div className={`fixed inset-0 z-40 bg-black/40`}>
         <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2">
-          <div className="bg-white rounded-lg shadow-lg w-full h-[min(90vh,800px)] p-5 flex flex-col">
+          <div className="bg-neutral-900 rounded-lg shadow-lg w-full h-[min(90vh,800px)] p-5 flex flex-col">
             {/* 헤더 */}
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-base font-semibold">문의하기</h3>
-              <button className="text-xl" onClick={onClose}>
+              <h3 className="text-base font-semibold text-white">문의하기</h3>
+              <button className="text-xl text-neutral-300" onClick={onClose}>
                 ✕
               </button>
             </div>
 
             {/* 탭 */}
-            <div className="mb-3 border-b flex gap-2">
-              {tabs.map((t) => (
+            <div className="mb-3 border-b border-white/20 flex gap-2">
+              {tabs.map((tabItem) => (
                 <button
-                  key={t.key}
-                  className={`px-3 py-2 text-sm ${tab === t.key ? 'border-b-2 border-black font-semibold' : 'text-slate-500'}`}
+                  key={tabItem.key}
+                  className={`px-3 py-2 text-sm transition-colors ${tab === tabItem.key ? 'border-b-2 border-white text-white font-semibold' : 'text-white/60 '}`}
                   onClick={() => {
                     // 탭 이동 시 편집상태 초기화
                     cancelEdit();
-                    setTab(t.key);
+                    if (tabItem.key === 'inbox') setExpandedId(null);
+                    setExpandedId(null);
+                    setTab(tabItem.key);
                   }}
                 >
-                  {t.label}
+                  {tabItem.label}
                 </button>
               ))}
             </div>
 
             {/* 컨텐츠 */}
             <div className="flex-1 min-h-0 overflow-y-auto">
-              {tab === 'ask' && !adminOnlyReply ? (
-                <AskForm onCancel={onClose} onSubmit={submitAsk} />
-              ) : (
-                <div className="flex flex-col">
-                  <TicketToolbar
-                    statusFilter={statusFilter}
-                    setStatusFilter={setStatusFilter}
-                    searchInput={searchInput}
-                    setSearchInput={setSearchInput}
-                    applySearch={applySearch}
-                  />
-
-                  <TicketList
-                    items={filteredTickets}
-                    isReplyTab={tab === 'reply' && isAdmin}
-                    expandedId={expandedId}
-                    setExpandedId={setExpandedId}
-                    // 사용자 편집
-                    editingId={editingId}
-                    editTitle={editTitle}
-                    editBody={editBody}
-                    startEdit={startEdit}
-                    cancelEdit={cancelEdit}
-                    setEditTitle={setEditTitle}
-                    setEditBody={setEditBody}
-                    saveEdit={saveEdit}
-                    // 관리자 답변
-                    replyDrafts={replyDrafts}
-                    setReplyDrafts={setReplyDrafts}
-                    submitReply={submitReply}
-                  />
-                </div>
-              )}
+              {(() => {
+                const isAskMode = tab === 'ask' && !adminOnlyReply;
+                if (isAskMode) {
+                  return <AskForm onCancel={onClose} onSubmit={submitAsk} />;
+                }
+                return (
+                  <div className="flex flex-col">
+                    <TicketToolbar
+                      statusFilter={statusFilter}
+                      setStatusFilter={setStatusFilter}
+                      searchInput={searchInput}
+                      setSearchInput={setSearchInput}
+                      applySearch={applySearch}
+                    />
+                    <TicketList
+                      items={filteredTickets}
+                      isReplyTab={tab === 'reply' && isAdmin}
+                      expandedId={expandedId}
+                      setExpandedId={setExpandedId}
+                      // 사용자 편집
+                      editingId={editingId}
+                      editTitle={editTitle}
+                      editBody={editBody}
+                      startEdit={startEdit}
+                      cancelEdit={cancelEdit}
+                      setEditTitle={setEditTitle}
+                      setEditBody={setEditBody}
+                      saveEdit={saveEdit}
+                      // 관리자 답변
+                      replyDrafts={replyDrafts}
+                      setReplyDrafts={setReplyDrafts}
+                      submitReply={submitReply}
+                    />
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -214,7 +238,7 @@ export default function Contact({
           </button>
         }
       >
-        <p className="mt-2 text-sm text-slate-800">{infoMessage}</p>
+        <p className="mt-2 text-sm text-white">{infoMessage}</p>
       </Modal>
     </ModalPortal>
   );
