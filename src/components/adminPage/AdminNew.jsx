@@ -15,44 +15,64 @@ export function AdminNew({ data }) {
   const percentage = todaySignUp.length > 0 ? (todayCount / totalCount) * 100 : 0;
 
   const options = {
-    chart: {
-      height: 350,
-      type: 'radialBar',
-    },
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          name: {
-            fontSize: '22px',
-          },
-          value: {
-            fontSize: '16px',
-          },
-          total: {
-            show: true,
-            label: '전체',
-            formatter: function () {
-              return totalCount;
-            },
+  chart: {
+    type: 'radialBar',
+    sparkline: {
+      enabled: false
+    }
+  },
+  plotOptions: {
+    radialBar: {
+      offsetY: -13,
+      startAngle: 0,
+      endAngle: 360,
+      hollow: {
+        margin: 0,
+        size: '70%',
+      },
+      track: {
+        show: true,
+        margin: 0,
+      },
+      dataLabels: {
+        name: {
+          fontSize: '18px',
+        },
+        value: {
+          fontSize: '16px',
+        },
+        total: {
+          show: false,
+          label: '전체',
+          formatter: function () {
+            return totalCount;
           },
         },
       },
     },
-    labels: ['오늘 가입자'],
-  };
+  },
+  labels: ['신규 회원'],
+  stroke: {
+    lineCap: 'round'
+  },
+};
 
   const series = [Math.round(percentage)];
 
   return (
-    <div className="flex m-1">
-      <div className="flex flex-col justify-between">
-        <h2 className="text-lg font-bold">유저 가입 현황</h2>
-        <div className="text-left flex flex-col gap-1">
-          <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#d82121] font-bold text-[2rem]">{totalCount}</span></p>
-          <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#10b610] font-bold text-[2rem]">{todayCount}</span></p>
+    <div className="flex  overflow-x-hidden overflow-y-hidden w-full h-full">
+      <div className="flex justify-between w-full h-full">
+        <h2 className="text-lg font-bold w-[20%]">유저 가입 현황</h2>
+        <div className="flex justify-start w-[80%] h-full">
+          <div className="h-[1rem]">
+            <Chart options={options} series={series} type="radialBar" height={180}/>
+          </div>
+          <div className="flex flex-col items-end justify-end">
+            <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#941010] font-bold text-[2rem]">{totalCount}</span> 명</p>
+            <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#007f00] font-bold text-[2rem]">{todayCount}</span> 명</p>
+          </div>
         </div>
       </div>
-        <Chart options={options} series={series} type="radialBar" height={250} />
 
     </div>
     

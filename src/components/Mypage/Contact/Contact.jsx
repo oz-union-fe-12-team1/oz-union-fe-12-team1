@@ -155,9 +155,10 @@ export default function Contact({
 
   return (
     <ModalPortal>
-      <div className={`fixed inset-0 z-40 bg-black/40`}>
-        <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2">
-          <div className="bg-neutral-900 rounded-lg shadow-lg w-full h-[min(90vh,800px)] p-5 flex flex-col">
+      {/* 뒤 검정배경 */}
+      <div className={`fixed inset-0 z-40 bg-black/50`}>
+        <div className="flex justify-center items-center w-full h-full">
+          <div className="bg-neutral-900 rounded-lg shadow-lg w-[80%] h-[90%] p-5 flex flex-col">
             {/* 헤더 */}
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-base font-semibold text-white">문의하기</h3>

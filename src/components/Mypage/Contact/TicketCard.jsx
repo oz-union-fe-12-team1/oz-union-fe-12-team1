@@ -37,7 +37,8 @@ export default function TicketCard({
   const bodyText = isEditing ? editBody : ticket.body;
 
   return (
-    <div className="border rounded p-3 border-white">
+    // 개별 문의
+    <div className="border rounded p-3 border-[#404856]">
       {/* 헤더 */}
       <button
         type="button"
@@ -48,15 +49,15 @@ export default function TicketCard({
           if (isEditing && isOpen) return; // 편집 중일 때 닫힘 방지
           setExpandedId(isOpen ? null : ticket.id);
         }}
-        className="w-full text-left cursor-pointer select-none focus:outline-none focus:ring-2 focus:ring-slate-200 rounded"
+        className="w-full text-left cursor-pointer select-none rounded"
       >
         <div className="flex items-baseline justify-between gap-3">
-          <div className="text-sm font-semibold text-white">
+          <div className="text-sm font-semibold">
             [{ticket.status}] {titleText}
           </div>
-          <div className="text-xs text-white shrink-0">{ticket.time}</div>
+          <div className="text-xs shrink-0">{ticket.time}</div>
         </div>
-        <div className="text-sm mt-1 line-clamp-2 text-neutral-300">{bodyText}</div>
+        <div className="text-sm mt-1 line-clamp-2 ">{bodyText}</div>
       </button>
 
       {/* 바디 */}
@@ -67,14 +68,14 @@ export default function TicketCard({
           isOpen ? 'max-h-[70vh] opacity-100' : 'max-h-0 opacity-0',
         ].join(' ')}
       >
-        <div className="pt-2 border-t border-white text-sm">
+        <div className="pt-2 border-t text-sm">
           {(() => {
             // 편집 모드
             if (isEditing) {
               return (
                 <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
                   <div className="space-y-1">
-                    <label className="text-xs text-white">제목</label>
+                    <label className="text-xs">제목</label>
                     <input
                       className="input"
                       value={editTitle}
@@ -83,7 +84,7 @@ export default function TicketCard({
                     />
                   </div>
                   <div className="space-y-1 flex-1 flex flex-col">
-                    <label className="text-xs text-white">내용</label>
+                    <label className="text-xs">내용</label>
                     <textarea
                       className="input min-h-[8rem]"
                       value={editBody}
@@ -106,7 +107,7 @@ export default function TicketCard({
             // 보기 모드 - 처리중
             if (isPending) {
               return (
-                <div className="text-white">
+                <div className="">
                   <div className="font-medium">답변 대기중입니다.</div>
                   <div>
                     영업시간은 <b>09:00 ~ 18:00</b> 입니다. 조금만 기다려주세요.
@@ -115,7 +116,7 @@ export default function TicketCard({
                   {!isReplyTab && (
                     <div className="mt-3 flex justify-end">
                       <button
-                        className="text-xs text-white underline"
+                        className="text-xs underline"
                         onClick={() => {
                           if (!isOpen) setExpandedId(ticket.id);
                           startEdit(ticket);
@@ -126,10 +127,10 @@ export default function TicketCard({
                     </div>
                   )}
 
-                  {/* ✅ 관리자 답변 영역: 패널 내부에 있어 패널 닫히면 같이 숨김 */}
+                  {/* 관리자 답변 영역: 패널 내부에 있어 패널 닫히면 같이 숨김 */}
                   {isReplyTab && (
                     <div className="mt-3 p-3 border rounded bg-neutral-900 border-white/10">
-                      <div className="text-xs text-white mb-2">관리자 답변</div>
+                      <div className="text-xs mb-2">관리자 답변</div>
                       <textarea
                         className="input min-h-[7rem]"
                         placeholder={replyPlaceholder}
@@ -170,8 +171,8 @@ export default function TicketCard({
             // 보기 모드 - 완료
             return (
               <div className="space-y-1">
-                <div className="text-white text-base font-semibold">처리 결과</div>
-                <div className="text-white/60 whitespace-pre-wrap">{resultText}</div>
+                <div className=" font-semibold">처리 결과</div>
+                <div className="opacity-50 whitespace-pre-wrap">{resultText}</div>
 
                 {/* 완료 상태에서 안내도 패널 내부에 두어 함께 접힘 */}
                 {isReplyTab && (

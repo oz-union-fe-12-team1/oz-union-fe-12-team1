@@ -14,7 +14,7 @@ export default function ScheduleForm({
     setForm,
     addSchedule,
     deleteSchedule,
-    startEdit,
+    // startEdit,
     cancelEdit,
   } = useSchedule();
 
@@ -31,7 +31,7 @@ export default function ScheduleForm({
   const onBack = () => setOpenSchedule(false);
 
   return (
-    <div className="rounded-2xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col relative">
+    <div className="rounded-xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col relative">
       {/* 닫기 버튼 */}
       <button
         type="button"

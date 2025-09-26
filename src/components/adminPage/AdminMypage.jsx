@@ -24,7 +24,7 @@ export default function AdminMypage() {
     <>
       <PinkCard open={openAdminPage} onClose={() => setOpenAdminPage(false)}>
         <button
-          className="ml-auto text-black/80 hover:text-black text-xl"
+          className="ml-auto text-white/80 hover:text-gray-500 text-xl"
           onClick={() => {
             setOpenAdminPage(false);
             setOpenAdminDashboard(false);

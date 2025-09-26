@@ -8,11 +8,11 @@ export default function Button({
   ...rest
 }) {
   const base = 'flex justify-center items-center transition text-white ';
-
+// bg-[#2d5b81] hover:bg-[#1b4567]
   const variants = {
-    common: 'bg-[#3456AF] hover:bg-[#24469d] disabled:bg-[#214294]',
+    common: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#214294]',
     cancel: 'bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060]',
-    confirm: 'bg-[#3058bd] hover:bg-[#1f45a5] disabled:bg-[#1c3063]',
+    confirm: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#1c3063]',
     mini: "bg-[#eee] hover:bg-[#ddd] disabled:bg-[#ccc]",
   };
 
