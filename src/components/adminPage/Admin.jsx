@@ -49,18 +49,18 @@ export default function Admin () {
           <IoSearch />
         </div>
       </div>
-      <div className="w-full overflow-x-auto">
-        <div className="rounded-lg overflow-hidden shadow-md border border-gray-200 w-full  max-w-[80rem] mx-auto  h-[20rem] overflow-y-scroll">
+      <div className="w-full overflow-x-auto custom-scroll">
+        <div className="rounded-lg overflow-hidden shadow-md border border-table w-full  max-w-[80rem] mx-auto  h-[20rem] overflow-y-scroll">
           <table className="rounded-lg overflow-hidden w-full border ">
             <thead>
-              <tr className="bg-[#dbeaff]">
-                <th className="border p-2 text-center">ID</th>
-                <th className="border p-2 text-center">접속여부</th>
-                <th className="border p-2 text-center">관리자</th>
-                <th className="border p-2 text-center">이름</th>
-                <th className="border p-2 text-center">이메일</th>
-                <th className="border p-2 text-center">가입일시</th>
-                <th className="border p-2 text-center">계정차단</th>
+              <tr className="bg-[#222222]">
+                <th className="border border-table p-2 text-center">ID</th>
+                <th className="border border-table p-2 text-center">접속여부</th>
+                <th className="border border-table p-2 text-center">관리자</th>
+                <th className="border border-table p-2 text-center">이름</th>
+                <th className="border border-table p-2 text-center">이메일</th>
+                <th className="border border-table p-2 text-center">가입일시</th>
+                <th className="border border-table p-2 text-center">계정차단</th>
               </tr>
             </thead>
             <tbody>
@@ -87,16 +87,16 @@ export default function Admin () {
                 <tr 
                   key={user.id}
                 >
-                  <td className="border p-2 text-center bg-[#f1f7ff]">{user.id}</td>
-                  <td className="border">{user.is_active ? 
-                  <div className="m-auto border border-white rounded-2xl bg-[#34cf20] w-3.5 h-3.5 shadow-[0_0_5px_#34cf20]"></div>
-                  : <div className="m-auto border border-white rounded-2xl bg-[#cf2020] w-3.5 h-3.5 shadow-[0_0_5px_#909090]"></div>
+                  <td className="border border-table p-2 text-center bg-[#222222]">{user.id}</td>
+                  <td className="border border-table">{user.is_active ? 
+                  <div className="m-auto border  rounded-2xl bg-[#34cf20] w-3.5 h-3.5 shadow-[0_0_5px_#34cf20]"></div>
+                  : <div className="m-auto border  rounded-2xl bg-[#cf2020] w-3.5 h-3.5 shadow-[0_0_5px_#909090]"></div>
                   }</td>
-                  <td className={`border p-2 text-center ${user.is_superuser ? "text-red-500  border-black" : "text-black"}`}>{user.is_superuser ? "◯" : "✕" }</td>
-                  <td className="border p-2 text-center">{user.username}</td>
-                  <td className="border p-2 text-center overflow-hidden">{user.email}</td>
-                  <td className="border p-2 text-center">{user.created_at.slice(2, -9).replace("T", "/").replace(/-/g,'/')}</td>
-                  <td className="border w-[5rem] h-full text-center align-middle p-1">
+                  <td className={`border p-2 text-center border-table ${user.is_superuser && "text-red-500" }`}>{user.is_superuser ? "◯" : "✕" }</td>
+                  <td className="border border-table p-2 text-center">{user.username}</td>
+                  <td className="border border-table p-2 text-center overflow-hidden">{user.email}</td>
+                  <td className="border border-table p-2 text-center">{user.created_at.slice(2, -9).replace("T", "/").replace(/-/g,'/')}</td>
+                  <td className="border border-table w-[5rem] h-full text-center align-middle p-1">
                     <Button size="vsm" variant="common">차단</Button>
                   </td>
                 </tr>
