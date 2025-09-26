@@ -14,6 +14,7 @@ export function AdminNew({ data }) {
 
   const percentage = todaySignUp.length > 0 ? (todayCount / totalCount) * 100 : 0;
 
+
   const options = {
   chart: {
     type: 'radialBar',
@@ -23,7 +24,7 @@ export function AdminNew({ data }) {
   },
   plotOptions: {
     radialBar: {
-      offsetY: -13,
+      offsetY: 0,
       startAngle: 0,
       endAngle: 360,
       hollow: {
@@ -61,27 +62,17 @@ export function AdminNew({ data }) {
 
   return (
     <div className="flex  overflow-x-hidden overflow-y-hidden w-full h-full">
-      <div className="flex justify-between w-full h-full">
-        <h2 className="text-lg font-bold w-[20%]">유저 가입 현황</h2>
-        <div className="flex justify-start w-[80%] h-full">
-          <div className="h-[1rem]">
-            <Chart options={options} series={series} type="radialBar" height={180}/>
-          </div>
-          <div className="flex flex-col items-end justify-end">
-            <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#941010] font-bold text-[2rem]">{totalCount}</span> 명</p>
-            <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#007f00] font-bold text-[2rem]">{todayCount}</span> 명</p>
-          </div>
+      <div className="flex justify-between items-center w-full h-full">
+        <div className="flex items-start h-full">
+          <h2 className="text-lg font-bold w-full">유저 가입 현황</h2>
+        </div>
+          <Chart options={options} series={series} type="radialBar" height={170}/>
+        <div className="flex flex-col items-end justify-end h-full">
+          <p>전체 가입자 수:&nbsp;&nbsp;<span className="text-[#941010] font-bold text-[2rem]">{totalCount}</span> 명</p>
+          <p>오늘 가입자 수:&nbsp;&nbsp;<span className="text-[#007f00] font-bold text-[2rem]">{todayCount}</span> 명</p>
         </div>
       </div>
 
     </div>
-    
-    /* <ul>
-        {todaySignUp.map((user) => (
-          <li key={user.id}>
-            {user.username} ({user.email})
-          </li>
-        ))}
-      </ul> */
   );
 }
