@@ -12,6 +12,7 @@ import LoadingPage from './pages/LoadingPage';
 // import Admin from './components/Admin';
 import AdminMypage from './components/adminPage/AdminMypage';
 import Schedule from './components/layout/Schedule';
+import Clock from './components/Clock';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
       />
 
       <Route path="/admin" element={<AdminMypage />} />
+      <Route path="/clock" element={<Clock />} />
       <Route path="/loading" element={<LoadingPage />} />
       <Route path="/*" element={<ErrorPage />} />
       <Route path="/Schedule" element={<Schedule />} />
