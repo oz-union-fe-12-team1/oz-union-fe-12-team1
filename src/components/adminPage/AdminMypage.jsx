@@ -20,6 +20,8 @@ export default function AdminMypage() {
   const { tickets, setTickets } = useTicketsStore();
   const { setPageMode } = useMainPage();
 
+  const handleBackToMain = () => setPageMode('main');
+
   return (
     <>
       <PinkCard open={openAdminPage} onClose={() => setOpenAdminPage(false)}>
@@ -28,6 +30,7 @@ export default function AdminMypage() {
           onClick={() => {
             setOpenAdminPage(false);
             setOpenAdminDashboard(false);
+            handleBackToMain();
           }}
           aria-label="close"
         >
