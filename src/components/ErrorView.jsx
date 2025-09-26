@@ -15,6 +15,7 @@ export default function ErrorView({ status = 404, homeHref = '/', onRetry }) {
         <div className="flex justify-center gap-3">
           <Link
             to={homeHref}
+            replace
             className="px-4 py-2 rounded-xl border border-neutral-700 hover:bg-neutral-800 transition-colors"
           >
             홈으로 가기

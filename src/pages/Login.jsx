@@ -8,7 +8,6 @@ import { useAuth } from '../store/useAuth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 
 export function Login() {
-  
   const navigate = useNavigate();
   const openModal = true;
   const [form, setForm] = useState({
@@ -122,17 +121,17 @@ export function Login() {
               error={touched.email ? errors.email : ''}
             />
           </div>
-            <LoginInputPassword
-              label={'비밀번호'}
-              placeholder="비밀번호 입력"
-              value={form.password}
-              onChange={(e) => {
-                const next = e.target.value;
-                setForm((password) => ({ ...password, password: next }));
-                setTouched((t) => ({ ...t, password: true }));
-              }}
-              error={touched.password ? errors.password : ''}
-            />
+          <LoginInputPassword
+            label={'비밀번호'}
+            placeholder="비밀번호 입력"
+            value={form.password}
+            onChange={(e) => {
+              const next = e.target.value;
+              setForm((password) => ({ ...password, password: next }));
+              setTouched((t) => ({ ...t, password: true }));
+            }}
+            error={touched.password ? errors.password : ''}
+          />
         </form>
       </LoginModal>
     </div>
