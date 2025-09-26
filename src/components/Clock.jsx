@@ -22,7 +22,7 @@ const Ani = ({ children }) => {
   );
 };
 
-export default function Clock() {
+export default function ClockComponent() {
   const [time, setTime] = useState(dayjs());
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Clock() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen h-screen bg-neutral-900 text-neutral-100 p-10 gap-2 font-['HsFallThought20']">
+    <div className="flex flex-col justify-center items-center  bg-neutral-900 text-neutral-100 p-10 gap-2 font-['HsFallThought20']">
       <div className="text-4xl">
         <Ani key={time.hour()}>{String(time.hour()).padStart(2, '0')}</Ani>
       </div>

@@ -15,16 +15,16 @@ export default function Briefing() {
         </button>
         <button
           onClick={() => setMode('evening')}
-          className={`px-3 py-1 rounded text-white ${mode === 'evening' ? 'bg-purple-500' : 'bg-slate-400'}`}
+          className={`px-3 py-1 rounded  ${mode === 'evening' ? 'bg-purple-500' : 'bg-slate-400'}`}
         >
           저녁
         </button>
       </div>
 
       {mode === 'morning' ? (
-        <p className="text-slate-700 whitespace-pre-line">{dummyMorning.summary}</p>
+        <p className=" whitespace-pre-line">{dummyMorning.summary}</p>
       ) : (
-        <p className="text-slate-700 whitespace-pre-line">{dummyEvening.summary}</p>
+        <p className=" whitespace-pre-line">{dummyEvening.summary}</p>
       )}
     </div>
   );
