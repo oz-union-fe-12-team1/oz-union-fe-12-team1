@@ -136,6 +136,8 @@ export default function MainPage() {
                 <Button size="lg" variant="common">푸쉬 설정</Button>
               </span>
             )}
+            <MyPage/>
+            <AdminMypage/>
           </div>
         </div>
       </div>
