@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import { useAuth } from '../store/useAuth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
+import Header from '../components/ui/header';
 
 export function Login() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ export function Login() {
             로그인
           </LoginButton>
           <button
-            className="flex justify-center items-center h-[40px] bg-[#f2f2f2] hover:bg-[#001d35]/[0.08] rounded-[0.6rem]"
+            className="flex justify-center items-center h-[40px] bg-[#131314] hover:bg-[#e3e3e31f]/[0.08] rounded-[0.6rem]"
             onClick={() => googleLogin()}
           >
             <img className="w-6" src=".\src\assets\pngegg.png" alt="google" />
@@ -82,27 +83,22 @@ export function Login() {
 
   return (
     <div className="flex h-screen w-screen flex-col">
-      <header className="flex h-16 items-center bg-slate-900 px-6 text-white">
-        <h1 className="text-lg font-medium"></h1>
-      </header>
-      <main className="flex-1 bg-slate-100 p-4">
-        <div className="grid h-full grid-cols-[3fr_1fr] gap-4">
-          <div className="grid grid-rows-[1fr_2fr] gap-4">
-            <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden">
+        <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
+          <div className="grid grid-rows-[auto_1fr] gap-4 min-h-0 min-w-0">
+            <Header />
+            <div className="grid grid-rows-[1fr_2fr] gap-4 min-h-0 min-w-0">
+              <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0"></div>
               </div>
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+              <div className="grid grid-cols-[1fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative  overflow-x-auto custom-scroll shadow-3d min-w-0"></div>
               </div>
             </div>
-            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-              <span className="text-xl font-medium text-slate-700"></span>
-            </div>
           </div>
-          <div className="bg-blue-600 rounded-lg p-6 flex items-center justify-center">
-            <span className="text-lg font-medium text-white"></span>
-          </div>
+          <div className="relative flex flex-col bg-[#22222295] shadow-3d rounded-lg overflow-hidden min-w-0"></div>
         </div>
       </main>
 

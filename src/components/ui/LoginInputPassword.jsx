@@ -1,7 +1,7 @@
-import { useState } from "react";
-import Button from "./Button";
-import { IoEyeOutline } from "react-icons/io5";
-import { IoEyeOffOutline } from "react-icons/io5";
+import { useState } from 'react';
+import Button from './Button';
+import { IoEyeOutline } from 'react-icons/io5';
+import { IoEyeOffOutline } from 'react-icons/io5';
 
 export function LoginInputPassword({
   label,
@@ -13,16 +13,14 @@ export function LoginInputPassword({
   disabled = false,
   ...rest
 }) {
-
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const passwordType = passwordVisibility ? "text" : "password";
-
+  const passwordType = passwordVisibility ? 'text' : 'password';
 
   const id = rest.id || `input-${Math.random().toString(36).slice(2, 11)}`;
 
   const errorMessage = error
     ? 'text-red-500 text-[12px] mt-1 select-none'
-    : 'text-white text-[12px] mt-1 select-none';
+    : 'text-[#222222] text-[12px] mt-1 select-none';
 
   return (
     <div className="flex flex-col flex-1">
@@ -38,22 +36,20 @@ export function LoginInputPassword({
             type={passwordType}
             onChange={onChange}
             onBlur={onBlur}
-            className="border px-3 rounded-l-sm h-[30px] border-gray-400 w-full"
+            className="text-neutral-100 border px-3 rounded-l-sm h-[30px] border-gray-400 w-full"
             disabled={disabled}
             {...rest}
           />
-          <div onClick={()=>setPasswordVisibility(prev=>!prev)}>
-            <Button
-              size="mini"
-              variant="mini"
-            >
-              { passwordVisibility ? 
-              <IoEyeOffOutline style={{ color: 'black' }} size={24}/> 
-              : <IoEyeOutline style={{ color: 'black' }} size={24}/> }
-              
+          <div onClick={() => setPasswordVisibility((prev) => !prev)}>
+            <Button size="mini" variant="mini">
+              {passwordVisibility ? (
+                <IoEyeOffOutline style={{ color: 'black' }} size={24} />
+              ) : (
+                <IoEyeOutline style={{ color: 'black' }} size={24} />
+              )}
             </Button>
           </div>
-      </div>
+        </div>
         <div className={errorMessage}>{error ? error : '123'}</div>
       </div>
     </div>
