@@ -33,16 +33,16 @@ export default function Clock() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full bg-neutral-900 text-neutral-100 p-10 gap-2 font-['HsFallThought20']">
+    <div className="flex flex-col justify-center items-center w-screen h-screen bg-neutral-900 text-neutral-100 p-10 gap-2 font-['HsFallThought20']">
       <div className="text-4xl">
         <Ani key={time.hour()}>{String(time.hour()).padStart(2, '0')}</Ani>
       </div>
       <div className="text-4xl">
         <Ani key={time.minute()}>
           {String(time.minute()).padStart(2, '0')}
-          <div className="text-xs absolute bottom-1 right-1">
+          {/* <div className="text-xs absolute bottom-1 right-1">
             {String(time.second()).padStart(2, '0')}
-          </div>
+          </div> */}
         </Ani>
       </div>
       <div className="text-base mt-1 text-gray-400">{time.format('YYYY. MM. DD (ddd)')}</div>
