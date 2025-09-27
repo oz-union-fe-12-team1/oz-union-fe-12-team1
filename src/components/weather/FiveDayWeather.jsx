@@ -5,7 +5,7 @@ export default function FiveDayWeather() {
   const data = fiveDayWeatherDummy;
 
   return (
-    <div className="flex flex-col gap-4 h-full min-h-0">
+    <div className="flex flex-col gap-4 h-full min-h-0  overflow-x-auto custom-scroll">
       <div className="flex-1 min-h-0 overflow-auto custom-scroll">
         <div className="flex justify-center gap-6">
           {data.slice(0, 2).map((d, i) => (

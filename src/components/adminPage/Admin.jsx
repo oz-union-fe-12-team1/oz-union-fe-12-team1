@@ -49,7 +49,7 @@ export default function Admin () {
           <IoSearch />
         </div>
       </div>
-      <div className="w-full overflow-x-auto custom-scroll">
+      <div className="w-full ">
         <div className="rounded-lg overflow-hidden shadow-md border border-table w-full  max-w-[80rem] mx-auto  h-[20rem] overflow-y-scroll">
           <table className="rounded-lg overflow-hidden w-full border ">
             <thead>

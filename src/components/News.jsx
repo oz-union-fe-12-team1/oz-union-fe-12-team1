@@ -36,9 +36,9 @@ export default function News() {
                 onClick={() => setCategory(cat)}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                   cat === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600'
-                }`}
+                    ? 'bg-[#2d5b81] hover:bg-[#1b4567]'
+                    : 'bg-neutral-700 hover:bg-neutral-800 '
+                }`} 
               >
                 {CATEGORY_LABELS[cat]}
               </button>
@@ -61,7 +61,7 @@ export default function News() {
                   href={news.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-sm text-neutral-100 hover:text-blue-400"
+                  className="block text-sm text-neutral-100 hover:text-[#417eb0]"
                 >
                   {news.headline}
                 </a>

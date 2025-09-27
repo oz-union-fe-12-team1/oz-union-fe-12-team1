@@ -5,9 +5,9 @@ export default function BackButton({ onClose }) {
     <button
       onClick={onClose}
       aria-label="닫기"
-      className="p-2 hover:bg-slate-200 rounded-md transition"
+      className="p-2 rounded-md transition"
     >
-      <X className="w-6 h-6 text-slate-700" />
+      <X className="w-6 h-6 text-[#555] hover:text-[#888] " />
     </button>
   );
 }

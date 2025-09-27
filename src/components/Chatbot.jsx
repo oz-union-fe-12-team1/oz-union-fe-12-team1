@@ -45,7 +45,7 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="w-full grid grid-cols-2 gap-12">
+    <div className="w-full grid grid-cols-2 gap-12  overflow-x-auto custom-scroll">
       <div className="flex flex-col items-center">
         <h2 className="font-semibold text-2xl mb-6 text-center border-b-2 pb-2 w-[70%]">
           오늘의 Todo
