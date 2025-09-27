@@ -93,8 +93,8 @@ export function useLogout() {
 // };
 
 // !- - - - 인증 메일 발송 - - - -
-export async function emailSend(payload) {
-  const res = await api.post('/auth/email/resend', payload);
+export async function emailSend(email) {
+  const res = await api.post(`/auth/email/verify_code?email=${email}`);
   return res.data;
 }
 export function useEmailSend() {
