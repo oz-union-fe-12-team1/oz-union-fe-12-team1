@@ -12,17 +12,17 @@ export function Quiz () {
   
 
   const handleBackgroundColor=(option)=>{
-    if (selectOption === undefined) return "bg-blue-200";
+    if (selectOption === undefined) return "bg-[#2d5b81] hover:bg-[#1b4567]";
     if (selectOption === option) {
-      return option === data.answer ? "bg-[#45ee4b]" : "bg-[#bf4b4b]";
+      return option === data.answer ? "bg-[#379e3b] hover:bg-[#267c29]" : "bg-[#bf4b4b] bg-[#a73939]";
     }
-    return "bg-gray-200";
+    return "bg-[#333] hover:bg-[#222]";
   }
 
   const handleOptionClick = (option) => {
     setSelectOption(option);
     if (option === data.answer) {
-      setMessage("정답입니다! 다음 문제를 풀어봅시다!");
+      setMessage("정답입니다!");
     } else {
       setMessage("아쉽지만 오답이네요.. 다른 답을 골라볼까요?");
     }
@@ -30,7 +30,7 @@ export function Quiz () {
 
 
   return (<>
-    <div className="flex justify-between w-full h-full">
+    <div className="flex justify-between w-full h-full items-center">
       
       <button
         onClick={()=>{
@@ -39,16 +39,16 @@ export function Quiz () {
           setMessage("과연 정답은?");
         }}
         disabled={page===0}
-        className={`${page===0 && "opacity-20"} p-10`}
+        className={`${page===0 && "opacity-20"} lg:p-10 `}
       >
         <AiFillCaretLeft size={40}/>
       </button>
 
-      <div className="flex flex-col w-full h-full items-center  gap-20 justify-center">
-        <h1 className="text-[1.8rem] font-semibold select-none break-keep">
+      <div className="flex flex-col w-full h-[70%] items-center   justify-around gap-10 lg:gap-0">
+        <h1 className="text-[1.4rem] font-semibold select-none break-keep lg:text-[1.8rem]">
           {data.id}.&nbsp;&nbsp;{data.question}
         </h1>
-        <div className="flex flex-col gap-10 items-center">
+        <div className="flex flex-col gap-10 items-center justify-center">
           <div className="flex flex-col justify-around w-full select-none lg:flex-row gap-7 items-center">
             {data.options.map((option, idx)=>(
               <p 
@@ -64,7 +64,7 @@ export function Quiz () {
             ))}
           </div>
 
-          <p className="text-[1.2rem] text-[#999]">
+          <p className="text-[1.2rem] text-[#999] mb-10 lg:mb-0">
             {message}
           </p>
 
@@ -80,7 +80,7 @@ export function Quiz () {
           setMessage("과연 정답은?");
         }}
         disabled={page===quizData.data.length-1}
-        className={`${page===quizData.data.length-1 && "opacity-20"} p-10`}
+        className={`${page===quizData.data.length-1 && "opacity-20"} lg:p-10`}
       >
         <AiFillCaretRight size={40}/>
       </button>

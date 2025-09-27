@@ -14,8 +14,8 @@ export default function PinkCard({ open, onClose, children }) {
       <div
         className="
           h-full p-6 flex flex-col min-h-0
-          rounded-2xl shadow-2xl ring-1 ring-white/10 border border-white/10
-          bg-neutral-900 text-neutral-100
+          rounded-lg  border-white/10
+          bg-neutral-900 shadow-3d
         "
         onClick={(e) => e.stopPropagation()}
       >

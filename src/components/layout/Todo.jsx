@@ -25,7 +25,7 @@ export default function Todo({ setOpenTodo }) {
   };
 
   return (
-    <div className="w-full mt-6">
+    <div className="w-full h-full">
     <TodoList
       form={form}
       onChange={handleChange}

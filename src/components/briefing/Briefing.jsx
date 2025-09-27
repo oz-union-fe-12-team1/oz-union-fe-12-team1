@@ -6,16 +6,16 @@ export default function Briefing() {
 
   return (
     <div className="w-full">
-      <div className="flex gap-2 mb-3">
+      <div className="flex gap-2 mb-3 ">
         <button
           onClick={() => setMode('morning')}
-          className={`px-3 py-1 rounded text-white ${mode === 'morning' ? 'bg-blue-500' : 'bg-slate-400'}`}
+          className={`transition-colors px-3 py-1 rounded-lg text-white ${mode === 'morning' ? 'bg-[#2d5b81] hover:bg-[#1b4567]' : 'bg-neutral-700 hover:bg-neutral-800'}`}
         >
           아침
         </button>
         <button
           onClick={() => setMode('evening')}
-          className={`px-3 py-1 rounded  ${mode === 'evening' ? 'bg-purple-500' : 'bg-slate-400'}`}
+          className={`transition-colors px-3 py-1 rounded-lg  ${mode === 'evening' ? 'bg-[#2d5b81] hover:bg-[#1b4567]' : 'bg-neutral-700 hover:bg-neutral-800'}`}
         >
           저녁
         </button>

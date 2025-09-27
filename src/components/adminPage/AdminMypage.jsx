@@ -20,14 +20,17 @@ export default function AdminMypage() {
   const { tickets, setTickets } = useTicketsStore();
   const { setPageMode } = useMainPage();
 
+  const handleBackToMain = () => setPageMode('main');
+
   return (
     <>
       <PinkCard open={openAdminPage} onClose={() => setOpenAdminPage(false)}>
         <button
-          className="ml-auto text-black/80 hover:text-black text-xl"
+          className="ml-auto text-white/80 hover:text-gray-500 text-xl"
           onClick={() => {
             setOpenAdminPage(false);
             setOpenAdminDashboard(false);
+            handleBackToMain();
           }}
           aria-label="close"
         >

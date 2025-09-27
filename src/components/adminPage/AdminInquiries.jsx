@@ -12,12 +12,11 @@ export function AdminInquiries () {
 
 
   return (<>
-    <div className="flex flex-col w-full h-full justify-between">
-      <span className="text-[1.1rem] font-bold m-1">
+    <div className="flex w-full h-full justify-between items-center">
+      <span className="text-[1.1rem] font-bold m-1 items-start h-full">
         답변을 기다리는 문의
       </span>
-      <div className="flex justify-center">
-        <div className="flex w-auto p-6 justify-center items-center bg-[#f5f5f5] rounded-[100%] aspect-[1/1]">
+        <div className="flex w-[9rem] h-[9rem] p-6 justify-center items-center bg-[#242424] rounded-[100%] aspect-[1/1]">
           {
             allInquiriesIsLoading ? (
               <div>로딩 중</div>
@@ -49,7 +48,6 @@ export function AdminInquiries () {
             )
           }
         </div>
-      </div>  
       <div></div>
     </div>
   </>)
