@@ -23,13 +23,12 @@ export function SignUp() {
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
-    code: '',
     name: '',
     birth: '',
     password: '',
     confirm: '',
   });
-
+  const [emailCode, setEmailCode] = useState('');
   const code = '1q2w3e4r';
 
   const [touched, setTouched] = useState({
@@ -40,11 +39,25 @@ export function SignUp() {
     confirm: false,
   });
   const [isCodeInput, setIsCodeInput] = useState(true);
+  const [isEmailInput, setIsEmailInput] = useState(false);
   const [isFormInput, setIsFormInput] = useState(true);
   const [isSendModal, setIsSendModal] = useState(false);
   const [modalConfirm, setModalConfirm] = useState('');
   const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [isConsent, setIsConsent] = useState(false);
+
+  const errors = newError(form);
+
+  const [agreed, setAgreed] = useState(false);
+
+  const forms =
+    form.email.length &&
+    form.password.length &&
+    form.birth.length &&
+    form.password.length &&
+    form.confirm.length;
+  const noError = !errors.email && !errors.name && !errors.password && !errors.confirm;
+  const onButton = agreed && noError && forms;
 
   const passwordPower = useMemo(() => {
     let power = 0;
@@ -56,6 +69,7 @@ export function SignUp() {
 
   // const { registerUserMutate, registerUserError } = useRegisterUser();
   // const { resendMutate } = useEmailSend();
+  // const { verifyMutate, verifyError } = useVerify();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -66,7 +80,8 @@ export function SignUp() {
       password: true,
       confirm: true,
     });
-
+    console.log(form);
+    console.log(emailCode);
     // const payload = {
     //   email: form.email,
     //   password: form.password,
@@ -86,19 +101,6 @@ export function SignUp() {
     // });
   }
 
-  const errors = newError(form);
-
-  const [agreed, setAgreed] = useState(false);
-
-  const forms =
-    form.email.length &&
-    form.password.length &&
-    form.birth.length &&
-    form.password.length &&
-    form.confirm.length;
-  const noError = !errors.email && !errors.name && !errors.password && !errors.confirm;
-  const onButton = agreed && noError && forms;
-
   const codeConfirm = (emailCode) => {
     if (emailCode === code) {
       setModalConfirm('인증되었습니다.');
@@ -108,14 +110,21 @@ export function SignUp() {
       setModalConfirm('인증번호가 틀립니다.');
       setIsModalConfirm(true);
     }
+
+    // const payload = { emailCode };
+    // verifyMutate(payload, {
+    //   onSuccess: () => alert('인증 성공~'),
+    //   onError: () => alert('인증 실패'),
+    // });
   };
 
-  // const emailsend = () => {
-  //   const payload = { email: form.email }
-  //   resendMutate{payload,
-
-  //   }
-  // }
+  // const emailSend = () => {
+  //   const payload = { email: form.email };
+  //   resendMutate(payload, {
+  //     onSuccess: () => alert('보냈당'),
+  //     onError: () => alert('실패했당..'),
+  //   });
+  // };
 
   const footer = () => {
     return (
@@ -191,6 +200,7 @@ export function SignUp() {
               }}
               onBlur={() => setTouched((t) => ({ ...t, email: true }))}
               error={touched.email ? errors.email : ''}
+              disabled={isEmailInput}
             />
             <button
               type="button"
@@ -198,6 +208,8 @@ export function SignUp() {
                 rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
               disabled={!(form.email.length && !errors.email)}
               onClick={() => {
+                // emailSend();
+                setIsEmailInput(true);
                 setIsCodeInput(false);
                 setIsSendModal(true);
               }}
@@ -210,9 +222,9 @@ export function SignUp() {
               label={'인증번호'}
               type={'text'}
               placeholder="인증번호를 입력하세요"
-              value={form.code}
+              value={emailCode}
               onChange={(e) => {
-                setForm((code) => ({ ...code, code: e.target.value }));
+                setEmailCode(e.target.value);
               }} //state 업데이트
               disabled={isCodeInput}
             />
@@ -220,8 +232,8 @@ export function SignUp() {
               type="button"
               className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
                 rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
-              disabled={!form.code.length}
-              onClick={() => codeConfirm(form.code)}
+              disabled={!emailCode.length}
+              onClick={() => codeConfirm(emailCode)}
             >
               인증번호 확인
             </button>

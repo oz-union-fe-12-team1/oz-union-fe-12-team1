@@ -26,6 +26,7 @@ export function Login() {
 
   // const { loginMutate } = useLogin();
   // const { getUser } = useUser();
+  // const { socialLoginMutate, socialLoginError } = useSocialLogin();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -59,7 +60,17 @@ export function Login() {
   const noError = !errors.email && !errors.password;
   const onButton = noError && mustFilled;
 
-  const googleLogin = () => {};
+  const googleLogin = () => {
+    // socialLoginMutate(undefined, {
+    //   onSuccess: async () => {
+    //     await getUser();
+    //     navigate('/main');
+    //   },
+    //   onError: () => {
+    //     alert('오류가 발생했습니다.');
+    //   },
+    // });
+  };
 
   const footer = () => {
     return (
