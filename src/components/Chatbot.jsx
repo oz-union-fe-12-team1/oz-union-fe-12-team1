@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { dummySchedules } from '../api/dummySchedules';
-import { dummyTodos } from '../api/dummyTodos';
+
 import dayjs from 'dayjs';
+import { dummySchedules } from '../api/dummyData/dummySchedules';
+import { dummyTodos } from '../api/dummyData/dummyTodos';
 
 export default function Chatbot() {
   const [schedules, setSchedules] = useState(null);
@@ -63,9 +64,7 @@ export default function Chatbot() {
                 />
                 <label
                   htmlFor={`todo-${item.id}`}
-                  className={`text-lg ${
-                    item.is_completed && 'line-through'
-                  }`}
+                  className={`text-lg ${item.is_completed && 'line-through'}`}
                 >
                   {item.title}
                 </label>

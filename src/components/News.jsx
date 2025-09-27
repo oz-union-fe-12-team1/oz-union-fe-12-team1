@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import dummyNews from '../api/dummyNews';
+import dummyNews from '../api/dummyData/dummyNews';
 
 const CATEGORY_LABELS = {
   politics: '정치',
@@ -38,7 +38,7 @@ export default function News() {
                   cat === category
                     ? 'bg-[#2d5b81] hover:bg-[#1b4567]'
                     : 'bg-neutral-700 hover:bg-neutral-800 '
-                }`} 
+                }`}
               >
                 {CATEGORY_LABELS[cat]}
               </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { dummyMorning, dummyEvening } from '../../api/dummyBriefings';
+import { dummyMorning, dummyEvening } from '../../api/dummyData/dummyBriefings';
 
 export default function Briefing() {
   const [mode, setMode] = useState('morning'); // morning | evening

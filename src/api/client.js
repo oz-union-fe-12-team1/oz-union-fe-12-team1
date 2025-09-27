@@ -17,11 +17,12 @@ api.interceptors.response.use(
     // error.config: api요청 실패해서 에러 생겼을 때 그 객체 안에 사용된 요청관련 설정 정보. (url, method, headers, data 등) = 실패했던 원래 요청의 설정정보 객체
     // ? 401 에러(=세션 만료) 오류 발생 시, 원래 실패했던 요청의 설정을 가져와서 똑같이 다시 요청 보내기 위함임.
 
-    if (error.response?.status === 401 && !originalRequest.retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       //? 401 에러이면서, 아직 재시도 안 한 요청일 때. = 401오류 떴을 때 한번만 리프레시 시도함.
+      // 앞에 _ 붙은 건 내부 속성임을 표시하는 의미라고 함.
       // 객체에 retry라는 속성이 없어도 밑에처럼 바로 할당해서 새 속성 만들 수 있음.
       // = 속성을 미리 정의하지 않아도 바로 새로운 속성을 추가할 수 있음.
-      originalRequest.retry = true;
+      originalRequest._retry = true;
       // 만약 retry라는 속성이 없으면 = 재시도한 적이 없으면
       // retry라는 속성을 만들어서 그 값을 true로 만들겠다. = 재시도 한 요청이구나!
 
@@ -33,6 +34,14 @@ api.interceptors.response.use(
         //? 위에서 만든 axios 인스턴스는 함수처럼 호출할 수 있음.
         //? 그래서 api(config) 하면, 그 config 객체를 기준으로 HTTP 요청을 보낼 수 있음.
       } catch (refreshError) {
+        try {
+          await api.post('/auth/logout');
+        } catch (logoutError) {
+          //로그아웃 api가 실패해도 리다이렉트 일단 계속 진행
+          console.error('로그아웃 요청 실패:', logoutError);
+        }
+        window.location.href = '/login';
+        // 로그인 페이지로 보내기
         return Promise.reject(refreshError);
         //무조건 실패하는 Promise를 만들어냄.
       }
