@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
+import Header from '../components/ui/header';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ export function PwConfirm() {
         </LoginButton>
         <div className="text-[12px]">
           비밀번호 생각났어요!
-          <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
+          <button onClick={() => navigate('/')} type="button" className="text-blue-500 font-bold">
             돌아가기
           </button>
         </div>
@@ -96,28 +97,23 @@ export function PwConfirm() {
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <header className="h-16 bg-slate-900 text-white flex items-center px-6">
-        <h1 className="text-lg font-medium"></h1>
-      </header>
-      <main className="flex-1 bg-slate-100 p-4">
-        <div className="h-full grid grid-cols-[3fr_1fr] gap-4">
-          <div className="grid grid-rows-[1fr_2fr] gap-4">
-            <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+    <div className="h-screen w-screen flex flex-col overflow-hidden">
+      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden">
+        <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
+          <div className="grid grid-rows-[auto_1fr] gap-4 min-h-0 min-w-0">
+            <Header />
+            <div className="grid grid-rows-[1fr_2fr] gap-4 min-h-0 min-w-0">
+              <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0"></div>
               </div>
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+              <div className="grid grid-cols-[1fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative  overflow-x-auto custom-scroll shadow-3d min-w-0"></div>
               </div>
             </div>
-            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-              <span className="text-xl font-medium text-slate-700"></span>
-            </div>
           </div>
-          <div className="bg-blue-600 rounded-lg p-6 flex items-center justify-center">
-            <span className="text-lg font-medium text-white"></span>
-          </div>
+          <div className="relative flex flex-col bg-[#22222295] shadow-3d rounded-lg overflow-hidden min-w-0"></div>
         </div>
       </main>
 
@@ -137,8 +133,9 @@ export function PwConfirm() {
             ></LoginInput>
             <button
               type="button"
-              className="flex justify-center items-center w-auto h-[30px] border-[1px]
-                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
+              className="flex justify-center items-center w-auto h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
+              disabled={!form.email || errors.email}
               onClick={() => emailConfirm(form.email)}
             >
               이메일 확인

@@ -8,15 +8,15 @@ export default function LoginButton({
   const base = 'flex justify-center items-center transition text-white ';
 
   const variants = {
-    common: 'bg-[#3456AF] hover:bg-[#24469d] disabled:bg-[#214294]',
+    common: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#214294]',
     cancel: 'bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060]',
-    confirm: 'bg-[#3058bd] hover:bg-[#1f45a5] disabled:bg-[#1c3063]',
-    mini: "bg-[#eee] hover:bg-[#ddd] disabled:bg-[#ccc]",
+    confirm: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#1c3063]',
+    mini: 'bg-[#eee] hover:bg-[#ddd] disabled:bg-[#ccc]',
   };
 
   const sizes = {
     md: 'w-full px-4 py-2 text-base rounded-[0.6rem]',
-    mini: "h-[30px] w-[30px] p-1 rounded-r-[0.3rem] border border-black",
+    mini: 'h-[30px] w-[30px] p-1 rounded-r-[0.3rem] border border-black',
   };
 
   const disabledClasses = disabled ? 'cursor-not-allowed opacity-70' : '';

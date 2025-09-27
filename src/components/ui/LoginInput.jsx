@@ -13,7 +13,7 @@ export function LoginInput({
 
   const errorMessage = error
     ? 'text-red-500 text-[12px] mt-1 select-none'
-    : 'text-white text-[12px] mt-1 select-none';
+    : 'text-[#222222] text-[12px] mt-1 select-none';
 
   return (
     <div className="flex flex-col flex-1">
@@ -28,7 +28,7 @@ export function LoginInput({
           type={type}
           onChange={onChange}
           onBlur={onBlur}
-          className="border px-3 rounded-sm h-[30px] border-gray-400 w-full"
+          className="text-neutral-100 border px-3 rounded-sm h-[30px] border-gray-400 w-full"
           disabled={disabled}
           {...rest}
         />

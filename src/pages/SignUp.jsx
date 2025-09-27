@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import LoginModal from '../components/ui/LoginModal';
 import LoginButton from '../components/ui/LoginButtons';
 import { LoginInput } from '../components/ui/LoginInput';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
+import Header from '../components/ui/header';
 
 const CONTENT = {
   title: '[필수] 개인정보 수집·이용 동의',
@@ -47,18 +48,13 @@ export function SignUp() {
 
   const [passwordPower, setPasswordPower] = useState(0);
 
-
-  const checkPasswordPower = (pw)=> {
+  const checkPasswordPower = (pw) => {
     let power = 0;
-    if(pw.length >=8) power += 1;
-    if(/[A-Za-z]/.test(pw)) power += 1;
+    if (pw.length >= 8) power += 1;
+    if (/[A-Za-z]/.test(pw)) power += 1;
     if (/\d/.test(pw)) power += 1;
     setPasswordPower(power);
-  }
-
-  useEffect(()=> {
-    console.log(passwordPower);
-  }, [passwordPower])
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -110,7 +106,7 @@ export function SignUp() {
         </LoginButton>
         <div className="text-[12px]">
           생각해보니 가입했었네!?
-          <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
+          <button onClick={() => navigate('/')} type="button" className="text-blue-500 font-bold">
             돌아가기
           </button>
         </div>
@@ -137,28 +133,23 @@ export function SignUp() {
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <header className="h-16 bg-slate-900 text-white flex items-center px-6">
-        <h1 className="text-lg font-medium"></h1>
-      </header>
-      <main className="flex-1 bg-slate-100 p-4">
-        <div className="h-full grid grid-cols-[3fr_1fr] gap-4">
-          <div className="grid grid-rows-[1fr_2fr] gap-4">
-            <div className="grid grid-cols-[2fr_1fr] gap-4">
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+    <div className="h-screen w-screen flex flex-col overflow-hidden">
+      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden">
+        <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
+          <div className="grid grid-rows-[auto_1fr] gap-4 min-h-0 min-w-0">
+            <Header />
+            <div className="grid grid-rows-[1fr_2fr] gap-4 min-h-0 min-w-0">
+              <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0"></div>
               </div>
-              <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-                <span className="text-lg font-medium text-slate-700"></span>
+              <div className="grid grid-cols-[1fr_2fr] gap-4 min-h-0 min-w-0">
+                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0"></div>
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative  overflow-x-auto custom-scroll shadow-3d min-w-0"></div>
               </div>
             </div>
-            <div className="bg-white rounded-lg p-6 flex items-center justify-center">
-              <span className="text-xl font-medium text-slate-700"></span>
-            </div>
           </div>
-          <div className="bg-blue-600 rounded-lg p-6 flex items-center justify-center">
-            <span className="text-lg font-medium text-white"></span>
-          </div>
+          <div className="relative flex flex-col bg-[#22222295] shadow-3d rounded-lg overflow-hidden min-w-0"></div>
         </div>
       </main>
 
@@ -178,8 +169,8 @@ export function SignUp() {
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[30px] border-[1px]
-                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
+              className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
               disabled={!(form.email.length && !errors.email)}
               onClick={() => {
                 setIsCodeInput(false);
@@ -202,8 +193,8 @@ export function SignUp() {
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[30px] border-[1px]
-                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1 disabled:hover:bg-gray-200"
+              className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
               disabled={!form.code.length}
               onClick={() => codeConfirm(form.code)}
             >
@@ -230,28 +221,40 @@ export function SignUp() {
             error={touched.birth ? errors.birth : ''}
             disabled={isFormInput}
           />
-          <div className='flex justify-end gap-1 mr-1'>
-            <div className={`${
-              passwordPower===0 ? "bg-[#e3e3e3]"
-                : passwordPower===1 ? "bg-[#d85a5a]"
-                : passwordPower===2 ? "bg-[#ffc848]"
-                : passwordPower===3 && "bg-[#72e46a]"
-              } w-5 h-[0.15rem]`}>
-            </div>
-            <div className={`${
-              passwordPower===0 ? "bg-[#e3e3e3]"
-                : passwordPower===1 ? "bg-[#e3e3e3]"
-                : passwordPower===2 ? "bg-[#ffc848]"
-                : passwordPower===3 && "bg-[#72e46a]"
-              } w-5 h-[0.15rem]`}>
-            </div>
-            <div className={`${
-              passwordPower===0 ? "bg-[#e3e3e3]"
-                : passwordPower===1 ? "bg-[#e3e3e3]"
-                : passwordPower===2 ? "bg-[#e3e3e3]"
-                : passwordPower===3 && "bg-[#72e46a]"
-              } w-5 h-[0.15rem]`}>
-            </div>
+          <div className="flex justify-end gap-1 mr-1">
+            <div
+              className={`${
+                passwordPower === 0
+                  ? 'bg-[#e3e3e3]'
+                  : passwordPower === 1
+                    ? 'bg-[#d85a5a]'
+                    : passwordPower === 2
+                      ? 'bg-[#ffc848]'
+                      : passwordPower === 3 && 'bg-[#72e46a]'
+              } w-5 h-[0.15rem]`}
+            ></div>
+            <div
+              className={`${
+                passwordPower === 0
+                  ? 'bg-[#e3e3e3]'
+                  : passwordPower === 1
+                    ? 'bg-[#e3e3e3]'
+                    : passwordPower === 2
+                      ? 'bg-[#ffc848]'
+                      : passwordPower === 3 && 'bg-[#72e46a]'
+              } w-5 h-[0.15rem]`}
+            ></div>
+            <div
+              className={`${
+                passwordPower === 0
+                  ? 'bg-[#e3e3e3]'
+                  : passwordPower === 1
+                    ? 'bg-[#e3e3e3]'
+                    : passwordPower === 2
+                      ? 'bg-[#e3e3e3]'
+                      : passwordPower === 3 && 'bg-[#72e46a]'
+              } w-5 h-[0.15rem]`}
+            ></div>
           </div>
           <LoginInputPassword
             label={'비밀번호'}
@@ -261,12 +264,12 @@ export function SignUp() {
               const next = e.target.value;
               setForm((password) => ({ ...password, password: next }));
               setTouched((t) => ({ ...t, password: true }));
-              checkPasswordPower(next)
+              checkPasswordPower(next);
             }}
             error={touched.password ? errors.password : ''}
             disabled={isFormInput}
           />
-          
+
           <LoginInputPassword
             label={'비밀번호 확인'}
             placeholder="비밀번호 입력 확인"
@@ -286,7 +289,7 @@ export function SignUp() {
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
             ></input>
-            <label htmlFor="cb" className="select-none text-[12px]">
+            <label htmlFor="cb" className="text-neutral-200 select-none text-[12px]">
               개인 정보 수집 이용 동의 (필수)
             </label>
             <button
@@ -309,8 +312,8 @@ export function SignUp() {
       </LoginModal>
 
       <LoginModal openModal={isConsent} footer={close()}>
-        <h1 className="text-[20px] pb-7 font-bold">{CONTENT.title}</h1>
-        <ul className="flex flex-col gap-[10px] text-[13px] list-disc ">
+        <h1 className="text-neutral-300 text-[20px] pb-7 font-bold">{CONTENT.title}</h1>
+        <ul className="text-neutral-300 flex flex-col gap-[10px] text-[13px] list-disc ">
           {CONTENT.items.map((item, index) => (
             <li key={index}>{item}</li>
           ))}
