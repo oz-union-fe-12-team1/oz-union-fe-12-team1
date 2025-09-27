@@ -122,7 +122,7 @@ export async function getWeather() {
   const res = await api.get('/weather');
   return res.data;
 }
-export function useWeather() {
+export function useWeather(lat, lon) {
   const {
     data: weatherData,
     isLoading: weatherIsLoading,
@@ -134,6 +134,26 @@ export function useWeather() {
     staleTime: 1000 * 60 * 1,
   });
   return { weatherData, weatherIsLoading, weatherIsError, ...rest };
+}
+// const { weatherData, weatherIsLoading, weatherIsError } = useWeather(37.5665, 126.9780);
+
+// !- - - - 5일 날씨 예보 조회 - - - -
+export async function getWeatherForecast() {
+  const res = await api.get('/weather/forecast');
+  return res.data;
+}
+export function useWeatherForecast() {
+  const {
+    data: weatherForecastData,
+    isLoading: weatherForecastIsLoading,
+    isError: weatherForecastIsError,
+    ...rest
+  } = useQuery({
+    queryKey: ['weatherForecast'],
+    queryFn: getWeatherForecast,
+    staleTime: 1000 * 60 * 30,
+  });
+  return { weatherForecastData, weatherForecastIsLoading, weatherForecastIsError, ...rest };
 }
 // const { weatherData, weatherIsLoading, weatherIsError } = useWeather();
 
