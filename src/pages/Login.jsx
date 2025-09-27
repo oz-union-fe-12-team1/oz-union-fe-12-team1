@@ -71,7 +71,7 @@ export function Login() {
         <div className="flex justify-between mt-4 text-[12px]">
           <div>
             처음이신가요?
-            <button className="text-[#3058bd] font-bold" onClick={() => navigate('/signup')}>
+            <button className="text-blue-500 font-bold" onClick={() => navigate('/signup')}>
               회원가입
             </button>
           </div>

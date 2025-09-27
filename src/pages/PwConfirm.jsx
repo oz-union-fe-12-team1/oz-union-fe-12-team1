@@ -78,7 +78,7 @@ export function PwConfirm() {
         </LoginButton>
         <div className="text-[12px]">
           비밀번호 생각났어요!
-          <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
+          <button onClick={() => navigate('/')} type="button" className="text-blue-500 font-bold">
             돌아가기
           </button>
         </div>
@@ -133,8 +133,8 @@ export function PwConfirm() {
             ></LoginInput>
             <button
               type="button"
-              className="flex justify-center items-center w-auto h-[30px] border-[1px]
-                rounded-[5px] p-[2px] border-gray-400 bg-gray-200 hover:bg-gray-400 pr-1 pl-1"
+              className="flex justify-center items-center w-auto h-[30px] border-[1px] text-black
+                rounded-[5px] p-[2px] border-gray-400 bg-[#eee] hover:bg-[#ddd] pr-1 pl-1"
               onClick={() => emailConfirm(form.email)}
             >
               이메일 확인

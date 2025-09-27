@@ -106,7 +106,7 @@ export function SignUp() {
         </LoginButton>
         <div className="text-[12px]">
           생각해보니 가입했었네!?
-          <button onClick={() => navigate('/')} type="button" className="text-[#3058bd] font-bold">
+          <button onClick={() => navigate('/')} type="button" className="text-blue-500 font-bold">
             돌아가기
           </button>
         </div>
