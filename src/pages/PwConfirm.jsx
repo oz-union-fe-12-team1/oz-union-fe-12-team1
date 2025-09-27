@@ -133,8 +133,9 @@ export function PwConfirm() {
             ></LoginInput>
             <button
               type="button"
-              className="flex justify-center items-center w-auto h-[30px] border-[1px] text-black
-                rounded-[5px] p-[2px] border-gray-400 bg-[#eee] hover:bg-[#ddd] pr-1 pl-1"
+              className="flex justify-center items-center w-auto h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
+              disabled={!form.email || errors.email}
               onClick={() => emailConfirm(form.email)}
             >
               이메일 확인

@@ -169,8 +169,8 @@ export function SignUp() {
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[30px] border-[1px] text-black
-                rounded-[5px] p-[2px] border-gray-400 bg-[#eee] hover:bg-[#ddd] pr-1 pl-1 disabled:hover:bg-gray-200"
+              className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
               disabled={!(form.email.length && !errors.email)}
               onClick={() => {
                 setIsCodeInput(false);
@@ -193,8 +193,8 @@ export function SignUp() {
             />
             <button
               type="button"
-              className="flex justify-center items-center h-[30px] border-[1px] text-black
-                rounded-[5px] p-[2px] border-gray-400 bg-[#eee] hover:bg-[#ddd] pr-1 pl-1 disabled:hover:bg-gray-200"
+              className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
+                rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
               disabled={!form.code.length}
               onClick={() => codeConfirm(form.code)}
             >

@@ -41,7 +41,7 @@ export function LoginInputPassword({
             {...rest}
           />
           <div onClick={() => setPasswordVisibility((prev) => !prev)}>
-            <Button size="mini" variant="mini">
+            <Button size="mini" variant="mini2">
               {passwordVisibility ? (
                 <IoEyeOffOutline style={{ color: 'black' }} size={24} />
               ) : (
