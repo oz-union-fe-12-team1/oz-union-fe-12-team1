@@ -1,17 +1,17 @@
-import { Navigate, Outlet } from 'react-router-dom';
-// import { useUser } from '../store/useUser';
-// import NyangLoading from '../components/NyangLoading';
+import { Navigate } from 'react-router-dom';
+import { useUser } from '../store/useUser';
+import LoadingView from '../components/LoadingView';
 
 export default function PrivateRoute({ children }) {
   // const token = localStorage.getItem('accessToken');
-  const token = 1;
-  return token ? children : <Navigate to="/login" />;
+  // const token = 1;
+  // return token ? children : <Navigate to="/login" />;
 
-  // const { user, isLoding } = useUser();
+  const { user, isLoading } = useUser();
 
-  // if (isLoding) {
-  //   return <NyangLoading />;
-  // }
+  if (isLoading) {
+    return <LoadingView />;
+  }
 
-  // return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/" replace />;
 }

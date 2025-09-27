@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { useUser } from '../store/useUser';
 // - - - - axios 인스턴스 생성 - - - -
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -11,7 +11,6 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   // 성공 응답은 아직 세션이 만료되지 않은 거니까 그냥 통과시킴.
-
   async (error) => {
     const originalRequest = error.config;
     // error.config: api요청 실패해서 에러 생겼을 때 그 객체 안에 사용된 요청관련 설정 정보. (url, method, headers, data 등) = 실패했던 원래 요청의 설정정보 객체
@@ -36,11 +35,12 @@ api.interceptors.response.use(
       } catch (refreshError) {
         try {
           await api.post('/auth/logout');
+          useUser.getState().clearUser();
         } catch (logoutError) {
           //로그아웃 api가 실패해도 리다이렉트 일단 계속 진행
           console.error('로그아웃 요청 실패:', logoutError);
         }
-        window.location.href = '/login';
+        window.location.href = '/';
         // 로그인 페이지로 보내기
         return Promise.reject(refreshError);
         //무조건 실패하는 Promise를 만들어냄.
