@@ -21,12 +21,11 @@ import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 
-
 export default function MainPage() {
   const { openAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
-
+  //버셀테스트
   const handleBackToMain = () => setPageMode('main');
 
   const CONTENT_MAP = {
@@ -78,26 +77,26 @@ export default function MainPage() {
                   {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
                 </div>
 
-              {/* 본문 윗부분 오 */}
-              <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0">
-                {openAdminDashboard ? <AdminInquiries/> : <TodayWeather />}
-              </div>
-            </div>
-            
-            {/* 본문 아랫부분 */}
-            <div className='grid grid-cols-[1fr_3fr] gap-4 min-h-0 min-w-0'>
-              {/* 본문 아랫부분 왼 */}
-              <div className='flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0'>
-                <ClockComponent />
+                {/* 본문 윗부분 오 */}
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0">
+                  {openAdminDashboard ? <AdminInquiries /> : <TodayWeather />}
+                </div>
               </div>
 
-              {/* 대시보드 = 본문 아랫부분 오 */}
-              <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative overflow-x-auto  custom-scroll w-full h-full shadow-3d min-w-0 ">
-                {CONTENT_MAP[pageMode]}
+              {/* 본문 아랫부분 */}
+              <div className="grid grid-cols-[1fr_3fr] gap-4 min-h-0 min-w-0">
+                {/* 본문 아랫부분 왼 */}
+                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0">
+                  <ClockComponent />
+                </div>
+
+                {/* 대시보드 = 본문 아랫부분 오 */}
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] p-6 relative overflow-x-auto  custom-scroll w-full h-full shadow-3d min-w-0 ">
+                  {CONTENT_MAP[pageMode]}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
           {/* 마이페이지 */}
           <div className="relative flex flex-col bg-[#22222295] shadow-3d rounded-lg overflow-hidden min-w-0">
@@ -113,35 +112,37 @@ export default function MainPage() {
                 />
               )}
 
-            {pageMode !== 'todo' && pageMode !== 'schedule' && (
-              <div className='flex flex-col justify-between h-full'>
-                <span className="text-lg font-medium text-white flex flex-col gap-4 w-full whitespace-nowrap ">
-                  <Button size="lgfree" variant="common" onClick={() => setPageMode('todo')}>
-                    Todo List
-                  </Button>
-                  <Button size="lgfree" variant="common" onClick={() => setPageMode('schedule')}>
-                    일정 리스트
-                  </Button>
-                  <Button size="lgfree" variant="common" onClick={() => setPageMode('five')}>
-                    5일 날씨
-                  </Button>
-                  <Button size="lgfree" variant="common" onClick={() => setPageMode('fortune')}>
-                    오늘의 운세
-                  </Button>
-                  <Button size="lgfree" variant="common" onClick={() => setPageMode('quiz')}>
-                    QUIZ
-                  </Button>
-                  <Button size="lgfree" variant="common">푸쉬 설정</Button>
-                </span>
-                <ScheduleSummary/>
-              </div>
-            )}
-            <MyPage/>
-            <AdminMypage/>
+              {pageMode !== 'todo' && pageMode !== 'schedule' && (
+                <div className="flex flex-col justify-between h-full">
+                  <span className="text-lg font-medium text-white flex flex-col gap-4 w-full whitespace-nowrap ">
+                    <Button size="lgfree" variant="common" onClick={() => setPageMode('todo')}>
+                      Todo List
+                    </Button>
+                    <Button size="lgfree" variant="common" onClick={() => setPageMode('schedule')}>
+                      일정 리스트
+                    </Button>
+                    <Button size="lgfree" variant="common" onClick={() => setPageMode('five')}>
+                      5일 날씨
+                    </Button>
+                    <Button size="lgfree" variant="common" onClick={() => setPageMode('fortune')}>
+                      오늘의 운세
+                    </Button>
+                    <Button size="lgfree" variant="common" onClick={() => setPageMode('quiz')}>
+                      QUIZ
+                    </Button>
+                    <Button size="lgfree" variant="common">
+                      푸쉬 설정
+                    </Button>
+                  </span>
+                  <ScheduleSummary />
+                </div>
+              )}
+              <MyPage />
+              <AdminMypage />
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-);
+      </main>
+    </div>
+  );
 }
