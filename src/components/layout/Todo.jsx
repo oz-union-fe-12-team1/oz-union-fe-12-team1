@@ -1,4 +1,4 @@
-import TodoList from "./TodoList";
+import TodoList from "./Todolist";
 import { useTodo } from "../../store/useTodo";
 
 export default function Todo({ setOpenTodo }) {
