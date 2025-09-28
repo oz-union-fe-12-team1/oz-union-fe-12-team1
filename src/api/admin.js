@@ -5,7 +5,6 @@ import { api } from './client';
 // 2. TanStack Query 훅
 // 3. 구조분해할당으로 데이터 꺼내오는 법
 
-const ADMIN_INQUIRIES = 'adminInquiries';
 const ADMIN_USERS = 'adminUsers';
 const USER_SEARCH = 'userSearch';
 
@@ -81,7 +80,7 @@ export function useUpdateUser() {
 // -- 이런 식으로 지어준 별칭을 가져와서 쓰면 됨, 별칭짓지 않은 ...rest에 담겨 있던 것들도 가져와서 쓸 수 있음.
 
 // <button onClick={() =>
-//    updateUserMutate({ userId: 5, payload: { is_active: false } })}
+//    updateUserMutate({ user_Id: 5, is_active: false  })}
 // > 수정 </button>
 // -- 이렇게 수정할 userId와 payload(내용)을 함수에 넣어서 실행시킴
 
@@ -110,75 +109,3 @@ export function useDeleteUser() {
 }
 // const { deleteUserMutate, deleteUserError } = useDeleteUser();
 // <button onClick={() => deleteUserMutate(user.id)}>삭제</button>
-
-// !- - - - 전체 문의 검색 - - - -
-export async function getAllInquiries() {
-  const res = await api.get('/admin/inquiries');
-  return res.data;
-}
-export function useAllInquiries() {
-  const {
-    data: allInquiriesData,
-    isLoading: allInquiriesIsLoading,
-    isError: allInquiriesIsError,
-    ...rest
-  } = useQuery({
-    queryKey: [ADMIN_INQUIRIES],
-    queryFn: getAllInquiries,
-  });
-  return { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError, ...rest };
-}
-//const { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError } = useAllInquiries();
-
-// !- - - - 문의 상태 변경 - - - -
-export async function updateInquiryStatus(id, payload) {
-  const res = await api.patch(`/admin/inquiries/${id}/status`, payload);
-  return res.data;
-}
-export function useUpdateInquiry() {
-  const queryClient = useQueryClient();
-  const {
-    mutate: updateInquiryMutate,
-    error: updateInquiryError,
-    ...rest
-  } = useMutation({
-    mutationFn: ({ id, payload }) => updateInquiryStatus(id, payload),
-    //얘는 updateUser와 달리 id와 payload를 받으니, 넘겨줄 때도 객체 형태로 id와 payload를 모두 넘겨줘야 함.
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ADMIN_INQUIRIES] });
-    },
-  });
-  return { updateInquiryMutate, updateInquiryError, ...rest };
-}
-// const { updateInquiryMutate, updateInquiryError } = useUpdateInquiry();
-// updateInquiryMutate({
-//   id: inquiryId,
-//   payload: { status: "in_progress" },
-// })
-
-// !- - - - 관리자 답변 등록 / 수정 - - - -
-export async function adminInquiriesReply(id, payload) {
-  const res = await api.post(`/admin/inquiries/${id}/reply`, payload);
-  return res.data;
-}
-export function useAdminInquiriesReply() {
-  const queryClient = useQueryClient();
-  const {
-    mutate: adminInquiriesReplyMutate,
-    error: adminInquiriesReplyError,
-    ...rest
-  } = useMutation({
-    mutationFn: ({ id, payload }) => adminInquiriesReply(id, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [ADMIN_INQUIRIES] });
-    },
-  });
-  return { adminInquiriesReplyMutate, adminInquiriesReplyError, ...rest };
-}
-// const { adminInquiriesMutate, adminInquiriesError } = useAdminInquiriesReply()
-// adminInquiriesMutate({
-//  "id": 3,
-//  "payload": {
-//      "admin_reply": "오류 수정"
-//    }
-//  })
