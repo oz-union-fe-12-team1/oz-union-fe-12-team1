@@ -71,9 +71,9 @@ export function SignUp() {
     return power;
   }, [form.password]);
 
-  const { registerUserMutate, registerUserError } = useRegisterUser();
+  const { registerUserMutate } = useRegisterUser();
   const { resendMutate } = useEmailSend();
-  const { verifyMutate, verifyError } = useVerify();
+  const { verifyMutate } = useVerify();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -126,7 +126,7 @@ export function SignUp() {
     //   setIsModalConfirm(true);
     // }
 
-    const payload = { emailCode };
+    const payload = { code: emailCode, email: form.email };
     verifyMutate(payload, {
       onSuccess: () => {
         alert('인증 성공~');

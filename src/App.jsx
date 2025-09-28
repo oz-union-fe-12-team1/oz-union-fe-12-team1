@@ -9,7 +9,6 @@ import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
 // import Admin from './components/Admin';
 import AdminMypage from './components/adminPage/AdminMypage';
-import Schedule from './components/layout/Schedule';
 import { useUser } from './store/useUser';
 import { useEffect } from 'react';
 import Clock from './components/Clock';
