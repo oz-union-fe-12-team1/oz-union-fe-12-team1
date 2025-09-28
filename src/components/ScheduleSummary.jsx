@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { conversationsData } from '../api/dummyData/dummySummary';
 // import { useQuery } from '@tanstack/react-query';
 
@@ -7,9 +7,12 @@ export default function ScheduleSummary() {
 
   const [page, setPage] = useState(0);
 
-  setTimeout(function () {
-    page === 0 ? setPage(1) : setPage(0);
-  }, 7000);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPage((prev) => (prev === 0 ? 1 : 0));
+    }, 7000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <>
