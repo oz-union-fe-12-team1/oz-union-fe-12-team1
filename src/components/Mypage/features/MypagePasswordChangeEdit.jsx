@@ -1,14 +1,9 @@
 import ModalPortal from '../common/ModalPortal';
 import Modal from '../../ui/Modal';
 import { useEffect, useMemo, useState } from 'react';
-import AskForm from './AskForm';
-import TicketToolbar from './TicketToolbar';
-import TicketCard from './TicketCard';
-
-import ContactTabBar from './ContactTabBar';
-import ContactBodyAsk from './ContactBodyAsk';
-import ContactBodyInbox from './ContactBodyInbox';
-import ContactBodyReply from './ContactBodyReply';
+import AskForm from '../Contact/AskForm';
+import TicketToolbar from '../Contact/TicketToolbar';
+import TicketCard from '../Contact/TicketCard';
 
 // YYYY-MM-DD HH:MM (Asia/Seoul)
 const fmt = new Intl.DateTimeFormat('sv-SE', {
