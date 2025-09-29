@@ -98,7 +98,7 @@ export default function MainPage() {
             </div>
           </div>
 
-          {/* 마이 페이지 */}
+          {/* 마이페이지 */}
           <div className="relative flex flex-col bg-[#22222295] shadow-3d rounded-lg overflow-hidden min-w-0">
             <div className="flex-1  p-6 min-h-0">
               {pageMode === 'todo' && <Todo setOpenTodo={handleBackToMain} />}
