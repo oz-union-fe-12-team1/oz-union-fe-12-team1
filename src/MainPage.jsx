@@ -14,12 +14,12 @@ import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
-import Header from './components/ui/header';
+import Header from './components/ui/Header';
 import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
-import { QuizComponent } from './components/quizPage/quiz';
+import { QuizComponent } from './components/quizPage/Quiz';
 
 export default function MainPage() {
   const { openAdminPage } = useOpenAdminPage();
