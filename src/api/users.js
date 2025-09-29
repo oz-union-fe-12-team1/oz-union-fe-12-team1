@@ -76,7 +76,7 @@ export function useDeleteMyAccount() {
 
 // !- - - - 위치 조회 - - - -
 export async function getMyLocation() {
-  const res = api.get('/users/me/location');
+  const res = await api.get('/users/me/location');
   return res.data;
 }
 export function useGetMyLocation() {
@@ -105,7 +105,7 @@ export function useUpdateMyLocation() {
     error: updateMyLocationError,
     ...rest
   } = useMutation({
-    queryFn: updateMyLocation,
+    mutationFn: updateMyLocation,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [MY_LOCATION] }),
   });
   return { updateMyLocationMutate, updateMyLocationError, ...rest };
