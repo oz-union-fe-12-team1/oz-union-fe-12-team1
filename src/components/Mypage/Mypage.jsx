@@ -90,7 +90,7 @@ export default function MyPage({ open, onClose }) {
     setExpandedId(null); // 펼친 카드 초기화
   }
   function handleLogout() {
-    openModal({ title: '로그아웃', message: '로그아웃(목업) 되었습니다.' });
+    openModal({ title: '로그아웃', message: '로그아웃 되었습니다.' });
   }
   function goMain() {
     setMode('main');
@@ -110,7 +110,7 @@ export default function MyPage({ open, onClose }) {
   function confirmLeave() {
     openModal({
       title: '탈퇴',
-      message: '탈퇴 처리(목업). 감사합니다.',
+      message: '탈퇴 처리. 감사합니다.',
       onConfirm: () => {
         setMe(null);
         setMode('main');

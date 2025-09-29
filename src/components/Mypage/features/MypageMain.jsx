@@ -34,7 +34,6 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
         <div className="flex items-center justify-between">
           <div>
             <div className="font-semibold">도움이 필요하신가요?</div>
-            <div className="text-sm text-neutral-300">고객센터로 문의하실 수 있어요.</div>
           </div>
           <button className="btn" type="button" onClick={handleContactClick}>
             고객센터
@@ -46,10 +45,7 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
       <div className="rounded-xl border border-white/10 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-semibold">프로필을 변경하고싶으신가요?</div>
-            <div className="text-sm text-neutral-300">
-              닉네임, 생년월일, 이미지 등을 수정할 수 있어요.
-            </div>
+            <div className="font-semibold">프로필 변경</div>
           </div>
           <button className="btn" type="button" onClick={handleEditClick}>
             회원정보 수정
@@ -61,10 +57,7 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
       <div className="rounded-xl border border-white/10 p-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-semibold">비밀번호를 변경하고싶으신가요?</div>
-            <div className="text-sm text-neutral-300">
-              현재 비밀번호와 새 비밀번호로 변경할 수 있어요.
-            </div>
+            <div className="font-semibold">비밀번호 변경</div>
           </div>
           <button className="btn" type="button" onClick={handlePasswordClick}>
             비밀번호 변경
