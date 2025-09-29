@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
-import Header from '../components/ui/header';
+import Header from '../components/ui/Header';
 
 const CONTENT = {
   title: '[필수] 개인정보 수집·이용 동의',
