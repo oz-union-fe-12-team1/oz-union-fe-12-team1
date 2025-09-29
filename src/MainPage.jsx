@@ -20,11 +20,13 @@ import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
+import { useOpenMyPage } from './store/useOpenMyPage';
 
 export default function MainPage() {
-  const { openAdminPage } = useOpenAdminPage();
+  const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
+  const { openMyPage, setOpenMyPage } = useOpenMyPage();
 
   const handleBackToMain = () => setPageMode('main');
 
@@ -137,8 +139,8 @@ export default function MainPage() {
                   <ScheduleSummary />
                 </div>
               )}
-              <MyPage />
-              <AdminMypage />
+              <MyPage open={openMyPage} onClose={() => setOpenMyPage(false)} />
+              <AdminMypage open={openAdminPage} onClose={() => setOpenAdminPage(false)} />
             </div>
           </div>
         </div>
