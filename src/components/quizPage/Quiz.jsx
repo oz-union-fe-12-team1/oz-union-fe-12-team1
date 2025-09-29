@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { quizData } from '../../api/dummyData/dummyQuiz';
 import { AiFillCaretLeft } from 'react-icons/ai';
 import { AiFillCaretRight } from 'react-icons/ai';
+import { useQuiz } from '../../api/external';
 
 export function Quiz() {
   const [page, setPage] = useState(0);
   const [selectOption, setSelectOption] = useState();
-  const data = quizData.data[page];
   const [message, setMessage] = useState('과연 정답은?');
+
+  const { quizData, quizIsLoading, quizIsError } = useQuiz();
+  if (quizIsLoading) return <div>로딩 중</div>;
+  if (quizIsError) return <div>에러</div>;
+  const data = quizData.data;
+  const totalQuiz = quizData.data.length;
 
   const handleBackgroundColor = (option) => {
     if (selectOption === undefined) return 'bg-[#2d5b81] hover:bg-[#1b4567]';
@@ -67,12 +72,12 @@ export function Quiz() {
 
         <button
           onClick={() => {
-            quizData.data.length > page && setPage((prev) => prev + 1);
+            totalQuiz - 1 > page && setPage((prev) => prev + 1);
             setSelectOption(undefined);
             setMessage('과연 정답은?');
           }}
-          disabled={page === quizData.data.length - 1}
-          className={`${page === quizData.data.length - 1 && 'opacity-20'} lg:p-10`}
+          disabled={page === totalQuiz - 1}
+          className={`${page === totalQuiz - 1 && 'opacity-20'} lg:p-10`}
         >
           <AiFillCaretRight size={40} />
         </button>

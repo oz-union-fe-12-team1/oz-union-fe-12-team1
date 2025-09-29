@@ -61,7 +61,7 @@ export default function MainPage() {
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
-      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden">
+      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden overflow-x-auto">
         {/* 본문 vs 마이페이지 */}
         <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
           {/* 헤더 vs 본문*/}
@@ -78,7 +78,7 @@ export default function MainPage() {
                 </div>
 
                 {/* 본문 윗부분 오 */}
-                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0">
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0 custom-scroll">
                   {openAdminDashboard ? <AdminInquiries /> : <TodayWeather />}
                 </div>
               </div>
