@@ -1,9 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from './client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from './client';
-
 // 덩어리별 코드 순서(목차)
 // 1. api 요청 함수
 // 2. TanStack Query 훅
