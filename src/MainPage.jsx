@@ -10,7 +10,6 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
-// import { Quiz } from './components/quizPage/quiz';
 import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
