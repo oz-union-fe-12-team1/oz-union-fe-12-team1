@@ -123,22 +123,23 @@ export function useDeleteSchedule() {
 // const { deleteScheduleMutate, deleteScheduleError } = useDeleteSchedule();
 // deleteScheduleMutate(id);
 
-//  !- - - - 일정 연계 할 일 조회 - - - -
-export async function getScheduleTodos(id) {
-  const res = await api.get(`/schedules/${id}/todos`);
-  return res.data;
-}
-export function useScheduleTodos(id) {
-  const {
-    data: scheduleTodosData,
-    isLoading: scheduleTodosIsLoading,
-    isError: scheduleTodosIsError,
-    ...rest
-  } = useQuery({
-    queryKey: [SCHEDULES, id, 'todos'],
-    queryFn: () => getScheduleTodos(id),
-    enabled: !!id,
-  });
-  return { scheduleTodosData, scheduleTodosIsLoading, scheduleTodosIsError, ...rest };
-}
-// const { scheduleTodosData, scheduleTodosIsLoading, scheduleTodosIsError } = useScheduleTodos(id);
+//? 삭제됨 - - - - 일정 연계 할 일 조회 - - - -
+// export async function getScheduleTodos(id) {
+//   const res = await api.get(`/schedules/${id}/todos`);
+//   return res.data;
+// }
+// export function useScheduleTodos(id) {
+//   const {
+//     data: scheduleTodosData,
+//     isLoading: scheduleTodosIsLoading,
+//     isError: scheduleTodosIsError,
+//     ...rest
+//   } = useQuery({
+//     queryKey: [SCHEDULES, id, 'todos'],
+//     queryFn: () => getScheduleTodos(id),
+//     enabled: !!id,
+//   });
+//   return { scheduleTodosData, scheduleTodosIsLoading, scheduleTodosIsError, ...rest };
+// }
+// const { scheduleTodosData, scheduleTodosIsLoading, scheduleTodosIsError } = useScheduleTodos();
+// scheduleTodosData(id)
