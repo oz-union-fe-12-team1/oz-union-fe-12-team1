@@ -98,10 +98,15 @@ export default function ScheduleForm({
         <div className="flex gap-2">
           <button
             type="submit"
-            className="flex-1 rounded-xl bg-gray-800 hover:bg-black py-2 font-semibold text-white"
+            disabled={!form.date || !form.title}
+            className={`flex-1 rounded-xl py-2 font-semibold text-white 
+              ${!form.date || !form.title 
+                ? "bg-gray-400 cursor-not-allowed" 
+                : "bg-gray-800 hover:bg-black"}`}
           >
             {isEditing ? "수정완료" : "등록"}
           </button>
+
           {isEditing && (
             <button
               type="button"
