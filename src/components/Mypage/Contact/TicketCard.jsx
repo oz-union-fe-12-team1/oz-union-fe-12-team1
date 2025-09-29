@@ -73,13 +73,13 @@ export default function TicketCard({
             // 편집 모드
             if (isEditing) {
               return (
-                <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
+                <form className="flex flex-col gap-3" onSubmit={(event) => event.preventDefault()}>
                   <div className="space-y-1">
                     <label className="text-xs">제목</label>
                     <input
                       className="input"
                       value={editTitle}
-                      onChange={(e) => setEditTitle(e.target.value)}
+                      onChange={(event) => setEditTitle(event.target.value)}
                       placeholder="제목을 입력하세요."
                     />
                   </div>
@@ -88,7 +88,7 @@ export default function TicketCard({
                     <textarea
                       className="input min-h-[8rem]"
                       value={editBody}
-                      onChange={(e) => setEditBody(e.target.value)}
+                      onChange={(event) => setEditBody(event.target.value)}
                       placeholder="문의 내용을 입력하세요."
                     />
                   </div>
@@ -135,11 +135,14 @@ export default function TicketCard({
                         className="input min-h-[7rem]"
                         placeholder={replyPlaceholder}
                         value={replyValue}
-                        onChange={(e) =>
-                          setReplyDrafts((prev) => ({ ...prev, [ticket.id]: e.target.value ?? '' }))
+                        onChange={(event) =>
+                          setReplyDrafts((prev) => ({
+                            ...prev,
+                            [ticket.id]: event.target.value ?? '',
+                          }))
                         }
-                        onKeyDown={(e) => {
-                          if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                        onKeyDown={(event) => {
+                          if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
                             const trimmed = (replyDrafts[ticket.id] ?? '').trim();
                             if (trimmed) submitReply(ticket);
                           }
