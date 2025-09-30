@@ -26,8 +26,8 @@ export function PwConfirm() {
   const [isInput, setIsInput] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
 
-  // const { passwordResetMutate, passwordResetError } = usePasswordReset();
-  // const { confirmPasswordResetMutate, confirmPasswordResetError } = useConfirmPasswordReset();
+  const { passwordResetMutate, passwordResetError } = usePasswordReset();
+  const { confirmPasswordResetMutate, confirmPasswordResetError } = useConfirmPasswordReset();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,47 +37,50 @@ export function PwConfirm() {
       confirm: true,
     });
 
-    // const payload = {
-    //   email: form.email,
-    //   new_password: form.password,
-    //   new_password_check: form.confirm,
-    // };
-    // confirmPasswordResetMutate(payload, {
-    //   onSuccess: () => alert('성공띠'),
-    //   onError: () => alert('실패띠...'),
-    // });
+    const payload = {
+      email: form.email,
+      new_password: form.password,
+      new_password_check: form.confirm,
+    };
+    confirmPasswordResetMutate(payload, {
+      onSuccess: () => alert('성공띠'),
+      onError: () => alert('실패띠...'),
+    });
   }
 
   const errors = newError(form);
 
-  const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
+  // const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
 
   function emailConfirm(email) {
-    const value = String(email || '')
-      .trim()
-      .toLowerCase();
-    if (!value) {
-      setPopupMessage('이메일을 입력하세요.');
-      return;
-    }
-    const confirm = users.some((user) => (user.email || '').toLowerCase() === value);
-    if (confirm) {
-      setPopupMessage('확인되었습니다.');
-      setIsInput(true);
-    } else {
-      setPopupMessage('존재하지 않는 이메일입니다.');
-    }
-    setIsPopup(true);
-
-    // const payload = form.email;
-    // if (!payload) {
+    // const value = String(email || '')
+    //   .trim()
+    //   .toLowerCase();
+    // if (!value) {
     //   setPopupMessage('이메일을 입력하세요.');
     //   return;
     // }
-    // passwordResetMutate(payload, {
-    //   onSuccess: () => alert('확인되었습니다.'),
-    //   onError: () => alert('존재하지않는 이메일 입니다.'),
-    // });
+    // const confirm = users.some((user) => (user.email || '').toLowerCase() === value);
+    // if (confirm) {
+    //   setPopupMessage('확인되었습니다.');
+    //   setIsInput(true);
+    // } else {
+    //   setPopupMessage('존재하지 않는 이메일입니다.');
+    // }
+    // setIsPopup(true);
+
+    const payload = form.email;
+    if (!payload) {
+      setPopupMessage('이메일을 입력하세요.');
+      return;
+    }
+    passwordResetMutate(payload, {
+      onSuccess: () => {
+        alert('확인되었습니다.');
+        setIsInput(true);
+      },
+      onError: () => alert('존재하지않는 이메일 입니다.'),
+    });
   }
 
   const forms = form.password.length && form.confirm.length;

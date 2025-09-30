@@ -107,7 +107,6 @@ export function SignUp() {
     // const payload = { email: form.email };
     resendMutate(form.email, {
       onSuccess: () => {
-        alert('보냈당');
         setIsEmailInput(true);
         setIsCodeInput(false);
         setIsSendModal(true);
@@ -216,7 +215,7 @@ export function SignUp() {
               type="button"
               className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
                 rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
-              disabled={!(form.email.length && !errors.email)}
+              disabled={!(form.email.length && !errors.email) || isEmailInput}
               onClick={() => emailSend()}
             >
               인증번호 발송
