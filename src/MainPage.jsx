@@ -12,7 +12,7 @@ import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
 import { Quiz } from './components/quizPage/Quiz';
 import { adminData } from './components/adminPage/adminData';
-import { AdminNew } from './components/adminPage/AdminNew';
+// import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
 import Header from './components/ui/Header';
@@ -21,6 +21,7 @@ import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 import { useOpenMyPage } from './store/useOpenMypage';
+import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -76,7 +77,7 @@ export default function MainPage() {
               <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 윗부분 왼 */}
                 <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0">
-                  {openAdminDashboard ? <AdminNew data={adminData} /> : <News />}
+                  {openAdminDashboard ? <AdminNewUpdate data={adminData} /> : <News />}
                 </div>
 
                 {/* 본문 윗부분 오 */}
