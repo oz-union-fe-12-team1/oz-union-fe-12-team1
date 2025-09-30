@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import AlertModal from './AlertModal';
+import Modal from '../../ui/Modal';
 
 export default function AskForm({ onCancel, onSubmit }) {
   const [title, setTitle] = useState('');
@@ -62,13 +62,18 @@ export default function AskForm({ onCancel, onSubmit }) {
         </button>
       </div>
 
-      <AlertModal
-        open={alert.open}
-        title={alert.title}
-        onClose={() => setAlert((a) => ({ ...a, open: false }))}
+      <Modal
+        openModal={open}
+        title="알림"
+        onClose={close}
+        footer={
+          <button type="button" className="btn" onClick={close}>
+            확인
+          </button>
+        }
       >
         <p className="mt-2 text-sm text-neutral-200">{alert.message}</p>
-      </AlertModal>
+      </Modal>
     </form>
   );
 }

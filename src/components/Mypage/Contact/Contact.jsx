@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import ContactModal from '../Contact/ContactModal';
 import AskForm from '../Contact/AskForm';
-import AlertModal from '../Contact/AlertModal';
-
+import Modal from '../../ui/Modal';
 import TicketToolbar from '../Contact/TicketToolbar';
 
 import useTabsConfig from './useTabsConfig';
@@ -152,13 +151,22 @@ export default function Contact({
 
       {tab === 'reply' && isAdmin && renderTicketList(true)}
 
-      <AlertModal
-        open={alert.open}
-        title={alert.title}
+      <Modal
+        openModal={alert.open}
+        title={alert.title || '알림'}
         onClose={() => setAlert((a) => ({ ...a, open: false }))}
+        footer={
+          <button
+            type="button"
+            className="btn"
+            onClick={() => setAlert((a) => ({ ...a, open: false }))}
+          >
+            확인
+          </button>
+        }
       >
         <p className="mt-2 text-sm text-white">{alert.message}</p>
-      </AlertModal>
+      </Modal>
     </ContactModal>
   );
 }
