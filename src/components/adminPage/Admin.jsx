@@ -50,7 +50,7 @@ export default function Admin() {
           </div>
         </div>
         <div className="w-full ">
-          <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center">
+          <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center overflow-x-auto min-w-[800px]">
             <table className="rounded-lg overflow-hidden w-full border ">
               <thead>
                 <tr className="bg-[#222222]">

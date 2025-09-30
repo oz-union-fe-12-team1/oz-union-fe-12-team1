@@ -44,13 +44,14 @@ export function useQuiz() {
     data: quizData,
     isLoading: quizIsLoading,
     isError: quizIsError,
+    refetch,
     ...rest
   } = useQuery({
     queryKey: [QUIZ],
     queryFn: getQuiz,
     //얘는 매번 랜덤으로 새로 문제 뽑아오게 staleTime: 0 기본값으로 두었음.
   });
-  return { quizData, quizIsLoading, quizIsError, ...rest };
+  return { quizData, quizIsLoading, quizIsError, refetch, ...rest };
 }
 // const { quizData, quizIsLoading, quizIsError } = useQuiz();
 
