@@ -8,12 +8,12 @@ export default function AskForm({ onCancel, onSubmit }) {
 
   // 알림 모달
   const [alert, setAlert] = useState({ open: false, title: '알림', message: '' });
-  const showInfo = (message, title = '알림') => setAlert({ open: true, title, message });
+  const closeAlert = () => setAlert((prev) => ({ ...prev, open: false }));
 
   const submit = (e) => {
     e.preventDefault();
     if (!title.trim() || !body.trim()) {
-      showInfo('제목과 내용을 입력해 주세요.');
+      setAlert({ open: true, title: '알림', message: '제목과 내용을 입력해 주세요.' });
       return;
     }
     onSubmit({ title: title.trim(), body: body.trim() });
@@ -63,11 +63,11 @@ export default function AskForm({ onCancel, onSubmit }) {
       </div>
 
       <Modal
-        openModal={open}
+        openModal={alert.open}
         title="알림"
-        onClose={close}
+        onClose={closeAlert}
         footer={
-          <button type="button" className="btn" onClick={close}>
+          <button type="button" className="btn" onClick={closeAlert}>
             확인
           </button>
         }
