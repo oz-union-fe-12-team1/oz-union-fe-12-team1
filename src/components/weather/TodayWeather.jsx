@@ -1,4 +1,4 @@
-import { todayWeatherDummy } from '../../api/dummyWeather';
+import { todayWeatherDummy } from '../../api/dummyData/dummyWeather';
 
 export default function TodayWeather() {
   const d = todayWeatherDummy;
