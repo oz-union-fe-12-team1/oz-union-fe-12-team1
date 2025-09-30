@@ -18,6 +18,8 @@ export default function Admin() {
 
   const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
 
+  const tableHead = ['이름', '접속여부', '관리자', '이름', '이메일', '가입일시', '계정차단'];
+
   return (
     <>
       <div className="flex flex-col gap-3">
@@ -54,20 +56,16 @@ export default function Admin() {
             <table className="rounded-lg overflow-hidden w-full border ">
               <thead>
                 <tr className="bg-[#222222]">
-                  <th className="border border-table p-2 text-center">ID</th>
-                  <th className="border border-table p-2 text-center">접속여부</th>
-                  <th className="border border-table p-2 text-center">관리자</th>
-                  <th className="border border-table p-2 text-center">이름</th>
-                  <th className="border border-table p-2 text-center">이메일</th>
-                  <th className="border border-table p-2 text-center">가입일시</th>
-                  <th className="border border-table p-2 text-center">계정차단</th>
+                  {tableHead.map((name) => (
+                    <th className="border border-table p-2 text-center">{name}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {userSearchIsLoading ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-4 text-gray-500">
-                      로딩 중입니다.
+                    <td colSpan={tableHead.length} className="text-center py-4 text-gray-500">
+                      ...
                     </td>
                   </tr>
                 ) : userSearchIsError ? (
