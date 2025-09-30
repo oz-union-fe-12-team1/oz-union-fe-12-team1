@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
-import Header from '../components/ui/header';
+import Header from '../components/ui/Header';
 
 export function PwConfirm() {
   const navigate = useNavigate();

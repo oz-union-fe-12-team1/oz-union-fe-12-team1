@@ -20,7 +20,7 @@ export default function Button({ children, variant = '', size = 'sm', disabled =
     lg: 'px-6 py-3 text-lg rounded-[0.7rem] w-full min-w-40',
     //w-40
     mini: 'h-[30px] w-[30px] p-1 rounded-r-[0.3rem] border-y border-r border-gray-400',
-    lgfree: 'px-6 py-3 text-lg rounded-[0.7rem] w-full',
+    lgfree: 'px-6 py-3 text-lg rounded-[0.7rem] w-full whitespace-nowrap',
     //w-40
   };
 

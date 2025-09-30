@@ -47,7 +47,7 @@ export default function AdminMypage() {
           </div>
 
           <Button
-            size="md"
+            size="lgfree"
             variant="common"
             onClick={() => {
               setOpenAdminDashboard(!openAdminDashboard);
@@ -62,7 +62,7 @@ export default function AdminMypage() {
           </Button>
 
           <Button
-            size="md"
+            size="lgfree"
             variant="common"
             onClick={() => {
               setContactTab('reply'); // 관리자 전용 탭으로 진입
