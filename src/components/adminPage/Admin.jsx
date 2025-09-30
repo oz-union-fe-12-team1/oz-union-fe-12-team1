@@ -56,7 +56,7 @@ export default function Admin() {
         </div>
         <div className="w-full ">
           <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center overflow-x-auto ">
-            <table className="rounded-lg overflow-hidden w-full border ">
+            <table className="rounded-lg overflow-auto w-full border ">
               <thead>
                 <tr className="bg-[#222222]">
                   {tableHead.map((name) => (
