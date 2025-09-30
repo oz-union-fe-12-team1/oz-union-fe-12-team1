@@ -20,7 +20,7 @@ import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
-import { useOpenMyPage } from './store/useOpenMyPage';
+import { useOpenMyPage } from './store/useOpenMypage';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
