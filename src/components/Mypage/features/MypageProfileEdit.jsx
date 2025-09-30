@@ -4,6 +4,8 @@ import EditBirthdateField from './EditBirthdateField';
 import EditProfileImageField from './EditProfileImageField';
 // import ApplyAllRow from './ApplyAllRow';
 import { updateMeMock } from '../../../mockData';
+import { useUser } from '../../../store/useUser';
+import { useLogout } from '../../../api/auth';
 
 export default function MypageProfileEdit({ me, onChange, onLogout, onLeave, onNotify }) {
   const nameRef = useRef(null);
@@ -26,6 +28,20 @@ export default function MypageProfileEdit({ me, onChange, onLogout, onLeave, onN
       nameRef.current.focus();
     }
   }, []);
+
+  const { clearUser } = useUser();
+  const { logoutMutate } = useLogout();
+
+  const handleLogout = () => {
+    logoutMutate(undefined, {
+      onSuccess: () => {
+        clearUser();
+      },
+      onError: () => {
+        alert('오류');
+      },
+    });
+  };
 
   async function safeUpdate(payload, okMsg) {
     setSavingProfile(true);
@@ -81,7 +97,7 @@ export default function MypageProfileEdit({ me, onChange, onLogout, onLeave, onN
           회원탈퇴
         </button>
         <div className="flex items-center gap-2">
-          <button className="btn" onClick={onLogout} type="button">
+          <button className="btn" onClick={() => handleLogout()} type="button">
             로그아웃
           </button>
         </div>

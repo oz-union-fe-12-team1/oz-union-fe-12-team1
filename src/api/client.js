@@ -40,7 +40,7 @@ api.interceptors.response.use(
           //로그아웃 api가 실패해도 리다이렉트 일단 계속 진행
           console.error('로그아웃 요청 실패:', logoutError);
         }
-        window.location.href = '/';
+        // window.location.href = '/';
         // 로그인 페이지로 보내기
         return Promise.reject(refreshError);
         //무조건 실패하는 Promise를 만들어냄.

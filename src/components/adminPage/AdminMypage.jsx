@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useOpenAdminPage } from '../../store/useOpenAdminPage';
 import PinkCard from '../Mypage/common/PinkCard';
 import Button from '../ui/Button';
@@ -7,12 +7,29 @@ import Contact from '../Mypage/Contact/Contact';
 import { useState } from 'react';
 import { useTicketsStore } from '../../store/useTicketsStore';
 import { useMainPage } from '../../store/useMainPage';
+import { useUser } from '../../store/useUser';
+import { useLogout } from '../../api/auth';
+import { UndoIcon } from 'lucide-react';
 
 export default function AdminMypage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard, setOpenAdminDashboard } = useOpenAdminDashboard();
 
-  const navigate = useNavigate();
+  const { clearUser } = useUser();
+  const { logoutMutate } = useLogout();
+
+  const handleLogout = () => {
+    logoutMutate(undefined, {
+      onSuccess: () => {
+        clearUser();
+      },
+      onError: () => {
+        alert('오류');
+      },
+    });
+  };
+
+  // const navigate = useNavigate();
 
   const [contactOpen, setContactOpen] = useState(false);
   const [contactTab, setContactTab] = useState('reply');
@@ -76,9 +93,10 @@ export default function AdminMypage() {
         <button
           className="hover:underline"
           onClick={() => {
+            handleLogout();
             // localStorage.removeItem('accessToken');
-            setOpenAdminPage(false);
-            navigate('/');
+            // setOpenAdminPage(false);
+            // navigate('/');
             // 나중에 로그인 기능 생기면.. 로그아웃 했을 때 토큰이 없으면 "/"으로 가게 될 거라서 그냥 토큰 삭제만 하면 됨.
           }}
         >
