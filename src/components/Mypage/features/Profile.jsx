@@ -6,7 +6,7 @@ export default function Profile({ username, email, birthdate, image }) {
   const img = image || '/images/nyangbiseo-sunglasses.png';
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
       <img
         src={img}
         alt="profile"

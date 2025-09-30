@@ -8,7 +8,7 @@ export default function EditNicknameField({ inputRef, value, onChangeValue, onAp
       <div className="flex gap-2">
         <input
           ref={inputRef}
-          className="input"
+          className="input flex-1 min-w-0"
           value={value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

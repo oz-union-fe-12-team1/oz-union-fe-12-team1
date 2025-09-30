@@ -47,7 +47,7 @@ export default function MypageProfileEdit({ me, onChange, onLogout, onLeave, onN
   //   safeUpdate({ username, birthdate, profile_image: profileImage }, '프로필이 적용되었습니다.');
 
   return (
-    <div className="space-y-6 text-white">
+    <div className="space-y-2 text-white">
       <EditProfileImageField
         value={profileImage}
         onChangeValue={setProfileImage}

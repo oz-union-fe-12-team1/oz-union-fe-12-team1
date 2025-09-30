@@ -20,19 +20,16 @@ export default function EditProfileImageField({
     <div className="rounded-xl border border-white/10 p-4 space-y-2">
       <Label>프로필 이미지</Label>
 
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         <input
-          className="input"
+          className="input flex-1 min-w-0"
           value={value}
           placeholder="https://..."
           onChange={(e) => onChangeValue(e.target.value)}
         />
-        <button className="btn" onClick={onApply} disabled={saving}>
-          적용
-        </button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex justify-end gap-2">
         <input
           id="profile-file"
           type="file"
@@ -43,6 +40,10 @@ export default function EditProfileImageField({
         <label htmlFor="profile-file" className="btn cursor-pointer">
           파일선택
         </label>
+
+        <button className="btn" onClick={onApply} disabled={saving}>
+          적용
+        </button>
       </div>
     </div>
   );
