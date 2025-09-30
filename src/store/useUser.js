@@ -11,14 +11,16 @@ export const useUser = create((set) => ({
   setUser: (user) => set({ user }),
 
   getUser: async () => {
+    set({ isLoading: true });
     try {
       const userProfile = await queryClient.fetchQuery({
         queryKey: [myProfile],
         queryFn: getMyProfile,
       });
-      set({ user: userProfile, isLoading: true });
+      set({ user: userProfile, isLoading: false });
     } catch (error) {
-      set({ user: null, isLoading: false });
+      console.error(error);
+      set({ user: null, isLoading: true });
     }
   },
 
