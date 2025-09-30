@@ -51,26 +51,8 @@ export function PwConfirm() {
 
   const errors = newError(form);
 
-  // const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
-
   function emailConfirm() {
-    // const value = String(email || '')
-    //   .trim()
-    //   .toLowerCase();
-    // if (!value) {
-    //   setPopupMessage('이메일을 입력하세요.');
-    //   return;
-    // }
-    // const confirm = users.some((user) => (user.email || '').toLowerCase() === value);
-    // if (confirm) {
-    //   setPopupMessage('확인되었습니다.');
-    //   setIsInput(true);
-    // } else {
-    //   setPopupMessage('존재하지 않는 이메일입니다.');
-    // }
-    // setIsPopup(true);
-
-    const payload = form.email;
+    const payload = { email: form.email };
     if (!payload) {
       setPopupMessage('이메일을 입력하세요.');
       return;

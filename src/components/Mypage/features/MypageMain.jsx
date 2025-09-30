@@ -3,9 +3,24 @@ import { useEffect, useRef } from 'react';
 import { VscAccount } from 'react-icons/vsc';
 import { BiLockAlt } from 'react-icons/bi';
 import { MdOutlineMailOutline, MdChevronRight } from 'react-icons/md';
+import { useUser } from '../../../store/useUser';
+import { useLogout } from '../../../api/auth';
 
 export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout }) {
   const topRef = useRef(null);
+  const { clearUser } = useUser();
+  const { logoutMutate } = useLogout();
+
+  const handleLogout = () => {
+    logoutMutate(undefined, {
+      onSuccess: () => {
+        clearUser();
+      },
+      onError: () => {
+        alert('오류');
+      },
+    });
+  };
 
   useEffect(() => {
     if (topRef.current && topRef.current.scrollIntoView) {
@@ -25,9 +40,6 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
   }
   function handlePasswordClick() {
     if (typeof onPassword === 'function') onPassword();
-  }
-  function handleLogoutClick() {
-    if (typeof onLogout === 'function') onLogout();
   }
 
   const itemCls =
@@ -74,7 +86,7 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
 
       {/* 로그아웃 유지 */}
       <div className="flex items-center justify-end">
-        <button className="btn text-xs" type="button" onClick={handleLogoutClick}>
+        <button className="btn text-xs" type="button" onClick={() => handleLogout()}>
           로그아웃
         </button>
       </div>
