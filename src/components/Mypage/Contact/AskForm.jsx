@@ -1,4 +1,3 @@
-// src/components/Mypage/Contact/AskForm.jsx
 import { useRef, useState } from 'react';
 import Modal from '../../ui/Modal';
 
@@ -7,24 +6,17 @@ export default function AskForm({ onCancel, onSubmit }) {
   const [body, setBody] = useState('');
   const bodyRef = useRef(null);
 
-  // 알림 모달 상태
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [infoTitle, setInfoTitle] = useState('알림');
-  const [infoMessage, setInfoMessage] = useState('');
-  const showInfo = (message, title = '알림') => {
-    setInfoTitle(title);
-    setInfoMessage(message);
-    setInfoOpen(true);
-  };
-  const closeInfo = () => setInfoOpen(false);
+  // 알림 모달
+  const [alert, setAlert] = useState({ open: false, title: '알림', message: '' });
+  const showInfo = (message, title = '알림') => setAlert({ open: true, title, message });
 
   const submit = (e) => {
-    e.preventDefault(); // 새로고침 막기
+    e.preventDefault();
     if (!title.trim() || !body.trim()) {
       showInfo('제목과 내용을 입력해 주세요.');
       return;
     }
-    onSubmit({ title: title.trim(), body: body.trim() }); //앞뒤 공백처리
+    onSubmit({ title: title.trim(), body: body.trim() });
     setTitle('');
     setBody('');
   };
@@ -40,7 +32,6 @@ export default function AskForm({ onCancel, onSubmit }) {
           onChange={(e) => setTitle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              // 제목에서 엔터 금지 + 본문으로 이동(선택)
               e.preventDefault();
               bodyRef.current?.focus();
             }
@@ -57,10 +48,7 @@ export default function AskForm({ onCancel, onSubmit }) {
           value={body}
           onChange={(e) => setBody(e.target.value)}
           onKeyDown={(e) => {
-            // 본문에서 Ctrl/Cmd + Enter 로만 제출되게
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-              submit(e);
-            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') submit(e);
           }}
         />
       </div>
@@ -73,17 +61,18 @@ export default function AskForm({ onCancel, onSubmit }) {
           보내기
         </button>
       </div>
+
       <Modal
-        openModal={infoOpen}
-        title={infoTitle}
-        onClose={closeInfo}
+        openModal={open}
+        title="알림"
+        onClose={close}
         footer={
-          <button type="button" className="btn" onClick={closeInfo}>
+          <button type="button" className="btn" onClick={close}>
             확인
           </button>
         }
       >
-        <p className="mt-2 text-sm text-neutral-200">{infoMessage}</p>
+        <p className="mt-2 text-sm text-neutral-200">{alert.message}</p>
       </Modal>
     </form>
   );
