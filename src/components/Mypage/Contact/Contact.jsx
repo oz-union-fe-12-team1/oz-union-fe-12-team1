@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import ContactModal from '../Contact/ContactModal';
 import AskForm from '../Contact/AskForm';
 import AlertModal from '../Contact/AlertModal';
-import TicketList from '../Contact/TicketList';
+
 import TicketToolbar from '../Contact/TicketToolbar';
 
 import useTabsConfig from './useTabsConfig';
 import useTicketFilter from './useTicketFilter';
 import useAutoTabEffects from './useAutoTabEffects';
 import useTicketActions from './useTicketActions';
+import TicketCard from './TicketCard';
 
 export default function Contact({
   open,
@@ -84,7 +85,6 @@ export default function Contact({
     applySearch('');
   };
 
-  // 문의 등록 후: inbox 전환 + 새 항목 자동 펼침
   const handleSubmitAsk = ({ title, body }) => {
     const newTicket = submitAsk({ title, body });
     setTab('inbox');
@@ -103,6 +103,38 @@ export default function Contact({
     />
   );
 
+  const renderTicketList = (isReplyTab) => (
+    <div className="flex flex-col">
+      {renderToolbar()}
+      {filteredTickets.length === 0 ? (
+        <div className="text-sm text-neutral-400">해당 조건의 문의가 없습니다.</div>
+      ) : (
+        <div className="space-y-2">
+          {filteredTickets.map((ticket) => (
+            <TicketCard
+              key={ticket.id}
+              ticket={ticket}
+              isReplyTab={isReplyTab}
+              expandedId={expandedId}
+              setExpandedId={setExpandedId}
+              editingId={isReplyTab ? null : editingId}
+              editTitle={isReplyTab ? '' : editTitle}
+              editBody={isReplyTab ? '' : editBody}
+              startEdit={isReplyTab ? () => {} : startEdit}
+              cancelEdit={isReplyTab ? () => {} : cancelEdit}
+              setEditTitle={isReplyTab ? () => {} : setEditTitle}
+              setEditBody={isReplyTab ? () => {} : setEditBody}
+              saveEdit={isReplyTab ? () => {} : saveEdit}
+              replyDrafts={replyDrafts}
+              setReplyDrafts={setReplyDrafts}
+              submitReply={submitReply}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <ContactModal
       open={open}
@@ -116,50 +148,9 @@ export default function Contact({
         <AskForm onCancel={handleClose} onSubmit={handleSubmitAsk} />
       )}
 
-      {tab === 'inbox' && (
-        <div className="flex flex-col">
-          {renderToolbar()}
-          <TicketList
-            items={filteredTickets}
-            isReplyTab={false}
-            expandedId={expandedId}
-            setExpandedId={setExpandedId}
-            editingId={editingId}
-            editTitle={editTitle}
-            editBody={editBody}
-            startEdit={startEdit}
-            cancelEdit={cancelEdit}
-            setEditTitle={setEditTitle}
-            setEditBody={setEditBody}
-            saveEdit={saveEdit}
-          />
-        </div>
-      )}
+      {tab === 'inbox' && renderTicketList(false)}
 
-      {tab === 'reply' && isAdmin && (
-        <div className="flex flex-col">
-          {renderToolbar()}
-          <TicketList
-            items={filteredTickets}
-            isReplyTab
-            expandedId={expandedId}
-            setExpandedId={setExpandedId}
-            // 관리자는 문의 수정 비활성
-            editingId={null}
-            editTitle=""
-            editBody=""
-            startEdit={() => {}}
-            cancelEdit={() => {}}
-            setEditTitle={() => {}}
-            setEditBody={() => {}}
-            saveEdit={() => {}}
-            // 답변 작성/등록
-            replyDrafts={replyDrafts}
-            setReplyDrafts={setReplyDrafts}
-            submitReply={submitReply}
-          />
-        </div>
-      )}
+      {tab === 'reply' && isAdmin && renderTicketList(true)}
 
       <AlertModal
         open={alert.open}
