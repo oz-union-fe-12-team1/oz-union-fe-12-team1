@@ -13,7 +13,7 @@ export default function EditBirthdateField({ value, onChangeValue, onApply, savi
       <div className="flex gap-2">
         <input
           type="date"
-          className="input date-icon-white"
+          className="input text-white [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-200 flex-1 min-w-0"
           value={value}
           onChange={(e) => onChangeValue(e.target.value)}
           min="1900-01-01"
