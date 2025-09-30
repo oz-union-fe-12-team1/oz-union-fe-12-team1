@@ -122,7 +122,7 @@ export async function getWeather() {
   const res = await api.get('/weather');
   return res.data;
 }
-export function useWeather(lat, lon) {
+export function useWeather() {
   const {
     data: weatherData,
     isLoading: weatherIsLoading,
