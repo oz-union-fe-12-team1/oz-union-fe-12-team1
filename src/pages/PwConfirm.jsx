@@ -7,6 +7,7 @@ import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
+import { useConfirmPasswordReset, usePasswordReset } from '../api/auth';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -26,8 +27,8 @@ export function PwConfirm() {
   const [isInput, setIsInput] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
 
-  const { passwordResetMutate, passwordResetError } = usePasswordReset();
-  const { confirmPasswordResetMutate, confirmPasswordResetError } = useConfirmPasswordReset();
+  const { passwordResetMutate } = usePasswordReset();
+  const { confirmPasswordResetMutate } = useConfirmPasswordReset();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -52,7 +53,7 @@ export function PwConfirm() {
 
   // const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
 
-  function emailConfirm(email) {
+  function emailConfirm() {
     // const value = String(email || '')
     //   .trim()
     //   .toLowerCase();
