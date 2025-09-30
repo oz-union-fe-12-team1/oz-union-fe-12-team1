@@ -22,6 +22,7 @@ import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
+import AnalogClock from './components/analogClock';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -90,7 +91,8 @@ export default function MainPage() {
               <div className="grid grid-cols-[1fr_3fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 아랫부분 왼 */}
                 <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0">
-                  <ClockComponent />
+                  <AnalogClock />
+                  {/* <ClockComponent /> */}
                 </div>
 
                 {/* 대시보드 = 본문 아랫부분 오 */}
