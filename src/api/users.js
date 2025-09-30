@@ -56,6 +56,28 @@ export function useUpdateMyProfile() {
 //   email: "newEmail@example.com",
 // })
 
+// !- - - - 사용자 상세 (관리자/본인) - - - -
+export async function getUserDetail(userId) {
+  const res = await api.get(`/users/${userId}`);
+  return res.data;
+}
+export function useUserDetail(userId) {
+  const {
+    data: userDetailData,
+    isLoading: userDetailIsLoading,
+    isError: userDetailIsError,
+    ...rest
+  } = useQuery({
+    queryKey: ['userDetail', userId],
+    queryFn: () => getUserDetail(userId),
+    enabled: !!userId,
+    // userId가 없을 때는 요청 안 함
+    staleTime: 1000 * 60 * 5,
+  });
+  return { userDetailData, userDetailIsLoading, userDetailIsError, ...rest };
+}
+// const { userDetailData, userDetailIsLoading, userDetailIsError } = useUserDetail(id);
+
 // !- - - - 사용자 삭제 - - - -
 export async function deleteMyAccount() {
   const res = await api.delete('/users/me');

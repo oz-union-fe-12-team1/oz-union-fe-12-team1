@@ -5,8 +5,8 @@ import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
 import { useAuth } from '../store/useAuth';
-// import { useUser } from '../store/useUser';
-// import { useLogin } from '../api/auth';
+import { useUser } from '../store/useUser';
+import { useLogin } from '../api/auth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
 
@@ -24,8 +24,8 @@ export function Login() {
 
   const login = useAuth((s) => s.login);
 
-  // const { loginMutate } = useLogin();
-  // const { getUser } = useUser();
+  const { loginMutate } = useLogin();
+  const { getUser } = useUser();
   // const { socialLoginMutate, socialLoginError } = useSocialLogin();
 
   async function handleSubmit(e) {
@@ -35,23 +35,23 @@ export function Login() {
       password: true,
     });
 
-    try {
-      await login({ email: form.email, password: form.password });
-      navigate('/main');
-    } catch (err) {
-      console.log(err);
-      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-    }
+    // try {
+    //   await login({ email: form.email, password: form.password });
+    //   navigate('/main');
+    // } catch (err) {
+    //   console.log(err);
+    //   alert('이메일 또는 비밀번호가 올바르지 않습니다.1111');
+    // }
 
-    // loginMutate(form, {
-    //   onSuccess: async () => {
-    //     await getUser();
-    //     navigate('/main');
-    //   },
-    //   onError: () => {
-    //     alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-    //   },
-    // });
+    loginMutate(form, {
+      onSuccess: async () => {
+        alert('로그인 성공');
+        await getUser();
+      },
+      onError: () => {
+        alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+      },
+    });
   }
 
   const errors = newError(form);
