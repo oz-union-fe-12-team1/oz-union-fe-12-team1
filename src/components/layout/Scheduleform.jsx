@@ -20,25 +20,13 @@ export default function ScheduleForm({
 
   const [errors, setErrors] = useState("");
 
-  const localForm = {
-    date: form.date || "",
-    timeStart: form.timeStart || form.time || "", // 기존 time을 timeStart로 흡수
-    timeEnd: form.timeEnd || "",
-    title: form.title || "",
-    memo: form.memo || "",
-    all_day: form.all_day ?? false,
-  };
-
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const v = type === "checkbox" ? checked : value;
-    
-setForm({...form, [name] : v });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
     setErrors("");
   };
 
   const toISO = (d, t) => {
-    // d: '2025-09-29', t: '13:30'
     const [Y, M, D] = d.split("-").map(Number);
     const [h = 0, m = 0] = (t || "00:00").split(":").map(Number);
     const dt = new Date(Y, M - 1, D, h, m, 0);
@@ -47,48 +35,39 @@ setForm({...form, [name] : v });
 
   const handleAdd = (e) => {
     e.preventDefault();
-    console.log("sudmit form",form)
-    const { date, timeStart, timeEnd, title, memo, all_day } = {
-      ...localForm,
-      ...form,
-    };
+    console.log("submit form", form);
+    
+    const { dateStart, timeStart, dateEnd, timeEnd, title, memo } = form;
 
-    if (!date || !title) {
+    if (!dateStart || !dateEnd || !title) {
       setErrors("날짜와 제목은 필수입니다.");
       return;
     }
 
-    let start_time, end_time;
-
-    if (all_day) {
-      start_time = toISO(date, "00:00");
-      end_time = toISO(date, "23:59");
-    } else {
-      if (!timeStart || !timeEnd) {
-        setErrors("시작/종료 시간을 모두 입력해주세요.");
-        return;
-      }
-      start_time = toISO(date, timeStart);
-      end_time = toISO(date, timeEnd);
-
-      if (new Date(start_time) >= new Date(end_time)) {
-        setErrors("종료시간은 시작시간보다 뒤여야 합니다.");
-        return;
-      }
+    if (!timeStart || !timeEnd) {
+      setErrors("시작/종료 시간을 모두 입력해주세요.");
+      return;
     }
 
-    // 스토어로 보낼 내용
-addSchedule({
-    title,
-    memo: memo || "",
-    date,
-    timeStart,
-    timeEnd,
-    all_day: Boolean(all_day),
-    start_time,
-    end_time,
-  });
-};
+    const start_time = toISO(dateStart, timeStart);
+    const end_time = toISO(dateEnd, timeEnd);
+
+    if (new Date(start_time) >= new Date(end_time)) {
+      setErrors("종료시간은 시작시간보다 뒤여야 합니다.");
+      return;
+    }
+
+    addSchedule({
+      title,
+      memo,
+      dateStart,
+      timeStart,
+      dateEnd,
+      timeEnd,
+      start_time,
+      end_time,
+    });
+  };
 
   const onBack = () => setOpenSchedule(false);
 
@@ -125,47 +104,50 @@ addSchedule({
           일정추가
         </div>
 
-        {/* 날짜 */}
-        <input
-          type="date"
-          name="date"
-          value={form.date || ""}
-          onChange={handleChange}
-          className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
-          required
-        />
+        {/* 시작 날짜/시간 */}
+        <div className="space-y-1">
+          <label className="text-sm font-medium">시작</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="date"
+              name="dateStart"
+              value={form.dateStart || ""}
+              onChange={handleChange}
+              className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
+              required
+            />
+            <input
+              type="time"
+              name="timeStart"
+              value={form.timeStart || ""}
+              onChange={handleChange}
+              className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
+              required
+            />
+          </div>
+        </div>
 
-        {/* 종일 체크하는거 */}
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            name="all_day"
-            checked={!!form.all_day}
-            onChange={handleChange}
-          />
-          종일
-        </label>
-
-        {/* 시작/종료 시간 */}
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="time"
-            name="timeStart"
-            value={form.timeStart || ""}
-            onChange={handleChange}
-            className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
-            disabled={!!form.all_day}
-            placeholder="시작 시간"
-          />
-          <input
-            type="time"
-            name="timeEnd"
-            value={form.timeEnd || ""}
-            onChange={handleChange}
-            className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
-            disabled={!!form.all_day}
-            placeholder="종료 시간"
-          />
+        {/* 종료 날짜/시간 */}
+        <div className="space-y-1">
+          <label className="text-sm font-medium">종료</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="date"
+              name="dateEnd"
+              value={form.dateEnd || ""}
+              onChange={handleChange}
+              className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
+              required
+            />
+            <input
+              type="time"
+              name="timeEnd"
+              value={form.timeEnd || ""}
+              onChange={handleChange}
+              className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
+              required
+            />
+          </div>
         </div>
 
         {/* 제목 */}
@@ -198,9 +180,9 @@ addSchedule({
         <div className="flex gap-2">
           <button
             type="submit"
-            disabled={!form.date || !form.title}
+            disabled={!form.dateStart || !form.title}
             className={`flex-1 rounded-xl py-2 font-semibold text-white 
-              ${!form.date || !form.title 
+              ${!form.dateStart || !form.title 
                 ? "bg-gray-400 cursor-not-allowed" 
                 : "bg-gray-800 hover:bg-black"}`}
           >

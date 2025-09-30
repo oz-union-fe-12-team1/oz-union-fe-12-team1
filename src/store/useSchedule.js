@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
 const initialForm = {
-  date: "",        // YYYY-MM-DD
-  timeStart: "",   // HH:mm
-  timeEnd: "",     // HH:mm
-  all_day: false,  // 종일 여부
+  dateStart: "",
+  timeStart: "",
+  dateEnd: "",
+  timeEnd: "",
   title: "",
   memo: "",
 };
@@ -29,28 +29,24 @@ export const useSchedule = create((set, get) => ({
     set((state) => {
       const src = payload || state.form;
 
-      if (!src.title?.trim() || !src.date) return state;
+      if (!src.title?.trim() || !src.dateStart || !src.dateEnd) return state;
 
-      let start_time, end_time;
-      if (src.all_day) {
-        start_time = toISO(src.date, "00:00");
-        end_time   = toISO(src.date, "23:59");
-      } else {
-        if (!src.timeStart || !src.timeEnd) return state;
-        start_time = toISO(src.date, src.timeStart);
-        end_time   = toISO(src.date, src.timeEnd);
-        if (new Date(start_time) >= new Date(end_time)) return state;
-      }
+      if (!src.timeStart || !src.timeEnd) return state;
+      
+      const start_time = toISO(src.dateStart, src.timeStart);
+      const end_time = toISO(src.dateEnd, src.timeEnd);
+      
+      if (new Date(start_time) >= new Date(end_time)) return state;
 
       const base = {
         title: src.title.trim(),
         memo: src.memo || "",
-        all_day: !!src.all_day,
+        dateStart: src.dateStart,
+        timeStart: src.timeStart,
+        dateEnd: src.dateEnd,
+        timeEnd: src.timeEnd,
         start_time,
         end_time,
-        date : src.date,
-        timeStart: src.timeStart || "",
-        timeEnd: src.timeEnd || "",
       };
 
       if (state.isEditing && state.editingId !== null) {
@@ -82,16 +78,17 @@ export const useSchedule = create((set, get) => ({
       const et = new Date(item.end_time);
       const pad = (n) => String(n).padStart(2, "0");
 
-      const date = `${st.getFullYear()}-${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
+      const dateStart = `${st.getFullYear()}-${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
       const timeStart = `${pad(st.getHours())}:${pad(st.getMinutes())}`;
-      const timeEnd   = `${pad(et.getHours())}:${pad(et.getMinutes())}`;
+      const dateEnd = `${et.getFullYear()}-${pad(et.getMonth() + 1)}-${pad(et.getDate())}`;
+      const timeEnd = `${pad(et.getHours())}:${pad(et.getMinutes())}`;
 
       return {
         form: {
-          date,
-          timeStart,	// 추가
-          timeEnd,	// 추가
-          all_day: !!item.all_day,	// 추가
+          dateStart,
+          timeStart,
+          dateEnd,
+          timeEnd,
           title: item.title,
           memo: item.memo ?? "",
         },
