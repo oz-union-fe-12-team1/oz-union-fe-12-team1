@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getMeMock, updateMeMock } from '../../mockData';
-import { useOpenMyPage } from '../../store/useOpenMyPage';
+import { useOpenMyPage } from '../../store/useOpenMypage';
 import PinkCard from './common/PinkCard';
 import Contact from './Contact/Contact';
 import MypageEdit from './MypageEdit';

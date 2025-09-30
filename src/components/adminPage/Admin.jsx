@@ -5,6 +5,8 @@ import { Input } from '../ui/Input';
 import { IoSearch } from 'react-icons/io5';
 import { useDebounce } from '../../hook/useDebounce';
 import { useUserSearch } from '../../api/admin';
+import { VscChromeClose } from 'react-icons/vsc';
+import { VscCircleLarge } from 'react-icons/vsc';
 
 export default function Admin() {
   const [mode, setMode] = useState('all');
@@ -19,12 +21,13 @@ export default function Admin() {
   const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
 
   const tableHead = ['이름', '접속여부', '관리자', '이름', '이메일', '가입일시', '계정차단'];
+  //ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
 
   return (
     <>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between">
-          <div className="flex w-45">
+          <div className="flex">
             <label className="sr-only">조건 선택</label>
             <select
               value={mode}
@@ -52,12 +55,14 @@ export default function Admin() {
           </div>
         </div>
         <div className="w-full ">
-          <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center overflow-x-auto min-w-[800px]">
+          <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center overflow-x-auto ">
             <table className="rounded-lg overflow-hidden w-full border ">
               <thead>
                 <tr className="bg-[#222222]">
                   {tableHead.map((name) => (
-                    <th className="border border-table p-2 text-center">{name}</th>
+                    <th className="border border-table p-2 text-center whitespace-nowrap">
+                      {name}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -96,7 +101,7 @@ export default function Admin() {
                       <td
                         className={`border p-2 text-center border-table ${user.is_superuser && 'text-red-500'}`}
                       >
-                        {user.is_superuser ? '◯' : '✕'}
+                        {user.is_superuser ? <VscCircleLarge /> : <VscChromeClose />}
                       </td>
                       <td className="border border-table p-2 text-center">{user.username}</td>
                       <td className="border border-table p-2 text-center overflow-hidden">
