@@ -72,7 +72,7 @@ export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout
         </nav>
       </div>
 
-      {/* (선택) 로그아웃 유지 */}
+      {/* 로그아웃 유지 */}
       <div className="flex items-center justify-end">
         <button className="btn text-xs" type="button" onClick={handleLogoutClick}>
           로그아웃
