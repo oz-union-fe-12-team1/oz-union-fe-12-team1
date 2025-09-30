@@ -9,7 +9,7 @@ export function Quiz() {
   const { quizData, quizIsLoading, quizIsError, refetch } = useQuiz();
   if (quizIsLoading) return <div>로딩 중</div>;
   if (quizIsError) return <div>에러</div>;
-  const data = quizData.data;
+  const data = quizData?.data;
 
   // const handleBackgroundColor = (option) => {
   //   if (selectOption === undefined) return 'bg-[#2d5b81] hover:bg-[#1b4567]';

@@ -7,6 +7,7 @@ import { useDebounce } from '../../hook/useDebounce';
 import { useUserSearch } from '../../api/admin';
 import { VscChromeClose } from 'react-icons/vsc';
 import { VscCircleLarge } from 'react-icons/vsc';
+import { formatDate } from '../../hook/useFormatDate';
 
 export default function Admin() {
   const [mode, setMode] = useState('all');
@@ -107,7 +108,7 @@ export default function Admin() {
                         {user.email}
                       </td>
                       <td className="border border-table p-2 text-center">
-                        {user.created_at.slice(2, -9).replace('T', '/').replace(/-/g, '/')}
+                        {formatDate(user.created_at)}
                       </td>
                       <td className="border border-table w-[5rem] h-full text-center align-middle p-1">
                         <Button size="vsm" variant="common">
