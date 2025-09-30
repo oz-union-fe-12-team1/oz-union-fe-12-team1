@@ -29,10 +29,8 @@ export const useSchedule = create((set, get) => ({
     set((state) => {
       const src = payload || state.form;
 
-      // 필수값
       if (!src.title?.trim() || !src.date) return state;
 
-      // 시간 조합
       let start_time, end_time;
       if (src.all_day) {
         start_time = toISO(src.date, "00:00");

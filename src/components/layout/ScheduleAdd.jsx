@@ -42,9 +42,10 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
               className="border-b border-gray-200 pb-3"
             >
               <div className="flex flex-col jusify-start gap-2">
-                <div className="flex gap-30" >
-                  <span className="font-medium">
+                <div className="flex gap-19 items-center flex-wrap" >
+                  <span className="font-medium whitespace-nowrap">
                     {item.date && new Date(item.date).toLocaleDateString('ko-KR', { 
+                      year: 'numeric',
                       month: 'numeric', 
                       day: 'numeric'
                     })} 

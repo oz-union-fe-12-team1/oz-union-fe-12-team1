@@ -32,7 +32,8 @@ export default function ScheduleForm({
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const v = type === "checkbox" ? checked : value;
-    setForm({ [name] : v });
+    
+setForm({...form, [name] : v });
     setErrors("");
   };
 
@@ -60,7 +61,6 @@ export default function ScheduleForm({
     let start_time, end_time;
 
     if (all_day) {
-      // 종일: 00:00:00 ~ 23:59:59
       start_time = toISO(date, "00:00");
       end_time = toISO(date, "23:59");
     } else {
