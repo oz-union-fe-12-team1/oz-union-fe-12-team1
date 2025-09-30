@@ -44,6 +44,7 @@ export function Login() {
       onSuccess: async () => {
         alert('로그인 성공');
         await getUser();
+        navigate('/main');
       },
       onError: () => {
         alert('이메일 또는 비밀번호가 올바르지 않습니다.');

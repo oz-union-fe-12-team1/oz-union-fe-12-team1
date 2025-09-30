@@ -22,8 +22,15 @@ import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
+import { useUser } from './store/useUser';
+import { useEffect } from 'react';
 
 export default function MainPage() {
+  const { getUser } = useUser();
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
