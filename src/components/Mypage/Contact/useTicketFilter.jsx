@@ -25,7 +25,7 @@ export default function useTicketFilter(tickets = []) {
     if (searchInput.trim() === '') setSearchQuery('');
   }, [searchInput]);
 
-  // 필터 계산 (메모이제이션)
+  // 필터 계산
   const filteredTickets = useMemo(() => {
     const normalizedQuery = (searchQuery || '').toLowerCase();
 
