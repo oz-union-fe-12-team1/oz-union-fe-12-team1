@@ -15,24 +15,24 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
                 <div className="flex gap-2 items-center">
                   <span className="text-sm text-gray-600 w-12"></span>
                   <span className="font-medium whitespace-nowrap">
-                    {item.dateStart && new Date(item.dateStart).toLocaleDateString('ko-KR', { 
-                      year: 'numeric',
-                      month: 'numeric', 
+                    {item.dateStart && new Date(item.dateStart).toLocaleDateString('ko-KR', {
+                      year: '2-digit',
+                      month: 'numeric',
                       day: 'numeric'
-                    })} 
+                    })}
                   </span>
                   <span className="whitespace-nowrap">{item.timeStart}</span>
                 </div>
-
+                <div className="text-center text-black font-semibold">~</div>
                 {/* 종료 날짜/시간 */}
                 <div className="flex gap-2 items-center">
                   <span className="text-sm text-gray-600 w-12"></span>
                   <span className="font-medium whitespace-nowrap">
-                    {item.dateEnd && new Date(item.dateEnd).toLocaleDateString('ko-KR', { 
-                      year: 'numeric',
-                      month: 'numeric', 
+                    {item.dateEnd && new Date(item.dateEnd).toLocaleDateString('ko-KR', {
+                      year: '2-digit',
+                      month: 'numeric',
                       day: 'numeric'
-                    })} 
+                    })}
                   </span>
                   <span className="whitespace-nowrap">{item.timeEnd}</span>
                 </div>

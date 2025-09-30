@@ -19,6 +19,10 @@ export default function ScheduleForm({
   } = useSchedule();
 
   const [errors, setErrors] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const showList = filterDate
+    ? list.filter(item => filterDate >= item.dateStart && filterDate <= item.dateEnd)
+    : list;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +39,6 @@ export default function ScheduleForm({
 
   const handleAdd = (e) => {
     e.preventDefault();
-    console.log("submit form", form);
     
     const { dateStart, timeStart, dateEnd, timeEnd, title, memo } = form;
 
@@ -73,7 +76,6 @@ export default function ScheduleForm({
 
   return (
     <div className="rounded-xl bg-gray-200 p-4 space-y-3 text-black h-full flex flex-col relative">
-      {/* 닫기 버튼 */}
       <button
         type="button"
         onClick={onBack}
@@ -87,12 +89,31 @@ export default function ScheduleForm({
         <div className="text-center py-2 font-semibold mb-2">
           {isEditing ? "일정 수정" : "일정 리스트"}
         </div>
+
+        {/* 날짜 필터 */}
+        <div className="px-2 mb-2 flex gap-2 items-center">
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+            className="flex-1 rounded-lg px-3 py-1 text-sm bg-white border border-gray-400"
+          />
+          {filterDate && (
+            <button
+              onClick={() => setFilterDate("")}
+              className="text-xs text-blue-600"
+            >
+              전체
+            </button>
+          )}
+        </div>
+
         <div className="flex-1 overflow-y-auto">
           <ScheduleList
             openAdminDashboard={openAdminDashboard}
             openAdminPage={openAdminPage}
             openSchedule={openSchedule}
-            list={list}
+            list={showList}
             handleDelete={deleteSchedule}
           />
         </div>
@@ -180,9 +201,9 @@ export default function ScheduleForm({
         <div className="flex gap-2">
           <button
             type="submit"
-            disabled={!form.dateStart || !form.title}
+            disabled={!form.dateStart || !form.dateEnd || !form.title}
             className={`flex-1 rounded-xl py-2 font-semibold text-white 
-              ${!form.dateStart || !form.title 
+              ${!form.dateStart || !form.dateEnd || !form.title 
                 ? "bg-gray-400 cursor-not-allowed" 
                 : "bg-gray-800 hover:bg-black"}`}
           >
