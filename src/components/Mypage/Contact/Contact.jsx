@@ -1,246 +1,172 @@
 // src/components/Mypage/Contact/Contact.jsx
-import ModalPortal from '../common/ModalPortal';
+import { useEffect, useState } from 'react';
+import ContactModal from '../Contact/ContactModal';
+import AskForm from '../Contact/AskForm';
 import Modal from '../../ui/Modal';
-import { useEffect, useMemo, useState } from 'react';
-import AskForm from './AskForm';
-import TicketToolbar from './TicketToolbar';
-import TicketList from './TicketList';
+import TicketToolbar from '../Contact/TicketToolbar';
 
-// 날짜 포맷: "YYYY-MM-DD HH:MM" (서울 기준)
-const fmt = new Intl.DateTimeFormat('sv-SE', {
-  dateStyle: 'short',
-  timeStyle: 'short',
-  hour12: false,
-  timeZone: 'Asia/Seoul',
-});
+import useTabsConfig from './useTabsConfig';
+import useTicketFilter from './useTicketFilter';
+import useAutoTabEffects from './useAutoTabEffects';
+import useTicketActions from './useTicketActions';
+import TicketCard from './TicketCard';
 
 export default function Contact({
   open,
-  tab,
-  setTab,
   onClose,
-  tickets = [],
-  setTickets,
-  expandedId,
-  setExpandedId,
-  isAdmin = false, //api 명세서 is_superuser로 교체 예정
+  isAdmin = false,
   adminOnlyReply = false,
+  initialTickets = [],
 }) {
-  // 알림 모달
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [infoTitle, setInfoTitle] = useState('알림');
-  const [infoMessage, setInfoMessage] = useState('');
-  const showInfo = (message, title = '알림') => {
-    setInfoMessage(message);
-    setInfoTitle(title);
-    setInfoOpen(true);
-  };
-  const closeInfo = () => setInfoOpen(false);
+  const tabs = useTabsConfig({ isAdmin, adminOnlyReply });
 
-  // 검색/필터 상태
-  const [statusFilter, setStatusFilter] = useState('all'); // all | 처리중 | 완료
-  const [searchInput, setSearchInput] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const applySearch = () => setSearchQuery(searchInput.trim());
+  const {
+    tickets,
+    setTickets,
+    submitAsk,
+    startEdit,
+    cancelEdit,
+    saveEdit,
+    submitReply,
+    editingId,
+    editTitle,
+    setEditTitle,
+    editBody,
+    setEditBody,
+    replyDrafts,
+    setReplyDrafts,
+    alert,
+    setAlert,
+  } = useTicketActions();
 
-  // 사용자 편집 상태
-  const [editingId, setEditingId] = useState(null);
-  const [editTitle, setEditTitle] = useState('');
-  const [editBody, setEditBody] = useState('');
-
-  // 관리자 답변 드래프트
-  const [replyDrafts, setReplyDrafts] = useState({});
-
-  // 티켓 필터링(제목/본문/답변에 검색어 포함)
-  const filteredTickets = useMemo(() => {
-    const q = searchQuery.toLowerCase();
-    return tickets.filter((ticket) => {
-      const statusOk = statusFilter === 'all' || ticket.status === statusFilter;
-      if (!statusOk) return false;
-      if (!q) return true;
-      const hay = `${ticket.title}\n${ticket.body}\n${ticket.answer ?? ''}`.toLowerCase();
-      return hay.includes(q);
-    });
-  }, [tickets, statusFilter, searchQuery]);
-
-  // 입력창이 비면 자동으로 전체 보기
   useEffect(() => {
-    if (searchInput.trim() === '') setSearchQuery('');
-  }, [searchInput]);
+    if (initialTickets?.length) setTickets(initialTickets);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // 문의함 탭일 때 첫 번째 항목 자동 펼치기
-  useEffect(() => {
-    if (!open) return;
-    if (tab !== 'inbox') return;
-    if (filteredTickets.length === 0) return;
+  const [tab, setTab] = useState(adminOnlyReply && isAdmin ? 'reply' : 'ask');
+  const [expandedId, setExpandedId] = useState(null);
 
-    const exists = filteredTickets.some((ticket) => ticket.id === expandedId);
-    if (!exists) {
-      setExpandedId(filteredTickets[0].id);
+  const {
+    statusFilter,
+    setStatusFilter,
+    searchInput,
+    setSearchInput,
+    applySearch,
+    filteredTickets,
+  } = useTicketFilter(tickets);
+
+  useAutoTabEffects({
+    open,
+    adminOnlyReply,
+    isAdmin,
+    tab,
+    setTab,
+    filteredTickets,
+    expandedId,
+    setExpandedId,
+  });
+
+  const handleChangeTab = (next) => {
+    cancelEdit();
+    setExpandedId(null);
+    setSearchInput('');
+    applySearch('');
+    setTab(next);
+  };
+
+  const handleClose = () => {
+    onClose?.();
+    setTab(isAdmin ? 'reply' : 'ask');
+    cancelEdit();
+    setExpandedId(null);
+    setSearchInput('');
+    applySearch('');
+  };
+
+  const handleSubmitAsk = ({ title, body }) => {
+    const newTicket = submitAsk({ title, body });
+    setTab('inbox');
+    if (newTicket && newTicket.id != null) {
+      setExpandedId(newTicket.id);
     }
-  }, [open, tab, filteredTickets, expandedId, setExpandedId]);
-
-  // 문의 제출
-  const submitAsk = ({ title, body }) => {
-    const now = new Date();
-    const time = fmt.format(now);
-    const newId = Date.now();
-    setTickets((prev) => [
-      { id: newId, status: '처리중', title: title.trim(), time, body: body.trim() },
-      ...prev,
-    ]);
-    // setTab('inbox');
-    // setExpandedId(newId);
-    showInfo('문의가 접수되었습니다.');
   };
 
-  // 사용자 편집(제목/내용)
-  const startEdit = (ticket) => {
-    setEditingId(ticket.id);
-    setEditTitle(ticket.title);
-    setEditBody(ticket.body);
-  };
-  const cancelEdit = () => {
-    setEditingId(null);
-    setEditTitle('');
-    setEditBody('');
-  };
-  const saveEdit = (ticket) => {
-    if (!editTitle.trim() || !editBody.trim()) {
-      showInfo('제목과 내용을 입력해 주세요.');
-      return;
-    }
-    setTickets((prev) =>
-      prev.map((it) =>
-        it.id === ticket.id ? { ...it, title: editTitle.trim(), body: editBody.trim() } : it,
-      ),
-    );
-    setEditingId(null);
-    showInfo('수정이 반영되었습니다.');
-  };
+  const renderToolbar = () => (
+    <TicketToolbar
+      statusFilter={statusFilter}
+      setStatusFilter={setStatusFilter}
+      searchInput={searchInput}
+      setSearchInput={setSearchInput}
+      applySearch={applySearch}
+    />
+  );
 
-  // 관리자 답변 등록
-  const submitReply = (ticket) => {
-    const draft = (replyDrafts[ticket.id] || '').trim();
-    if (!draft) {
-      showInfo('답변 내용을 입력해 주세요.');
-      return;
-    }
-    setTickets((prev) =>
-      prev.map((it) => (it.id === ticket.id ? { ...it, status: '완료', answer: draft } : it)),
-    );
-    setReplyDrafts((prev) => ({ ...prev, [ticket.id]: '' }));
-    showInfo('답변이 등록되었습니다.');
-  };
-
-  // 탭 목록
-  const tabs = adminOnlyReply
-    ? [{ key: 'reply', label: '답변함' }]
-    : [
-        { key: 'ask', label: '문의하기' },
-        { key: 'inbox', label: '문의함' },
-        ...(isAdmin ? [{ key: 'reply', label: '답변함' }] : []),
-      ];
-
-  // 관리자 전용 모드일 땐 탭을 강제로 'reply'로 유지
-  useEffect(() => {
-    if (!open) return;
-    if (!adminOnlyReply) return;
-    if (!isAdmin) return;
-
-    setTab('reply');
-  }, [open, adminOnlyReply, isAdmin, tab, setTab]);
-
-  if (!open) return null;
+  const renderTicketList = (isReplyTab) => (
+    <div className="flex flex-col">
+      {renderToolbar()}
+      {filteredTickets.length === 0 ? (
+        <div className="text-sm text-neutral-400">해당 조건의 문의가 없습니다.</div>
+      ) : (
+        <div className="space-y-2">
+          {filteredTickets.map((ticket) => (
+            <TicketCard
+              key={ticket.id}
+              ticket={ticket}
+              isReplyTab={isReplyTab}
+              expandedId={expandedId}
+              setExpandedId={setExpandedId}
+              editingId={isReplyTab ? null : editingId}
+              editTitle={isReplyTab ? '' : editTitle}
+              editBody={isReplyTab ? '' : editBody}
+              startEdit={isReplyTab ? () => {} : startEdit}
+              cancelEdit={isReplyTab ? () => {} : cancelEdit}
+              setEditTitle={isReplyTab ? () => {} : setEditTitle}
+              setEditBody={isReplyTab ? () => {} : setEditBody}
+              saveEdit={isReplyTab ? () => {} : saveEdit}
+              replyDrafts={replyDrafts}
+              setReplyDrafts={setReplyDrafts}
+              submitReply={submitReply}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <ModalPortal>
-      {/* 뒤 검정배경 */}
-      <div className={`fixed inset-0 z-40 bg-black/50`}>
-        <div className="flex justify-center items-center w-full h-full">
-          <div className="bg-neutral-900 rounded-lg shadow-lg w-[80%] h-[90%] p-5 flex flex-col">
-            {/* 헤더 */}
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-base font-semibold text-white">문의하기</h3>
-              <button className="text-xl text-neutral-300" onClick={onClose}>
-                ✕
-              </button>
-            </div>
+    <ContactModal
+      open={open}
+      title="문의하기"
+      onClose={handleClose}
+      tabs={tabs}
+      activeTab={tab}
+      onChangeTab={handleChangeTab}
+    >
+      {tab === 'ask' && !adminOnlyReply && (
+        <AskForm onCancel={handleClose} onSubmit={handleSubmitAsk} />
+      )}
 
-            {/* 탭 */}
-            <div className="mb-3 border-b border-white/20 flex gap-2">
-              {tabs.map((tabItem) => (
-                <button
-                  key={tabItem.key}
-                  className={`px-3 py-2 text-sm transition-colors ${tab === tabItem.key ? 'border-b-2 border-white text-white font-semibold' : 'text-white/60 '}`}
-                  onClick={() => {
-                    // 탭 이동 시 편집상태 초기화
-                    cancelEdit();
-                    if (tabItem.key === 'inbox') setExpandedId(null);
-                    setExpandedId(null);
-                    setTab(tabItem.key);
-                  }}
-                >
-                  {tabItem.label}
-                </button>
-              ))}
-            </div>
+      {tab === 'inbox' && renderTicketList(false)}
 
-            {/* 컨텐츠 */}
-            <div className="flex-1 min-h-0 overflow-y-auto">
-              {(() => {
-                const isAskMode = tab === 'ask' && !adminOnlyReply;
-                if (isAskMode) {
-                  return <AskForm onCancel={onClose} onSubmit={submitAsk} />;
-                }
-                return (
-                  <div className="flex flex-col">
-                    <TicketToolbar
-                      statusFilter={statusFilter}
-                      setStatusFilter={setStatusFilter}
-                      searchInput={searchInput}
-                      setSearchInput={setSearchInput}
-                      applySearch={applySearch}
-                    />
-                    <TicketList
-                      items={filteredTickets}
-                      isReplyTab={tab === 'reply' && isAdmin}
-                      expandedId={expandedId}
-                      setExpandedId={setExpandedId}
-                      // 사용자 편집
-                      editingId={editingId}
-                      editTitle={editTitle}
-                      editBody={editBody}
-                      startEdit={startEdit}
-                      cancelEdit={cancelEdit}
-                      setEditTitle={setEditTitle}
-                      setEditBody={setEditBody}
-                      saveEdit={saveEdit}
-                      // 관리자 답변
-                      replyDrafts={replyDrafts}
-                      setReplyDrafts={setReplyDrafts}
-                      submitReply={submitReply}
-                    />
-                  </div>
-                );
-              })()}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/*공통 Modal로 알림 표시 */}
+      {tab === 'reply' && isAdmin && renderTicketList(true)}
+
       <Modal
-        openModal={infoOpen}
-        title={infoTitle}
-        onClose={closeInfo}
+        openModal={alert.open}
+        title={alert.title || '알림'}
+        onClose={() => setAlert((a) => ({ ...a, open: false }))}
         footer={
-          <button type="button" className="btn" onClick={closeInfo}>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => setAlert((a) => ({ ...a, open: false }))}
+          >
             확인
           </button>
         }
       >
-        <p className="mt-2 text-sm text-white">{infoMessage}</p>
+        <p className="mt-2 text-sm text-white">{alert.message}</p>
       </Modal>
-    </ModalPortal>
+    </ContactModal>
   );
 }
