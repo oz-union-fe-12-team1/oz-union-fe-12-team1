@@ -7,6 +7,7 @@ import { useDebounce } from '../../hook/useDebounce';
 import { useUserSearch } from '../../api/admin';
 import { VscChromeClose } from 'react-icons/vsc';
 import { VscCircleLarge } from 'react-icons/vsc';
+import { formatDate } from '../../hook/useFormatDate';
 
 export default function Admin() {
   const [mode, setMode] = useState('all');
@@ -24,7 +25,7 @@ export default function Admin() {
 
   return (
     <>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 w-full h-full">
         <div className="flex justify-between">
           <div className="flex">
             <label className="sr-only">조건 선택</label>
@@ -53,11 +54,11 @@ export default function Admin() {
             <IoSearch />
           </div>
         </div>
-        <div className="w-full ">
-          <div className="rounded-lg  shadow-md border border-table w-full   mx-auto  h-[20rem] overflow-y-scroll flex justify-center overflow-x-auto ">
-            <table className="rounded-lg overflow-hidden w-full border ">
-              <thead>
-                <tr className="bg-[#222222]">
+        <div className="w-full overflow-auto">
+          <div className="rounded-lg  shadow-md border border-table min-w-[50rem]  h-[20rem] overflow-y-auto ">
+            <table className="w-full rounded-lg border ">
+              <thead className="sticky top-0 bg-[#222]">
+                <tr>
                   {tableHead.map((name) => (
                     <th className="border border-table p-2 text-center whitespace-nowrap">
                       {name}
@@ -87,10 +88,10 @@ export default function Admin() {
                 ) : (
                   searchedUser.map((user) => (
                     <tr key={user.id}>
-                      <td className="border border-table p-2 text-center bg-[#222222]">
+                      <td className="border border-table p-2 text-center bg-[#222222] whitespace-nowrap">
                         {user.id}
                       </td>
-                      <td className="border border-table">
+                      <td className="border border-table whitespace-nowrap">
                         {user.is_active ? (
                           <div className="m-auto border  rounded-2xl bg-[#34cf20] w-3.5 h-3.5 shadow-[0_0_5px_#34cf20]"></div>
                         ) : (
@@ -102,14 +103,16 @@ export default function Admin() {
                       >
                         {user.is_superuser ? <VscCircleLarge /> : <VscChromeClose />}
                       </td>
-                      <td className="border border-table p-2 text-center">{user.username}</td>
-                      <td className="border border-table p-2 text-center overflow-hidden">
+                      <td className="border border-table p-2 text-center whitespace-nowrap">
+                        {user.username}
+                      </td>
+                      <td className="border border-table p-2 text-center  whitespace-nowrap">
                         {user.email}
                       </td>
-                      <td className="border border-table p-2 text-center">
-                        {user.created_at.slice(2, -9).replace('T', '/').replace(/-/g, '/')}
+                      <td className="border border-table p-2 text-center whitespace-nowrap">
+                        {formatDate(user.created_at)}
                       </td>
-                      <td className="border border-table w-[5rem] h-full text-center align-middle p-1">
+                      <td className="border border-table text-center align-middle p-1">
                         <Button size="vsm" variant="common">
                           차단
                         </Button>

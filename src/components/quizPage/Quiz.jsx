@@ -9,7 +9,7 @@ export function Quiz() {
   const { quizData, quizIsLoading, quizIsError, refetch } = useQuiz();
   if (quizIsLoading) return <div>로딩 중</div>;
   if (quizIsError) return <div>에러</div>;
-  const data = quizData.data;
+  const data = quizData?.data;
 
   // const handleBackgroundColor = (option) => {
   //   if (selectOption === undefined) return 'bg-[#2d5b81] hover:bg-[#1b4567]';
@@ -57,18 +57,6 @@ export function Quiz() {
   return (
     <>
       <div className="flex justify-between w-full h-full items-center">
-        {/* <button
-          onClick={() => {
-            page > 0 && setPage((prev) => prev - 1);
-            setSelectOption(undefined);
-            setMessage('과연 정답은?');
-          }}
-          disabled={page === 0}
-          className={`${page === 0 && 'opacity-20'} lg:p-10 `}
-        >
-          <AiFillCaretLeft size={40} />
-        </button> */}
-
         <div className="flex flex-col w-full h-[70%] items-center   justify-around gap-10 lg:gap-0">
           <div className="flex gap-2 items-center">
             <h1 className="text-[1.4rem] font-semibold select-none break-keep lg:text-[1.8rem]">
@@ -96,18 +84,6 @@ export function Quiz() {
             <p className="text-[1.2rem] text-[#999] mb-10 lg:mb-0">{message}</p>
           </div>
         </div>
-
-        {/* <button
-          onClick={() => {
-            totalQuiz - 1 > page && setPage((prev) => prev + 1);
-            setSelectOption(undefined);
-            setMessage('과연 정답은?');
-          }}
-          disabled={page === totalQuiz - 1}
-          className={`${page === totalQuiz - 1 && 'opacity-20'} lg:p-10`}
-        >
-          <AiFillCaretRight size={40} />
-        </button> */}
       </div>
     </>
   );

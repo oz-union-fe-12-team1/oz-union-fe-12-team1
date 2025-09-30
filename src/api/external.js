@@ -135,7 +135,7 @@ export function useWeather() {
   });
   return { weatherData, weatherIsLoading, weatherIsError, ...rest };
 }
-// const { weatherData, weatherIsLoading, weatherIsError } = useWeather(37.5665, 126.9780);
+// const { weatherData, weatherIsLoading, weatherIsError } = useWeather();
 
 // !- - - - 5일 날씨 예보 조회 - - - -
 export async function getWeatherForecast() {
