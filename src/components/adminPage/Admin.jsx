@@ -75,7 +75,7 @@ export default function Admin() {
                 ) : userSearchIsError ? (
                   <tr>
                     <td colSpan={7} className="text-center py-4 text-gray-500">
-                      조회 중 오류 발생
+                      error
                     </td>
                   </tr>
                 ) : searchedUser.length === 0 ? (
