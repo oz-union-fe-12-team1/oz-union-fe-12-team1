@@ -17,7 +17,7 @@ export default function Admin() {
   const { userSearchData, userSearchIsLoading, userSearchIsError } = useUserSearch(debouncedValue);
 
   const filteredUsers =
-    mode === 'connecting' ? adminData.items.filter((u) => u.is_active) : adminData.items;
+    mode === 'connecting' ? adminData.users.filter((u) => u.is_active) : adminData.users;
 
   const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
 
@@ -25,8 +25,8 @@ export default function Admin() {
 
   return (
     <>
-      <div className="flex flex-col gap-3 w-full h-full">
-        <div className="flex justify-between">
+      <div className="flex flex-col gap-3 w-full h-full justify-center items-center">
+        <div className="flex justify-between w-full">
           <div className="flex">
             <label className="sr-only">조건 선택</label>
             <select
@@ -59,8 +59,8 @@ export default function Admin() {
             <table className="w-full rounded-lg border ">
               <thead className="sticky top-0 bg-[#222]">
                 <tr>
-                  {tableHead.map((name) => (
-                    <th className="border border-table p-2 text-center whitespace-nowrap">
+                  {tableHead.map((name, idx) => (
+                    <th key={idx} className="border border-table p-2 text-center whitespace-nowrap">
                       {name}
                     </th>
                   ))}
