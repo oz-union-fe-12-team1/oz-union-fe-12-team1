@@ -16,7 +16,7 @@ export default function TodoList({
   };
 
   return (
-    <div className="bg-white rounded-xl p-4 text-black w-full h-full flex flex-col border-2 border-gray-300 relative">
+    <div className="bg-white rounded-xl p-4 text-black w-full h-full flex flex-col border-2 border-gray-300 relative ">
       {/* X 버튼을 상단 우측에 위치 */}
       <button
         type="button"

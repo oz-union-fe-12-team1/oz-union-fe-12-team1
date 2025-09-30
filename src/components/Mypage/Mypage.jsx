@@ -1,11 +1,14 @@
 // src/components/Mypage/Mypage.jsx
 import { useEffect, useMemo, useState } from 'react';
 import { getMeMock, updateMeMock } from '../../mockData';
-
 import MypageHeaderBar from './features/MypageHeaderBar';
 import MypageMain from './features/MypageMain';
 import MypageProfileEdit from './features/MypageProfileEdit';
 import MypagePasswordChangeEdit from './features/MypagePasswordChangeEdit';
+import { useOpenMyPage } from '../../store/useOpenMypage';
+import PinkCard from './common/PinkCard';
+import Contact from './Contact/Contact';
+import MypageEdit from './MypageEdit';
 import Leave from './Leave';
 import Modal from '../ui/Modal';
 import Contact from './Contact/Contact';

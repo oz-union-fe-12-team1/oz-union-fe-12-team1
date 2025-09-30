@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { fiveDayWeatherDummy } from '../../api/dummyWeather';
+import { fiveDayWeatherDummy } from '../../api/dummyData/dummyWeather';
 
 export default function FiveDayWeather() {
   const data = fiveDayWeatherDummy;

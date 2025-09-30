@@ -10,17 +10,18 @@ import TodayWeather from './components/weather/TodayWeather';
 import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
-import { Quiz } from './components/quizPage/quiz';
+import { Quiz } from './components/quizPage/Quiz';
 import { adminData } from './components/adminPage/adminData';
 import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
-import Header from './components/ui/header';
+import Header from './components/ui/Header';
 import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
 import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
-import { useOpenMyPage } from './store/useOpenMyPage';
+import { useOpenMyPage } from './store/useOpenMypage';
+
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -63,7 +64,7 @@ export default function MainPage() {
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
-      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden">
+      <main className="flex-1 bg-[#090909] p-4 min-h-0 overflow-hidden overflow-x-auto">
         {/* 본문 vs 마이페이지 */}
         <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
           {/* 헤더 vs 본문*/}
@@ -80,7 +81,8 @@ export default function MainPage() {
                 </div>
 
                 {/* 본문 윗부분 오 */}
-                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0">
+
+                <div className="flex items-center justify-center rounded-lg bg-[#22222295] shadow-3d p-6 overflow-y-auto min-w-0 custom-scroll">
                   {openAdminDashboard ? <AdminInquiries /> : <TodayWeather />}
                 </div>
               </div>
@@ -139,8 +141,10 @@ export default function MainPage() {
                   <ScheduleSummary />
                 </div>
               )}
+
               <MyPage open={openMyPage} onClose={() => setOpenMyPage(false)} />
               <AdminMypage open={openAdminPage} onClose={() => setOpenAdminPage(false)} />
+
             </div>
           </div>
         </div>
