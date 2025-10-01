@@ -1,12 +1,14 @@
 import { weatherIconMap, mapIconCode } from '../../utils/weatherIcons';
 import useLocation from '../../hook/useLocation';
 import { useTodayWeather } from '../../api/external';
+import { DEFAULT_LOCATION } from './location';
 
 export default function TodayWeather() {
   const { location, error } = useLocation();
-  const { data: d, isLoading, isError, error: apiError } = useTodayWeather(location);
+  const coords = location || DEFAULT_LOCATION;
 
-  if (error) return <div className="text-neutral-400">위치 오류: {error}</div>;
+  const { data: d, isLoading, isError, error: apiError } = useTodayWeather(coords);
+
   if (isLoading) return <div className="text-neutral-400">날씨 불러오는 중...</div>;
   if (isError)
     return (
@@ -21,6 +23,12 @@ export default function TodayWeather() {
 
   return (
     <div className="flex flex-col gap-4 h-full">
+      {error && (
+        <div className="text-neutral-400 text-sm">
+          현재 위치 확인이 어려워 서울 날씨로 대신합니다.
+        </div>
+      )}
+
       <div className="flex items-center gap-3">
         <Icon className="w-20 h-20 text-blue-300" strokeWidth={1.5} />
         <div className="ml-auto text-right">
