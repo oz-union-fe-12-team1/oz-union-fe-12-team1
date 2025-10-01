@@ -7,7 +7,6 @@ import { SignUp } from './pages/SignUp';
 import PrivateRoute from './layout/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
-import AnalogClock from './components/analogClock';
 
 function App() {
   return (
@@ -26,7 +25,6 @@ function App() {
 
       <Route path="/loading" element={<LoadingPage />} />
       <Route path="/*" element={<ErrorPage />} />
-      <Route path="/clock" element={<AnalogClock />} />
     </Routes>
   );
 }
