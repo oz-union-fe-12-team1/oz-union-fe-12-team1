@@ -12,18 +12,16 @@ import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
 import { Quiz } from './components/quizPage/Quiz';
 import { adminData } from './components/adminPage/adminData';
-// import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
 import Header from './components/ui/Header';
 import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
-import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
-import AnalogClock from './components/analogClock';
 import GlareEffect from './components/GlareEffect';
+import AnalogClock from './components/AnalogClock';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
