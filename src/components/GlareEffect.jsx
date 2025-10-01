@@ -6,24 +6,33 @@ export default function GlareEffect() {
   const baTwoRef = useRef(null);
 
   useEffect(() => {
+    const containerWidth = containerRef.current.offsetWidth;
+    const spacing = containerWidth / 2;
+    // => 부모 너비의 1/3만큼의 거리를 벌리겠다,,
+
     let x1 = 0;
-    let x2 = 200;
+    let x2 = -spacing;
 
     let animationId;
 
     const animate = () => {
       if (!containerRef.current) return;
-      const containerWidth = containerRef.current.offsetWidth;
 
       if (baOneRef.current) {
-        x1 += 1; // 이동 속도
-        if (x1 > containerWidth + 100) x1 = -100;
+        x1 += 1;
+        // 화면 끝을 넘어가면 화면 왼쪽 밖에서 다시 시작
+        if (x1 > containerWidth + 250) {
+          x1 = -150;
+        }
         baOneRef.current.style.transform = `translateX(${x1}px) rotate(-25deg)`;
       }
 
       if (baTwoRef.current) {
         x2 += 1;
-        if (x2 > containerWidth + 100) x2 = -100;
+        // 두 번째 바도 같은 방식으로 루프
+        if (x2 > containerWidth + 250) {
+          x2 = -150;
+        }
         baTwoRef.current.style.transform = `translateX(${x2}px) rotate(-25deg)`;
       }
 

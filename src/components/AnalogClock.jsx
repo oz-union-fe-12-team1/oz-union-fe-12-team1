@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 dayjs.locale('ko');
 
 export default function AnalogClock() {
   const [time, setTime] = useState(dayjs());
   const [secondAngle, setSecondAngle] = useState(time.second() * 6);
+  const secondHandRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,8 +29,21 @@ export default function AnalogClock() {
       if (!document.hidden) {
         const now = dayjs();
         setTime(now);
-        // transition 없이 즉시 각도 설정
+
+        // transition 끄고
+        if (secondHandRef.current) {
+          secondHandRef.current.style.transition = 'none';
+        }
+
+        // 즉시 현재 각도로 설정
         setSecondAngle(now.second() * 6);
+
+        // 다음 프레임에서 transition 다시 켜기
+        requestAnimationFrame(() => {
+          if (secondHandRef.current) {
+            secondHandRef.current.style.transition = 'transform 1s linear';
+          }
+        });
       }
     };
 
@@ -45,7 +59,6 @@ export default function AnalogClock() {
   const minutes = time.minute();
 
   return (
-    // 이 부분 전체를 수정
     <div className="w-full h-full flex flex-col gap-4 justify-between py-4 px-2">
       {/* 상단 여백 */}
       <div className="flex-shrink-0"></div>
@@ -73,7 +86,7 @@ export default function AnalogClock() {
               {/* 분침 */}
               <div
                 className="w-[1.4%] h-[45%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
-                bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
+                bg-gradient-to-b from-[#1c3c57] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${minutes * 6}deg)`,
                 }}
