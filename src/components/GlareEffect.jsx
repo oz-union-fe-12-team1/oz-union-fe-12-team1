@@ -17,13 +17,13 @@ export default function GlareEffect() {
 
       if (baOneRef.current) {
         x1 += 1; // 이동 속도
-        if (x1 > containerWidth + 150) x1 = -150;
+        if (x1 > containerWidth + 100) x1 = -100;
         baOneRef.current.style.transform = `translateX(${x1}px) rotate(-25deg)`;
       }
 
       if (baTwoRef.current) {
         x2 += 1;
-        if (x2 > containerWidth + 150) x2 = -150;
+        if (x2 > containerWidth + 100) x2 = -100;
         baTwoRef.current.style.transform = `translateX(${x2}px) rotate(-25deg)`;
       }
 
@@ -41,7 +41,7 @@ export default function GlareEffect() {
       oneVisible = !oneVisible;
 
       if (baTwoRef.current) {
-        baTwoRef.current.style.opacity = twoVisible ? '0.6' : '0.3';
+        baTwoRef.current.style.opacity = twoVisible ? '0.5' : '0.2';
       }
       twoVisible = !twoVisible;
     }, 1000);

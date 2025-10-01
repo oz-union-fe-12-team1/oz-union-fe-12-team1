@@ -31,15 +31,15 @@ body,
 .thick {
   height: 1000px;
   width: 25px;
-  background-color: #22222280;
-  box-shadow: 0 0 30px 30px #22222280;
+  background-color: #ffffff05;
+  box-shadow: 0 0 30px 30px #ffffff05;
   border-radius: 10px;
 }
 
 .thin {
   height: 1000px;
   width: 15px;
-  background-color: #22222280;
-  box-shadow: 0 0 20px 20px #22222280;
+  background-color: #ffffff05;
+  box-shadow: 0 0 20px 20px #ffffff05;
   border-radius: 10px;
 }
