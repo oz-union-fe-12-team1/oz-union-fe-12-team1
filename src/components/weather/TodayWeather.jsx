@@ -4,14 +4,19 @@ import { useTodayWeather } from '../../api/external';
 
 export default function TodayWeather() {
   const { location, error } = useLocation();
-  const { data: d, isLoading, isError } = useTodayWeather(location);
+  const { data: d, isLoading, isError, error: apiError } = useTodayWeather(location);
 
-  if (error) return <div>위치 오류: {error}</div>;
-  if (isLoading) return <div>날씨 불러오는 중...</div>;
-  if (isError) return <div>날씨 불러오기 실패</div>;
-  if (!d) return <div>날씨 정보가 없습니다.</div>;
+  if (error) return <div className="text-neutral-400">위치 오류: {error}</div>;
+  if (isLoading) return <div className="text-neutral-400">날씨 불러오는 중...</div>;
+  if (isError)
+    return (
+      <div className="text-red-400">
+        날씨 불러오기 실패 ({apiError?.response?.data?.message || apiError?.message})
+      </div>
+    );
+  if (!d) return <div className="text-neutral-400">날씨 정보가 없습니다.</div>;
 
-  const iconKey = mapIconCode(d.weather_icon || '');
+  const iconKey = mapIconCode(d?.weather_icon || '');
   const Icon = weatherIconMap[iconKey] || weatherIconMap.cloudy;
 
   return (
@@ -27,9 +32,9 @@ export default function TodayWeather() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <InfoCard label="습도" value={`${d.humidity}%`} />
-        <InfoCard label="강수량" value={`${d.precipitation}mm`} />
-        <InfoCard label="미세먼지" value={`${d.pm10}㎍/m³`} />
+        <InfoCard label="습도" value={d?.humidity != null ? `${d.humidity}%` : '-'} />
+        <InfoCard label="강수량" value={d?.precipitation != null ? `${d.precipitation}mm` : '-'} />
+        <InfoCard label="미세먼지" value={d?.pm10 != null ? `${d.pm10}㎍/m³` : '-'} />
       </div>
     </div>
   );
