@@ -1,6 +1,6 @@
 import { weatherIconMap, mapIconCode } from '../../utils/weatherIcons';
 import useLocation from '../../hook/useLocation';
-import { useTodayWeather } from '../../hook/useWeather';
+import { useTodayWeather } from '../../api/external';
 
 export default function TodayWeather() {
   const { location, error } = useLocation();
@@ -11,8 +11,6 @@ export default function TodayWeather() {
   if (isError) return <div>날씨 불러오기 실패</div>;
   if (!d) return <div>날씨 정보가 없습니다.</div>;
 
-  console.log('🌤️ TodayWeather data:', d);
-
   const iconKey = mapIconCode(d.weather_icon || '');
   const Icon = weatherIconMap[iconKey] || weatherIconMap.cloudy;
 
@@ -21,9 +19,9 @@ export default function TodayWeather() {
       <div className="flex items-center gap-3">
         <Icon className="w-20 h-20 text-blue-300" strokeWidth={1.5} />
         <div className="ml-auto text-right">
-          <div className="text-4xl font-bold">{d.current_temp}°</div>
+          <div className="text-4xl font-bold">{d?.current_temp ?? '-'}°</div>
           <div className="text-sm text-neutral-400">
-            최고 {d.max_temp}° / 최저 {d.min_temp}°
+            최고 {d?.max_temp ?? '-'}° / 최저 {d?.min_temp ?? '-'}°
           </div>
         </div>
       </div>
