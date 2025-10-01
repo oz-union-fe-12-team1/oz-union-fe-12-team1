@@ -15,15 +15,22 @@ export default function ScheduleForm({
     setForm,
     addSchedule,
     deleteSchedule,
+    startEdit,
     cancelEdit,
   } = useSchedule();
 
   const [errors, setErrors] = useState("");
   const [filterDate, setFilterDate] = useState("");
   
-  const showList = filterDate
+  const filteredList = filterDate
     ? list.filter(item => filterDate >= item.dateStart && filterDate <= item.dateEnd)
     : list;
+
+  const showList = [...filteredList].sort((a, b) => {
+    const dateA = new Date(a.start_time);
+    const dateB = new Date(b.start_time);
+    return dateA - dateB;
+  });
 
   const isAllDay = !form.timeStart && !form.timeEnd;
 
@@ -113,6 +120,7 @@ export default function ScheduleForm({
             openSchedule={openSchedule}
             list={showList}
             handleDelete={deleteSchedule}
+            handleEdit={startEdit}
           />
         </div>
       </div>
