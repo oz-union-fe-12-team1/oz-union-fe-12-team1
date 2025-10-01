@@ -13,15 +13,13 @@ export default function AnalogClock() {
       const now = dayjs();
       setTime(now);
 
-      // 현재 초를 각도로 환산
       const targetAngle = now.second() * 6;
 
       setSecondAngle((prev) => {
-        // 59 → 0초로 넘어갈 때 각도가 줄어드는 문제 해결
         if (targetAngle < prev % 360) {
-          return prev + 6; // 360도 넘어가서 누적 회전
+          return prev + 6;
         }
-        return prev - (prev % 360) + targetAngle; // 같은 한바퀴 내에서 보정
+        return prev - (prev % 360) + targetAngle;
       });
     }, 1000);
 
@@ -32,12 +30,12 @@ export default function AnalogClock() {
   const minutes = time.minute();
 
   return (
-    <div className="w-full h-full flex flex-col gap-7 justify-between py-7">
+    <div className="clock-container w-full h-full flex flex-col gap-7 justify-between py-7">
       <div></div>
-      <div className="w-full max-w-md aspect-[1/1] m-auto rounded-full relative bg-[#181818]">
+      <div className="w-full max-w-md aspect-[1/1] m-auto rounded-full relative z-20">
         {/* 시 */}
         <div
-          className="bg-[#555] w-[2.5%] h-[30%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear"
+          className="bg-[#aaa] w-[2.5%] h-[30%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30"
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${
               hours * 30 + minutes * 0.5
@@ -46,28 +44,28 @@ export default function AnalogClock() {
         />
         {/* 분 */}
         <div
-          className="bg-[#555] w-[1.4%] h-[45%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear"
+          className="bg-[#aaa] w-[1.4%] h-[45%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30"
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${minutes * 6}deg)`,
           }}
         />
         {/* 초 */}
         <div
-          className="bg-[#555] w-[1%] h-[40%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_20px_#000] transition-transform duration-1000 ease-linear"
+          className="bg-[#aaa] w-[1%] h-[40%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_20px_#000] transition-transform duration-1000 ease-linear z-30"
           style={{
             transform: `translateX(-50%) translateY(-100%) rotate(${secondAngle}deg)`,
             transition: 'transform 1s linear',
           }}
         />
         {/* 중심점 */}
-        <div className="bg-[#181818] border-2 border-[#555] w-[5%] h-[5%] absolute top-[50%] left-[50%] rounded-full -translate-x-1/2 -translate-y-1/2 z-30"></div>
+        <div className="bg-[#aaa] border-2 border-[#555] w-[5%] h-[5%] absolute top-[50%] left-[50%] rounded-full -translate-x-1/2 -translate-y-1/2 z-40"></div>
       </div>
 
       <div
-        className="flex flex-col justify-center items-center lg:gap-2  text-[#555] text-3xl lg:text-5xl font-semilight lg:flex-row text-center"
+        className="flex flex-col justify-center items-center lg:gap-2  text-[#aaa] text-3xl lg:text-5xl font-semilight lg:flex-row text-center"
         style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
       >
-        <span className="text-shadow-black">{String(time.hour()).padStart(2, '0')}</span>
+        <span>{String(time.hour()).padStart(2, '0')}</span>
         <span className="hidden lg:block font-semibold text-center relative bottom-1">:</span>
         <span>{String(time.minute()).padStart(2, '0')}</span>
         <span className="hidden lg:block font-semibold text-center relative bottom-1">:</span>
