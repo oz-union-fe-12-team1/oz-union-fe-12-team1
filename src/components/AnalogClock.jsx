@@ -6,17 +6,30 @@ dayjs.locale('ko');
 
 export default function AnalogClock() {
   const [time, setTime] = useState(dayjs());
+  const [secondAngle, setSecondAngle] = useState(time.second() * 6);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(dayjs());
+      const now = dayjs();
+      setTime(now);
+
+      // 현재 초를 각도로 환산
+      const targetAngle = now.second() * 6;
+
+      setSecondAngle((prev) => {
+        // 59 → 0초로 넘어갈 때 각도가 줄어드는 문제 해결
+        if (targetAngle < prev % 360) {
+          return prev + 6; // 360도 넘어가서 누적 회전
+        }
+        return prev - (prev % 360) + targetAngle; // 같은 한바퀴 내에서 보정
+      });
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
   const hours = time.hour() % 12;
   const minutes = time.minute();
-  const seconds = time.second();
 
   return (
     <div className="w-full h-full flex flex-col gap-7 justify-between py-7">
@@ -26,7 +39,9 @@ export default function AnalogClock() {
         <div
           className="bg-[#555] w-[2.5%] h-[30%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear"
           style={{
-            transform: `translateX(-50%) translateY(-100%) rotate(${hours * 30 + minutes * 0.5}deg)`,
+            transform: `translateX(-50%) translateY(-100%) rotate(${
+              hours * 30 + minutes * 0.5
+            }deg)`,
           }}
         />
         {/* 분 */}
@@ -40,8 +55,8 @@ export default function AnalogClock() {
         <div
           className="bg-[#555] w-[1%] h-[40%] absolute top-[50%] left-[50%] origin-bottom rounded-full shadow-[0_0_20px_#000] transition-transform duration-1000 ease-linear"
           style={{
-            transform: `translateX(-50%) translateY(-100%) rotate(${seconds * 6}deg)`,
-            transition: seconds === 0 ? 'none' : 'transform 1s linear',
+            transform: `translateX(-50%) translateY(-100%) rotate(${secondAngle}deg)`,
+            transition: 'transform 1s linear',
           }}
         />
         {/* 중심점 */}
