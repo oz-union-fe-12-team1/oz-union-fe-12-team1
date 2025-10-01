@@ -1,4 +1,6 @@
-html, body, #root {
+html,
+body,
+#root {
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -6,4 +8,38 @@ html, body, #root {
   background-color: black;
   color: #e7e7e7;
 }
+.glare-container {
+  position: absolute;
+  top: -0px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
 
+.ba {
+  display: flex;
+  gap: 100px;
+  position: absolute;
+  height: 1000px; /* 시계 높이에 맞춤 */
+  width: auto;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 0;
+}
+
+.thick {
+  height: 1000px;
+  width: 25px;
+  background-color: #ffffff05;
+  box-shadow: 0 0 30px 30px #ffffff05;
+  border-radius: 10px;
+}
+
+.thin {
+  height: 1000px;
+  width: 15px;
+  background-color: #ffffff05;
+  box-shadow: 0 0 20px 20px #ffffff05;
+  border-radius: 10px;
+}

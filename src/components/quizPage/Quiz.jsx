@@ -11,16 +11,6 @@ export function Quiz() {
   if (quizIsError) return <div>에러</div>;
   const data = quizData?.data;
 
-  // const handleBackgroundColor = (option) => {
-  //   if (selectOption === undefined) return 'bg-[#2d5b81] hover:bg-[#1b4567]';
-  //   if (selectOption === option) {
-  //     return option === data.answer
-  //       ? 'bg-[#379e3b] hover:bg-[#267c29]'
-  //       : 'bg-[#bf4b4b] bg-[#a73939]';
-  //   }
-  //   return 'bg-[#333] hover:bg-[#222]';
-  // };
-
   const handleBack = (idx) => {
     const alphabetIdx = String.fromCharCode(65 + idx);
 
@@ -34,7 +24,7 @@ export function Quiz() {
         ? 'bg-[#379e3b] hover:bg-[#267c29] cursor-pointer'
         : 'bg-[#bf4b4b] hover:bg-[#a73939] cursor-pointer';
     }
-    // 선택하지 않은 옵션들은 회색
+    // 선택되지 않은 나머지 옵션들은 회색
     return 'bg-[#333] hover:bg-[#222] cursor-pointer';
   };
 
@@ -72,7 +62,7 @@ export function Quiz() {
               {data.options.map((option, idx) => (
                 <p
                   key={idx}
-                  className={`shadow-md rounded-2xl px-5 py-1 text-[1.4rem] text-center max-w-[14rem] min-w-[7rem] transition-colors ${handleBack(idx)}
+                  className={`shadow-3d rounded-2xl px-5 py-1 text-[1.4rem] text-center max-w-[14rem] min-w-[7rem] transition-colors ${handleBack(idx)}
                   `}
                   onClick={() => handleOptionClick(idx)}
                 >

@@ -8,7 +8,6 @@ import PrivateRoute from './layout/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
 
-
 function App() {
   return (
     <Routes>
