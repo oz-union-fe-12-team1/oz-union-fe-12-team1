@@ -59,7 +59,7 @@ export default function AnalogClock() {
   const minutes = time.minute();
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 justify-between py-4 px-2">
+    <div className="w-full h-full flex flex-col gap-4 justify-between">
       {/* 상단 여백 */}
       <div className="flex-shrink-0"></div>
 
@@ -74,7 +74,7 @@ export default function AnalogClock() {
             <div className="relative w-full h-full max-w-full max-h-full rounded-full">
               {/* 시침 */}
               <div
-                className="w-[2.5%] h-[30%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
+                className="w-[2.5%] lg:h-[20%] h-[17%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
                 bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${
@@ -85,7 +85,7 @@ export default function AnalogClock() {
 
               {/* 분침 */}
               <div
-                className="w-[1.4%] h-[45%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
+                className="w-[1.4%] lg:h-[35%] h-[32%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
                 bg-gradient-to-b from-[#1c3c57] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${minutes * 6}deg)`,
@@ -95,7 +95,7 @@ export default function AnalogClock() {
               {/* 초침 */}
               <div
                 ref={secondHandRef}
-                className="w-[1%] h-[38%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
+                className="w-[1%] lg:h-[28%] h-[25%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
                 bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${secondAngle}deg)`,
