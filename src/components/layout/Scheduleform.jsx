@@ -169,7 +169,7 @@ export default function ScheduleForm({
 
         {isAllDay && (
           <p className="text-xs text-blue-600 bg-blue-50 rounded-lg px-3 py-2">
-            💡 시간을 입력하지 않으면 종일 일정으로 등록됩니다.
+            시간을 입력하지 않으면 종일 일정으로 등록됩니다.
           </p>
         )}
 
