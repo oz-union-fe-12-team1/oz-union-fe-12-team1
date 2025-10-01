@@ -23,7 +23,22 @@ export default function AnalogClock() {
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    // 포커스 돌아올 때 즉시 동기화
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        const now = dayjs();
+        setTime(now);
+        // transition 없이 즉시 각도 설정
+        setSecondAngle(now.second() * 6);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const hours = time.hour() % 12;
@@ -83,24 +98,18 @@ export default function AnalogClock() {
 
       {/* 디지털 시간 표시 */}
       <div
-        className="flex-shrink-0 flex flex-col justify-center items-center gap-1 lg:gap-2 lg:flex-row text-center bg-gradient-to-r from-[#17334c] via-[#1e4564] to-[#234c6d] bg-clip-text text-transparent"
+        className="flex-shrink-0 flex flex-col justify-center items-center gap-2 lg:gap-1 lg:mb-5 lg:flex-row text-center bg-gradient-to-r from-[#17334c] via-[#1e4564] to-[#234c6d] bg-clip-text text-transparent text-3xl lg:text-5xl"
         style={{ textShadow: '0 0 15px black' }}
       >
-        <span className="text-2xl lg:text-4xl xl:text-5xl font-semilight">
-          {String(time.hour()).padStart(2, '0')}
-        </span>
+        <span className=" font-semilight">{String(time.hour()).padStart(2, '0')}</span>
         <span className="hidden lg:block font-semibold relative bottom-1 text-[#234c6d] text-[1.5rem]">
           :
         </span>
-        <span className="text-2xl lg:text-4xl xl:text-5xl font-semilight">
-          {String(time.minute()).padStart(2, '0')}
-        </span>
+        <span className=" font-semilight">{String(time.minute()).padStart(2, '0')}</span>
         <span className="hidden lg:block font-semibold relative bottom-1 text-[#234c6d] text-[1.5rem]">
           :
         </span>
-        <span className="text-2xl lg:text-4xl xl:text-5xl font-semilight">
-          {String(time.second()).padStart(2, '0')}
-        </span>
+        <span className=" font-semilight">{String(time.second()).padStart(2, '0')}</span>
       </div>
     </div>
   );
