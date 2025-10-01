@@ -5,8 +5,8 @@ export default function Button({ children, variant = '', size = 'sm', disabled =
 
   const variants = {
     common: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#214294] shadow-3d',
-    cancel: 'bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060]',
-    confirm: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#1c3063]',
+    cancel: 'bg-[#636e8b] hover:bg-[#505b78] disabled:bg-[#495060] shadow-3d',
+    confirm: 'bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#1c3063] shadow-3d',
     mini: 'bg-[#eee] hover:bg-[#ddd] disabled:bg-[#ccc]',
     mini2: 'bg-[#3f3f3f94] hover:bg-[#22222295]',
   };

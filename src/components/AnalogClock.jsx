@@ -94,6 +94,7 @@ export default function AnalogClock() {
 
               {/* 초침 */}
               <div
+                ref={secondHandRef}
                 className="w-[1%] h-[38%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
                 bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
                 style={{
