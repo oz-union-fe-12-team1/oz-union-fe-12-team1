@@ -95,27 +95,19 @@ export function useConversations() {
 }
 // const { conversationsData, conversationsIsLoading, conversationsIsError } = useConversations();
 
-// !- - - - 운세 조회 - - - -
-export async function getFortune() {
-  const res = await api.get('/gemini/fortune');
+// !- - - - 오늘의 운세 (생일 필요) - - - -
+export async function getFortune(birthdate) {
+  const res = await api.get('/gemini/fortune', { params: { birthdate } });
   return res.data;
 }
-export function useFortune() {
-  const {
-    data: fortuneData,
-    isLoading: fortuneIsLoading,
-    isError: fortuneIsError,
-    ...rest
-  } = useQuery({
-    queryKey: [FORTUNE],
-    queryFn: getFortune,
-    // 생일이 있을 때만 실행
-    // staleTime: 1000 * 60 * 60 * 12,
-    // 오늘의 운세는 하루 단위로 바뀌니 12시간을 고민하였으나, 자정이 지날 때 queryClient.invalidateQueries({queryKey: ["fortune"]})을 해줘야 함. (useEffect로 초기화함수를 Timeout 지정해서..)
+export function useFortune(birthdate) {
+  return useQuery({
+    queryKey: [FORTUNE, birthdate],
+    queryFn: () => (birthdate ? getFortune(birthdate) : Promise.resolve(null)),
+    enabled: !!birthdate,
+    staleTime: 1000 * 60 * 60 * 12,
   });
-  return { fortuneData, fortuneIsLoading, fortuneIsError, ...rest };
 }
-// const { fortuneData, fortuneIsLoading, fortuneIsError } = useFortune();
 
 // !- - - - 현재 날씨 조회 (lat/lon 추가) - - - -
 export async function getTodayWeather(lat, lon) {
