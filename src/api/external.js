@@ -23,6 +23,7 @@ export function useNews(category) {
     data: newsData,
     isLoading: newsIsLoading,
     isError: newsIsError,
+    error: newsError,
     ...rest
   } = useQuery({
     queryKey: [NEWS, category],
@@ -30,7 +31,7 @@ export function useNews(category) {
     staleTime: 1000 * 60 * 5,
     //5분 동안은 캐시가 살아있어서, news를 재호출했을 때 캐시를 불러옴.
   });
-  return { newsData, newsIsLoading, newsIsError, ...rest };
+  return { newsData, newsIsLoading, newsIsError, newsError, ...rest };
 }
 // const { newsData, newsIsLoading, newsIsError } = useNews("politics");
 
