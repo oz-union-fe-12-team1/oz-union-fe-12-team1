@@ -30,8 +30,11 @@ export default function MainPage() {
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
   // const  { usersData, usersIsLoading, usersIsError } = useUsers();
   const usersData = adminData;
-  // const { getMyProfileData, getMyProfileIsLoading, getMyProfileIsError } = useGetMyProfile();
-  //
+
+  // const { user } = useAuth();
+  // const isSuper = user?.is_superuser;
+  // api 나오면 위에 두 개 주석 풀고 아래 한 줄 삭제
+  const isSuper = true;
 
   const handleBackToMain = () => setPageMode('main');
 
@@ -73,7 +76,7 @@ export default function MainPage() {
         <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
           {/* 헤더 vs 본문*/}
           <div className="grid grid-rows-[auto_1fr] gap-4 min-h-0 min-w-0">
-            <Header />
+            <Header isSuper={isSuper} />
 
             {/* 본문 - 위아래 1:2 비율 */}
             <div className="grid grid-rows-[1fr_2fr] gap-4 min-h-0 min-w-0">
