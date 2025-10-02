@@ -28,6 +28,8 @@ export default function MainPage() {
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
+  // const  { usersData, usersIsLoading, usersIsError } = useUsers();
+  const usersData = adminData;
 
   const handleBackToMain = () => setPageMode('main');
 
@@ -77,7 +79,7 @@ export default function MainPage() {
               <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 윗부분 왼 */}
                 <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0">
-                  {openAdminDashboard ? <AdminNewUpdate data={adminData} /> : <News />}
+                  {openAdminDashboard ? <AdminNewUpdate data={usersData} /> : <News />}
                 </div>
 
                 {/* 본문 윗부분 오 */}

@@ -40,8 +40,10 @@ export function AdminNewUpdate({ data }) {
     return data.users.filter((user) => user.created_at.slice(0, 10) === weekWhile[i]).length;
   });
 
+  const week = weekWhile.map((day) => day.split(/-/).slice(1).join('/'));
+
   const chartData = {
-    labels: weekWhile.map((day) => day.slice(6).replace(/-/, '/')),
+    labels: week,
     datasets: [
       {
         type: 'line',

@@ -4,7 +4,7 @@ import { adminData } from './adminData';
 import { Input } from '../ui/Input';
 import { IoSearch } from 'react-icons/io5';
 import { useDebounce } from '../../hook/useDebounce';
-import { useUserSearch } from '../../api/admin';
+// import { useUserSearch } from '../../api/admin';
 import { VscChromeClose } from 'react-icons/vsc';
 import { VscCircleLarge } from 'react-icons/vsc';
 import { formatDate } from '../../hook/useFormatDate';
@@ -14,10 +14,15 @@ export default function Admin() {
   const [inputValue, setInputValue] = useState('');
   const debouncedValue = useDebounce(inputValue);
 
-  const { userSearchData, userSearchIsLoading, userSearchIsError } = useUserSearch(debouncedValue);
+  // const { userSearchData, userSearchIsLoading, userSearchIsError } = useUserSearch(debouncedValue);
+
+  // api 들어오면 위 주석 풀고 아래 세 줄 지우기
+  const userSearchData = adminData;
+  const { userSearchIsLoading } = useState(false);
+  const { userSearchIsError } = useState(false);
 
   const filteredUsers =
-    mode === 'connecting' ? adminData.users.filter((u) => u.is_active) : adminData.users;
+    mode === 'connecting' ? userSearchData.users.filter((u) => u.is_active) : userSearchData.users;
 
   const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
 
