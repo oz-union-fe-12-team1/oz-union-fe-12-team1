@@ -44,7 +44,10 @@ export function PwConfirm() {
       new_password_check: form.confirm,
     };
     confirmPasswordResetMutate(payload, {
-      onSuccess: () => alert('성공띠'),
+      onSuccess: () => {
+        alert('성공띠');
+        navigate('/');
+      },
       onError: () => alert('실패띠...'),
     });
   }
