@@ -30,6 +30,8 @@ export default function MainPage() {
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
   // const  { usersData, usersIsLoading, usersIsError } = useUsers();
   const usersData = adminData;
+  // const { getMyProfileData, getMyProfileIsLoading, getMyProfileIsError } = useGetMyProfile();
+  //
 
   const handleBackToMain = () => setPageMode('main');
 

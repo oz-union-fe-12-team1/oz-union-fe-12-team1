@@ -1,4 +1,3 @@
-// import { useNavigate } from 'react-router-dom';
 import { useOpenAdminPage } from '../../store/useOpenAdminPage';
 import PinkCard from '../Mypage/common/PinkCard';
 import Button from '../ui/Button';
