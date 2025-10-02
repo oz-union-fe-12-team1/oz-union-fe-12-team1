@@ -6,7 +6,7 @@ import { MdOutlineMailOutline, MdChevronRight } from 'react-icons/md';
 import { useUser } from '../../../store/useUser';
 import { useLogout } from '../../../api/auth';
 
-export default function MypageMain({ me, onEdit, onPassword, onContact, onLogout }) {
+export default function MypageMain({ me, onEdit, onPassword, onContact }) {
   const topRef = useRef(null);
   const { clearUser } = useUser();
   const { logoutMutate } = useLogout();
