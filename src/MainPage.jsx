@@ -12,16 +12,16 @@ import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
 import { Quiz } from './components/quizPage/Quiz';
 import { adminData } from './components/adminPage/adminData';
-// import { AdminNew } from './components/adminPage/AdminNew';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
 import Header from './components/ui/Header';
 import Todo from './components/layout/Todo';
 import ScheduleForm from './components/layout/Scheduleform';
-import ClockComponent from './components/Clock';
 import ScheduleSummary from './components/ScheduleSummary';
 import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
+import GlareEffect from './components/GlareEffect';
+import AnalogClock from './components/AnalogClock';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -89,8 +89,9 @@ export default function MainPage() {
               {/* 본문 아랫부분 */}
               <div className="grid grid-cols-[1fr_3fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 아랫부분 왼 */}
-                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg min-w-0">
-                  <ClockComponent />
+                <div className="flex bg-[#22222295] items-center justify-center shadow-3d rounded-lg relative overflow-hidden">
+                  <AnalogClock />
+                  <GlareEffect />
                 </div>
 
                 {/* 대시보드 = 본문 아랫부분 오 */}

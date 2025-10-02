@@ -21,7 +21,7 @@ export default function Admin() {
 
   const searchedUser = debouncedValue ? (userSearchData ?? []) : filteredUsers;
 
-  const tableHead = ['이름', '접속여부', '관리자', '이름', '이메일', '가입일시', '계정차단'];
+  const tableHead = ['이름', '접속여부', '접속제한', '이름', '이메일', '가입일시', '계정차단'];
 
   return (
     <>
