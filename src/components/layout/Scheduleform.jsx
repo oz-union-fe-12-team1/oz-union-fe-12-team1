@@ -15,14 +15,24 @@ export default function ScheduleForm({
     setForm,
     addSchedule,
     deleteSchedule,
+    startEdit,
     cancelEdit,
   } = useSchedule();
 
   const [errors, setErrors] = useState("");
   const [filterDate, setFilterDate] = useState("");
-  const showList = filterDate
+  
+  const filteredList = filterDate
     ? list.filter(item => filterDate >= item.dateStart && filterDate <= item.dateEnd)
     : list;
+
+  const showList = [...filteredList].sort((a, b) => {
+    const dateA = new Date(a.start_time);
+    const dateB = new Date(b.start_time);
+    return dateA - dateB;
+  });
+
+  const isAllDay = !form.timeStart && !form.timeEnd;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,29 +57,24 @@ export default function ScheduleForm({
       return;
     }
 
-    if (!timeStart || !timeEnd) {
-      setErrors("시작/종료 시간을 모두 입력해주세요.");
-      return;
+    const isAllDayInput = !timeStart && !timeEnd;
+
+    if (!isAllDayInput) {
+      if (!timeStart || !timeEnd) {
+        setErrors("시작/종료 시간을 모두 입력해주세요.");
+        return;
+      }
+
+      const start_time = toISO(dateStart, timeStart);
+      const end_time = toISO(dateEnd, timeEnd);
+
+      if (new Date(start_time) >= new Date(end_time)) {
+        setErrors("종료시간은 시작시간보다 뒤여야 합니다.");
+        return;
+      }
     }
 
-    const start_time = toISO(dateStart, timeStart);
-    const end_time = toISO(dateEnd, timeEnd);
-
-    if (new Date(start_time) >= new Date(end_time)) {
-      setErrors("종료시간은 시작시간보다 뒤여야 합니다.");
-      return;
-    }
-
-    addSchedule({
-      title,
-      memo,
-      dateStart,
-      timeStart,
-      dateEnd,
-      timeEnd,
-      start_time,
-      end_time,
-    });
+    addSchedule(form);
   };
 
   const onBack = () => setOpenSchedule(false);
@@ -115,11 +120,11 @@ export default function ScheduleForm({
             openSchedule={openSchedule}
             list={showList}
             handleDelete={deleteSchedule}
+            handleEdit={startEdit}
           />
         </div>
       </div>
 
-      {/* 일정 추가/수정 폼 */}
       <form onSubmit={handleAdd} className="space-y-3">
         <div className="text-center py-2 font-semibold text-gray-800">
           일정추가
@@ -142,13 +147,12 @@ export default function ScheduleForm({
               name="timeStart"
               value={form.timeStart || ""}
               onChange={handleChange}
+              placeholder="선택사항"
               className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
-              required
             />
           </div>
         </div>
 
-        {/* 종료 날짜/시간 */}
         <div className="space-y-1">
           <label className="text-sm font-medium">종료</label>
           <div className="grid grid-cols-2 gap-2">
@@ -165,13 +169,18 @@ export default function ScheduleForm({
               name="timeEnd"
               value={form.timeEnd || ""}
               onChange={handleChange}
+              placeholder="선택사항"
               className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
-              required
             />
           </div>
         </div>
 
-        {/* 제목 */}
+        {isAllDay && (
+          <p className="text-xs text-blue-600 bg-blue-50 rounded-lg px-3 py-2">
+            시간을 입력하지 않으면 종일 일정으로 등록됩니다.
+          </p>
+        )}
+
         <input
           type="text"
           name="title"
@@ -182,7 +191,6 @@ export default function ScheduleForm({
           required
         />
 
-        {/* 메모 */}
         <textarea
           name="memo"
           placeholder="메모"
@@ -191,7 +199,6 @@ export default function ScheduleForm({
           className="w-full rounded-xl px-3 py-2 bg-white border border-gray-400"
         />
 
-        {/* 에러 메시지 */}
         {errors && (
           <p className="text-red-600 text-sm bg-white rounded-xl px-3 py-2 border border-red-200">
             {errors}

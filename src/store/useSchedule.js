@@ -31,22 +31,28 @@ export const useSchedule = create((set, get) => ({
 
       if (!src.title?.trim() || !src.dateStart || !src.dateEnd) return state;
 
-      if (!src.timeStart || !src.timeEnd) return state;
-      
-      const start_time = toISO(src.dateStart, src.timeStart);
-      const end_time = toISO(src.dateEnd, src.timeEnd);
-      
-      if (new Date(start_time) >= new Date(end_time)) return state;
+      const isAllDay = !src.timeStart && !src.timeEnd;
+      let start_time, end_time;
+      if (isAllDay) {
+        start_time = toISO(src.dateStart, "00:00");
+        end_time = toISO(src.dateEnd, "23:59");
+      } else {
+        if (!src.timeStart || !src.timeEnd) return state;
+        start_time = toISO(src.dateStart, src.timeStart);
+        end_time = toISO(src.dateEnd, src.timeEnd);
+        if (new Date(start_time) >= new Date(end_time)) return state;
+      }
 
       const base = {
         title: src.title.trim(),
         memo: src.memo || "",
         dateStart: src.dateStart,
-        timeStart: src.timeStart,
+        timeStart: src.timeStart || "00:00",
         dateEnd: src.dateEnd,
-        timeEnd: src.timeEnd,
+        timeEnd: src.timeEnd || "23:59",
         start_time,
         end_time,
+        all_day: isAllDay,
       };
 
       if (state.isEditing && state.editingId !== null) {
@@ -86,9 +92,9 @@ export const useSchedule = create((set, get) => ({
       return {
         form: {
           dateStart,
-          timeStart,
+          timeStart: item.all_day ? "" : timeStart,
           dateEnd,
-          timeEnd,
+          timeEnd: item.all_day ? "" : timeEnd,
           title: item.title,
           memo: item.memo ?? "",
         },
