@@ -8,9 +8,11 @@ import { useUser } from '../store/useUser';
 import { useLogin } from '../api/auth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Login() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
@@ -43,6 +45,7 @@ export function Login() {
     loginMutate(form, {
       onSuccess: async () => {
         alert('로그인 성공');
+        queryClient.invalidateQueries({ queryKey: ['myProfile'] });
         await getUser();
         navigate('/main');
       },
