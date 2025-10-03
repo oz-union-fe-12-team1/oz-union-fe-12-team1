@@ -11,7 +11,6 @@ import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
 import { Quiz } from './components/quizPage/Quiz';
-import { adminData } from './components/adminPage/adminData';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
 import Header from './components/ui/Header';
@@ -22,19 +21,18 @@ import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
 import GlareEffect from './components/GlareEffect';
 import AnalogClock from './components/AnalogClock';
+import { useUser } from './store/useUser';
+// import AnalogClock from './components/AnalogClock';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
-  // const  { usersData, usersIsLoading, usersIsError } = useUsers();
-  const usersData = adminData;
 
-  // const { user } = useAuth();
-  // const isSuper = user?.is_superuser;
+  const { user } = useUser();
+  const isSuper = user?.is_superuser;
   // api 나오면 위에 두 개 주석 풀고 아래 한 줄 삭제
-  const isSuper = true;
 
   const handleBackToMain = () => setPageMode('main');
 
@@ -84,7 +82,7 @@ export default function MainPage() {
               <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 윗부분 왼 */}
                 <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0">
-                  {openAdminDashboard ? <AdminNewUpdate data={usersData} /> : <News />}
+                  {openAdminDashboard ? <AdminNewUpdate /> : <News />}
                 </div>
 
                 {/* 본문 윗부분 오 */}

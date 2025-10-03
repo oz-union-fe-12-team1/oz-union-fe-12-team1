@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
+import { useUsers } from '../../api/admin';
 
 ChartJS.register(
   CategoryScale,
@@ -22,7 +23,9 @@ ChartJS.register(
   Legend,
 );
 
-export function AdminNewUpdate({ data }) {
+export function AdminNewUpdate() {
+  const { usersData } = useUsers();
+
   // 일주일 담은 배열
   const weekWhile = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
@@ -32,12 +35,12 @@ export function AdminNewUpdate({ data }) {
 
   // 그날그날 전체회원수
   const totalUserCounts = Array.from({ length: 7 }, (_, i) => {
-    return data.users.filter((user) => user.created_at.slice(0, 10) <= weekWhile[i]).length;
+    return usersData?.users.filter((user) => user.created_at.slice(0, 10) <= weekWhile[i]).length;
   });
 
   // 그날그날 신규회원수
   const weekUser = Array.from({ length: 7 }, (_, i) => {
-    return data.users.filter((user) => user.created_at.slice(0, 10) === weekWhile[i]).length;
+    return usersData?.users.filter((user) => user.created_at.slice(0, 10) === weekWhile[i]).length;
   });
 
   const week = weekWhile.map((day) => day.split(/-/).slice(1).join('/'));
