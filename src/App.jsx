@@ -7,8 +7,16 @@ import { SignUp } from './pages/SignUp';
 import PrivateRoute from './layout/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 import LoadingPage from './pages/LoadingPage';
+// import Admin from './components/Admin';
+import { useUser } from './store/useUser';
+import { useEffect } from 'react';
 
 function App() {
+  const { getUser } = useUser();
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
   return (
     <Routes>
       <Route path="/" element={<Login />} />

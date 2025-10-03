@@ -7,6 +7,7 @@ import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
+import { useConfirmPasswordReset, usePasswordReset } from '../api/auth';
 
 export function PwConfirm() {
   const navigate = useNavigate();
@@ -26,6 +27,9 @@ export function PwConfirm() {
   const [isInput, setIsInput] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
 
+  const { passwordResetMutate } = usePasswordReset();
+  const { confirmPasswordResetMutate } = useConfirmPasswordReset();
+
   function handleSubmit(e) {
     e.preventDefault();
     setTouched({
@@ -33,31 +37,36 @@ export function PwConfirm() {
       password: true,
       confirm: true,
     });
+
+    const payload = {
+      email: form.email,
+      new_password: form.password,
+      new_password_check: form.confirm,
+    };
+    confirmPasswordResetMutate(payload, {
+      onSuccess: () => {
+        alert('성공띠');
+        navigate('/');
+      },
+      onError: () => alert('실패띠...'),
+    });
   }
 
   const errors = newError(form);
 
-  const users = [{ email: 'test@gmail.com' }, { email: 'test1@gmail.com' }];
-
-  function emailConfirm(email) {
-    const value = String(email || '')
-      .trim()
-      .toLowerCase();
-
-    if (!value) {
+  function emailConfirm() {
+    const payload = { email: form.email };
+    if (!payload) {
       setPopupMessage('이메일을 입력하세요.');
-      setIsInput(true);
       return;
     }
-
-    const confirm = users.some((user) => (user.email || '').toLowerCase() === value);
-    if (confirm) {
-      setPopupMessage('확인되었습니다.');
-      setIsInput(true);
-    } else {
-      setPopupMessage('존재하지 않는 이메일입니다.');
-    }
-    setIsPopup(true);
+    passwordResetMutate(payload, {
+      onSuccess: () => {
+        alert('확인되었습니다.');
+        setIsInput(true);
+      },
+      onError: () => alert('존재하지않는 이메일 입니다.'),
+    });
   }
 
   const forms = form.password.length && form.confirm.length;

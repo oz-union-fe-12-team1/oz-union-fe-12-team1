@@ -7,6 +7,9 @@ import { newError } from '../utils/validate';
 import Button from '../components/ui/Button';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
+import { useVerify } from '../api/auth';
+import { useEmailSend } from '../api/auth';
+import { useRegisterUser } from '../api/auth';
 
 const CONTENT = {
   title: '[필수] 개인정보 수집·이용 동의',
@@ -23,14 +26,13 @@ export function SignUp() {
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
-    code: '',
     name: '',
     birth: '',
     password: '',
     confirm: '',
   });
-
-  const code = '1q2w3e4r';
+  const [emailCode, setEmailCode] = useState('');
+  // const code = '1q2w3e4r';
 
   const [touched, setTouched] = useState({
     email: false,
@@ -39,31 +41,14 @@ export function SignUp() {
     password: false,
     confirm: false,
   });
+
   const [isCodeInput, setIsCodeInput] = useState(true);
+  const [isEmailInput, setIsEmailInput] = useState(false);
   const [isFormInput, setIsFormInput] = useState(true);
   const [isSendModal, setIsSendModal] = useState(false);
   const [modalConfirm, setModalConfirm] = useState('');
   const [isModalConfirm, setIsModalConfirm] = useState(false);
   const [isConsent, setIsConsent] = useState(false);
-
-  const passwordPower = useMemo(() => {
-    let power = 0;
-    if (form.password.length >= 8) power += 1;
-    if (/[A-Za-z]/.test(form.password)) power += 1;
-    if (/\d/.test(form.password)) power += 1;
-    return power;
-  }, [form.password]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    setTouched({
-      email: true,
-      name: true,
-      birth: true,
-      password: true,
-      confirm: true,
-    });
-  }
 
   const errors = newError(form);
 
@@ -78,15 +63,76 @@ export function SignUp() {
   const noError = !errors.email && !errors.name && !errors.password && !errors.confirm;
   const onButton = agreed && noError && forms;
 
-  const codeConfirm = (emailCode) => {
-    if (emailCode === code) {
-      setModalConfirm('인증되었습니다.');
-      setIsModalConfirm(true);
-      setIsFormInput(false);
-    } else {
-      setModalConfirm('인증번호가 틀립니다.');
-      setIsModalConfirm(true);
-    }
+  const passwordPower = useMemo(() => {
+    let power = 0;
+    if (form.password.length >= 8) power += 1;
+    if (/[A-Za-z]/.test(form.password)) power += 1;
+    if (/\d/.test(form.password)) power += 1;
+    return power;
+  }, [form.password]);
+
+  const { registerUserMutate } = useRegisterUser();
+  const { resendMutate } = useEmailSend();
+  const { verifyMutate } = useVerify();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setTouched({
+      email: true,
+      name: true,
+      birth: true,
+      password: true,
+      confirm: true,
+    });
+    const payload = {
+      email: form.email,
+      password: form.password,
+      password_check: form.confirm,
+      username: form.name,
+      birthday: form.birth,
+    };
+
+    registerUserMutate(payload, {
+      onSuccess: () => {
+        navigate('/');
+      },
+      onError: () => {
+        setModalConfirm('오류');
+        setIsModalConfirm(true);
+      },
+    });
+  }
+
+  const emailSend = () => {
+    // const payload = { email: form.email };
+    resendMutate(form.email, {
+      onSuccess: () => {
+        setIsEmailInput(true);
+        setIsCodeInput(false);
+        setIsSendModal(true);
+      },
+      onError: () => alert('실패했당..'),
+    });
+  };
+
+  const codeConfirm = () => {
+    // if (emailCode === code) {
+    //   setModalConfirm('인증되었습니다.');
+    //   setIsModalConfirm(true);
+    //   setIsFormInput(false);
+    // } else {
+    //   setModalConfirm('인증번호가 틀립니다.');
+    //   setIsModalConfirm(true);
+    // }
+
+    const payload = { code: emailCode, email: form.email };
+    verifyMutate(payload, {
+      onSuccess: () => {
+        alert('인증 성공~');
+        setIsFormInput(false);
+      },
+      onError: () => alert('인증 실패'),
+    });
   };
 
   const footer = () => {
@@ -98,7 +144,6 @@ export function SignUp() {
           size="md"
           disabled={!onButton}
           form="signupForm"
-          onClick={() => navigate('/')}
         >
           회원가입
         </LoginButton>
@@ -164,16 +209,14 @@ export function SignUp() {
               }}
               onBlur={() => setTouched((t) => ({ ...t, email: true }))}
               error={touched.email ? errors.email : ''}
+              disabled={isEmailInput}
             />
             <button
               type="button"
               className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
                 rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
-              disabled={!(form.email.length && !errors.email)}
-              onClick={() => {
-                setIsCodeInput(false);
-                setIsSendModal(true);
-              }}
+              disabled={!(form.email.length && !errors.email) || isEmailInput}
+              onClick={() => emailSend()}
             >
               인증번호 발송
             </button>
@@ -183,9 +226,9 @@ export function SignUp() {
               label={'인증번호'}
               type={'text'}
               placeholder="인증번호를 입력하세요"
-              value={form.code}
+              value={emailCode}
               onChange={(e) => {
-                setForm((code) => ({ ...code, code: e.target.value }));
+                setEmailCode(e.target.value);
               }} //state 업데이트
               disabled={isCodeInput}
             />
@@ -193,8 +236,8 @@ export function SignUp() {
               type="button"
               className="flex justify-center items-center h-[30px] border-[1px] text-neutral-300
                 rounded-[5px] p-[2px] border-[#3f3f3f] bg-[#3f3f3f90] hover:bg-[#22222295] pr-1 pl-1 disabled:hover:bg-[#3f3f3f90]"
-              disabled={!form.code.length}
-              onClick={() => codeConfirm(form.code)}
+              disabled={!emailCode.length}
+              onClick={() => codeConfirm()}
             >
               인증번호 확인
             </button>

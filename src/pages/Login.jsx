@@ -4,12 +4,15 @@ import { LoginInput } from '../components/ui/LoginInput';
 import LoginButton from '../components/ui/LoginButtons';
 import { useNavigate } from 'react-router-dom';
 import { newError } from '../utils/validate';
-import { useAuth } from '../store/useAuth';
+import { useUser } from '../store/useUser';
+import { useLogin } from '../api/auth';
 import { LoginInputPassword } from '../components/ui/LoginInputPassword';
 import Header from '../components/ui/Header';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Login() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const openModal = true;
   const [form, setForm] = useState({
     email: '',
@@ -20,7 +23,9 @@ export function Login() {
     password: false,
   });
 
-  const login = useAuth((s) => s.login);
+  const { loginMutate } = useLogin();
+  const { getUser } = useUser();
+  // const { socialLoginMutate, socialLoginError } = useSocialLogin();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -29,13 +34,25 @@ export function Login() {
       password: true,
     });
 
-    try {
-      await login({ email: form.email, password: form.password });
-      navigate('/main');
-    } catch (err) {
-      console.log(err);
-      alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-    }
+    // try {
+    //   await login({ email: form.email, password: form.password });
+    //   navigate('/main');
+    // } catch (err) {
+    //   console.log(err);
+    //   alert('이메일 또는 비밀번호가 올바르지 않습니다.1111');
+    // }
+
+    loginMutate(form, {
+      onSuccess: async () => {
+        alert('로그인 성공');
+        queryClient.invalidateQueries({ queryKey: ['myProfile'] });
+        await getUser();
+        navigate('/main');
+      },
+      onError: () => {
+        alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+      },
+    });
   }
 
   const errors = newError(form);
@@ -44,7 +61,17 @@ export function Login() {
   const noError = !errors.email && !errors.password;
   const onButton = noError && mustFilled;
 
-  const googleLogin = () => {};
+  const googleLogin = () => {
+    // socialLoginMutate(undefined, {
+    //   onSuccess: async () => {
+    //     await getUser();
+    //     navigate('/main');
+    //   },
+    //   onError: () => {
+    //     alert('오류가 발생했습니다.');
+    //   },
+    // });
+  };
 
   const footer = () => {
     return (
