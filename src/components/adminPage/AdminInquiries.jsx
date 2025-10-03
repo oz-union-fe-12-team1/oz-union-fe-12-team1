@@ -3,11 +3,13 @@ import { inquiryData } from '../../api/dummyData/dummyInquiries';
 
 export function AdminInquiries() {
   // const { allInquiriesData, allInquiriesIsLoading, allInquiriesIsError } = useAllInquiries();
-  // api 들어오면 inquiryData를 allInquiriesData로 변경하면 됨.
 
+  // api 들어오면 주석 풀고 아래 세 줄 지우기
+  const allInquiriesData = inquiryData;
   const [allInquiriesIsLoading] = useState(false);
   const [allInquiriesIsError] = useState(false);
-  const pendingData = inquiryData.items.filter((item) => item.status === 'pending');
+
+  const pendingData = allInquiriesData.items.filter((item) => item.status === 'pending');
 
   return (
     <>
@@ -25,11 +27,11 @@ export function AdminInquiries() {
                 ${
                   pendingData.length === 0
                     ? 'text-[#1b99f9]'
-                    : inquiryData.total * 0.3 >= pendingData.length
+                    : allInquiriesData.total * 0.3 >= pendingData.length
                       ? 'text-[#10b610]'
-                      : inquiryData.total * 0.6 >= pendingData.length
+                      : allInquiriesData.total * 0.6 >= pendingData.length
                         ? 'text-[#f80]'
-                        : inquiryData.total * 0.6 < pendingData.length
+                        : allInquiriesData.total * 0.6 < pendingData.length
                           ? 'text-[#d82121]'
                           : 'text-black'
                 }  
@@ -38,7 +40,7 @@ export function AdminInquiries() {
                 {pendingData.length}
               </span>
               <span className="text-2xl"> / </span>
-              <span className="relative top-2 text-[1.8rem]">{inquiryData.total}</span>
+              <span className="relative top-2 text-[1.8rem]">{allInquiriesData.total}</span>
             </div>
           )}
         </div>

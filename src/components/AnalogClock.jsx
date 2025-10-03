@@ -85,7 +85,7 @@ export default function AnalogClock() {
 
               {/* 분침 */}
               <div
-                className="w-[1.4%] lg:h-[35%] h-[32%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
+                className="w-[1.4%] lg:h-[30%] h-[25%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
                 bg-gradient-to-b from-[#1c3c57] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${minutes * 6}deg)`,
@@ -95,7 +95,7 @@ export default function AnalogClock() {
               {/* 초침 */}
               <div
                 ref={secondHandRef}
-                className="w-[1%] lg:h-[28%] h-[25%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
+                className="w-[1%] lg:h-[28%] h-[22%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
                 bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${secondAngle}deg)`,

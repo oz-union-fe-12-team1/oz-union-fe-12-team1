@@ -1,4 +1,3 @@
-// import { useNavigate } from 'react-router-dom';
 import { useOpenAdminPage } from '../../store/useOpenAdminPage';
 import PinkCard from '../Mypage/common/PinkCard';
 import Button from '../ui/Button';
@@ -9,7 +8,6 @@ import { useTicketsStore } from '../../store/useTicketsStore';
 import { useMainPage } from '../../store/useMainPage';
 import { useUser } from '../../store/useUser';
 import { useLogout } from '../../api/auth';
-import { UndoIcon } from 'lucide-react';
 
 export default function AdminMypage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
@@ -28,8 +26,6 @@ export default function AdminMypage() {
       },
     });
   };
-
-  // const navigate = useNavigate();
 
   const [contactOpen, setContactOpen] = useState(false);
   const [contactTab, setContactTab] = useState('reply');

@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-
+// 삭제 예정 ( 원차트 )
 export function AdminNew({ data }) {
   // 오늘
   const today = new Date();

@@ -11,7 +11,6 @@ import FiveDayWeather from './components/weather/FiveDayWeather';
 import TodayFortune from './components/TodayFortune';
 import BriefingSection from './components/briefing/BriefingSection';
 import { Quiz } from './components/quizPage/Quiz';
-import { adminData } from './components/adminPage/adminData';
 import BackButton from './components/ui/BackButton';
 import { AdminInquiries } from './components/adminPage/AdminInquiries';
 import Header from './components/ui/Header';
@@ -22,12 +21,17 @@ import { useOpenMyPage } from './store/useOpenMypage';
 import { AdminNewUpdate } from './components/adminPage/AdminNewUpdate';
 import GlareEffect from './components/GlareEffect';
 import AnalogClock from './components/AnalogClock';
+import { useUser } from './store/useUser';
+// import AnalogClock from './components/AnalogClock';
 
 export default function MainPage() {
   const { openAdminPage, setOpenAdminPage } = useOpenAdminPage();
   const { openAdminDashboard } = useOpenAdminDashboard();
   const { pageMode, setPageMode } = useMainPage();
   const { openMyPage, setOpenMyPage } = useOpenMyPage();
+
+  const { user } = useUser();
+  const isSuper = user?.is_superuser;
 
   const handleBackToMain = () => setPageMode('main');
 
@@ -69,7 +73,7 @@ export default function MainPage() {
         <div className="grid h-full grid-cols-[4fr_1fr] gap-4 min-w-0">
           {/* 헤더 vs 본문*/}
           <div className="grid grid-rows-[auto_1fr] gap-4 min-h-0 min-w-0">
-            <Header />
+            <Header isSuper={isSuper} />
 
             {/* 본문 - 위아래 1:2 비율 */}
             <div className="grid grid-rows-[1fr_2fr] gap-4 min-h-0 min-w-0">
@@ -77,7 +81,7 @@ export default function MainPage() {
               <div className="grid grid-cols-[3fr_2fr] gap-4 min-h-0 min-w-0">
                 {/* 본문 윗부분 왼 */}
                 <div className="bg-[#22222295] shadow-3d rounded-lg p-6 flex flex-col overflow-y-auto min-w-0">
-                  {openAdminDashboard ? <AdminNewUpdate data={adminData} /> : <News />}
+                  {openAdminDashboard ? <AdminNewUpdate /> : <News />}
                 </div>
 
                 {/* 본문 윗부분 오 */}
