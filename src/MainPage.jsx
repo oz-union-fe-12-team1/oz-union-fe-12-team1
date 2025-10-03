@@ -32,7 +32,6 @@ export default function MainPage() {
 
   const { user } = useUser();
   const isSuper = user?.is_superuser;
-  // api 나오면 위에 두 개 주석 풀고 아래 한 줄 삭제
 
   const handleBackToMain = () => setPageMode('main');
 
