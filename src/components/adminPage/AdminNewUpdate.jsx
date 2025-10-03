@@ -26,7 +26,7 @@ ChartJS.register(
 export function AdminNewUpdate() {
   const { usersData } = useUsers();
 
-  // 일주일 담은 배열
+  // 일주일치 담은 배열
   const weekWhile = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
     date.setDate(date.getDate() - (6 - i));
