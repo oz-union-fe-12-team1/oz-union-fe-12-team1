@@ -1,49 +1,58 @@
-import { todayWeatherDummy } from '../../api/dummyData/dummyWeather';
+import { weatherIconMap, mapIconCode } from '../../utils/weatherIcons';
+import useLocation from '../../hook/useLocation';
+import { useTodayWeather } from '../../api/external';
+import { DEFAULT_LOCATION } from './location';
 
 export default function TodayWeather() {
-  const d = todayWeatherDummy;
-  const iconUrl = `https://openweathermap.org/img/wn/${d.weather_icon}@4x.png`;
+  const { location, error } = useLocation();
+  const coords = location || DEFAULT_LOCATION;
+
+  const { data: d, isLoading, isError, error: apiError } = useTodayWeather(coords);
+
+  if (isLoading) return <div className="text-neutral-400">날씨 불러오는 중...</div>;
+  if (isError)
+    return (
+      <div className="text-red-400">
+        날씨 불러오기 실패 ({apiError?.response?.data?.message || apiError?.message})
+      </div>
+    );
+  if (!d) return <div className="text-neutral-400">날씨 정보가 없습니다.</div>;
+
+  const iconKey = mapIconCode(d?.weather_icon || '');
+  const Icon = weatherIconMap[iconKey] || weatherIconMap.cloudy;
 
   return (
-    <div className="flex flex-col gap-4 h-full min-h-0">
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scroll">
-        <div className="h-full p-3 grid grid-rows-[auto_auto] gap-4 rounded-xl bg-black/30 border border-neutral-800/60">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="relative shrink-0">
-              <img src={iconUrl} alt="weather" className="w-28 sm:w-32 h-auto object-contain" />
-              <div className="absolute top-1 left-1 text-[11px] px-2 py-0.5 rounded bg-black/50 border border-white/10">
-                내 현재 위치
-              </div>
-            </div>
+    <div className="flex flex-col gap-4 h-full">
+      {error && (
+        <div className="text-neutral-400 text-sm">
+          현재 위치 확인이 어려워 서울 날씨로 대신합니다.
+        </div>
+      )}
 
-            <div className="ml-auto pr-1 flex flex-col items-end justify-center flex-shrink min-w-0">
-              <div className="font-extrabold leading-none text-[clamp(1.5rem,5vw,3.5rem)] truncate">
-                {d.current_temp}°
-              </div>
-              <div className="text-xs sm:text-sm text-neutral-300 mt-1 text-right whitespace-nowrap">
-                <span className="text-red-400 font-bold">최고 {d.max_temp}°</span> /{' '}
-                <span className="text-blue-400 font-bold">최저 {d.min_temp}°</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { k: '습도', v: `${d.humidity}%` },
-              { k: '강수량', v: `${d.precipitation} mm` },
-              { k: '미세먼지', v: `${d.pm10} ㎍/m³` },
-            ].map((it) => (
-              <div
-                key={it.k}
-                className="rounded-xl bg-neutral-800/70 border border-neutral-700 px-2 py-2 flex flex-col items-center justify-center"
-              >
-                <div className="text-sm text-neutral-400">{it.k}</div>
-                <div className="text-base font-semibold leading-tight">{it.v}</div>
-              </div>
-            ))}
+      <div className="flex items-center gap-3">
+        <Icon className="w-20 h-20 text-blue-300" strokeWidth={1.5} />
+        <div className="ml-auto text-right">
+          <div className="text-4xl font-bold">{d?.current_temp ?? '-'}°</div>
+          <div className="text-sm text-neutral-400">
+            최고 {d?.max_temp ?? '-'}° / 최저 {d?.min_temp ?? '-'}°
           </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        <InfoCard label="습도" value={d?.humidity != null ? `${d.humidity}%` : '-'} />
+        <InfoCard label="강수량" value={d?.precipitation != null ? `${d.precipitation}mm` : '-'} />
+        <InfoCard label="미세먼지" value={d?.pm10 != null ? `${d.pm10}㎍/m³` : '-'} />
+      </div>
+    </div>
+  );
+}
+
+function InfoCard({ label, value }) {
+  return (
+    <div className="rounded-xl bg-neutral-800/70 border border-neutral-700 px-2 py-2 flex flex-col items-center">
+      <div className="text-sm text-neutral-400">{label}</div>
+      <div className="text-base font-semibold">{value}</div>
     </div>
   );
 }

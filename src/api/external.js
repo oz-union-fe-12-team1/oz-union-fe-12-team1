@@ -15,7 +15,7 @@ const WEATHER = 'weather';
 
 // !- - - - 카테고리별 최신 뉴스 헤드라인 및 링크 가져오기 - - - -
 export async function getNews(category) {
-  const res = await api.get(`/news/${category}`);
+  const res = await api.get('/news', { params: { category } });
   return res.data;
 }
 export function useNews(category) {
@@ -23,6 +23,7 @@ export function useNews(category) {
     data: newsData,
     isLoading: newsIsLoading,
     isError: newsIsError,
+    error: newsError,
     ...rest
   } = useQuery({
     queryKey: [NEWS, category],
@@ -30,7 +31,7 @@ export function useNews(category) {
     staleTime: 1000 * 60 * 5,
     //5분 동안은 캐시가 살아있어서, news를 재호출했을 때 캐시를 불러옴.
   });
-  return { newsData, newsIsLoading, newsIsError, ...rest };
+  return { newsData, newsIsLoading, newsIsError, newsError, ...rest };
 }
 // const { newsData, newsIsLoading, newsIsError } = useNews("politics");
 
@@ -95,65 +96,46 @@ export function useConversations() {
 }
 // const { conversationsData, conversationsIsLoading, conversationsIsError } = useConversations();
 
-// !- - - - 운세 조회 - - - -
-export async function getFortune() {
-  const res = await api.get('/gemini/fortune');
+// !- - - - 오늘의 운세 (생일 필요) - - - -
+export async function getFortune(birthdate) {
+  const res = await api.get('/gemini/fortune', { params: { birthdate } });
   return res.data;
 }
-export function useFortune() {
-  const {
-    data: fortuneData,
-    isLoading: fortuneIsLoading,
-    isError: fortuneIsError,
-    ...rest
-  } = useQuery({
-    queryKey: [FORTUNE],
-    queryFn: getFortune,
-    // 생일이 있을 때만 실행
-    // staleTime: 1000 * 60 * 60 * 12,
-    // 오늘의 운세는 하루 단위로 바뀌니 12시간을 고민하였으나, 자정이 지날 때 queryClient.invalidateQueries({queryKey: ["fortune"]})을 해줘야 함. (useEffect로 초기화함수를 Timeout 지정해서..)
+export function useFortune(birthdate) {
+  return useQuery({
+    queryKey: [FORTUNE, birthdate],
+    queryFn: () => (birthdate ? getFortune(birthdate) : Promise.resolve(null)),
+    enabled: !!birthdate,
+    staleTime: 1000 * 60 * 60 * 12,
   });
-  return { fortuneData, fortuneIsLoading, fortuneIsError, ...rest };
 }
-// const { fortuneData, fortuneIsLoading, fortuneIsError } = useFortune();
 
-// !- - - - 현재 날씨 조회 - - - -
-export async function getWeather() {
-  const res = await api.get('/weather');
+// !- - - - 현재 날씨 조회 (lat/lon 추가) - - - -
+export async function getTodayWeather(lat, lon) {
+  const res = await api.get('/weather', { params: { lat, lon } });
   return res.data;
 }
-export function useWeather() {
-  const {
-    data: weatherData,
-    isLoading: weatherIsLoading,
-    isError: weatherIsError,
-    ...rest
-  } = useQuery({
-    queryKey: [WEATHER],
-    queryFn: getWeather,
-    staleTime: 1000 * 60 * 1,
+export function useTodayWeather(location) {
+  return useQuery({
+    queryKey: [WEATHER, 'today', location?.lat, location?.lon],
+    queryFn: () => (location ? getTodayWeather(location.lat, location.lon) : Promise.resolve(null)),
+    enabled: !!location,
+    staleTime: 1000 * 60 * 5,
   });
-  return { weatherData, weatherIsLoading, weatherIsError, ...rest };
 }
-// const { weatherData, weatherIsLoading, weatherIsError } = useWeather();
 
-// !- - - - 5일 날씨 예보 조회 - - - -
-export async function getWeatherForecast() {
-  const res = await api.get('/weather/forecast');
+// !- - - - 5일 날씨 예보 조회 (lat/lon 추가) - - - -
+export async function getFiveDayWeather(lat, lon) {
+  const res = await api.get('/weather/forecast', { params: { lat, lon } });
   return res.data;
 }
-export function useWeatherForecast() {
-  const {
-    data: weatherForecastData,
-    isLoading: weatherForecastIsLoading,
-    isError: weatherForecastIsError,
-    ...rest
-  } = useQuery({
-    queryKey: ['weatherForecast'],
-    queryFn: getWeatherForecast,
+export function useFiveDayWeather(location) {
+  return useQuery({
+    queryKey: [WEATHER, 'five', location?.lat, location?.lon],
+    queryFn: () => (location ? getFiveDayWeather(location.lat, location.lon) : Promise.resolve([])),
+    enabled: !!location,
     staleTime: 1000 * 60 * 30,
   });
-  return { weatherForecastData, weatherForecastIsLoading, weatherForecastIsError, ...rest };
 }
 // const { weatherData, weatherIsLoading, weatherIsError } = useWeather();
 
