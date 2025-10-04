@@ -86,7 +86,7 @@ export default function TodoList({
           <button
             type="submit"
             disabled={!form.title.trim()}
-            className="flex-1 px-4 py-3 bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-gray-400 text-white rounded-lg text-sm font-medium disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 bg-[#2d5b81] hover:bg-[#1b4567] disabled:bg-[#555] rounded-lg text-sm font-medium disabled:cursor-not-allowed"
           >
             {isEditing ? '수정' : '추가'}
           </button>
