@@ -60,7 +60,7 @@ export default function Chatbot() {
                   type="checkbox"
                   checked={item.is_completed}
                   onChange={() => toggleTodo(item.id)}
-                  className="w-5 h-5"
+                  className="w-5 h-5 accent-[#2d5b81]"
                 />
                 <label
                   htmlFor={`todo-${item.id}`}

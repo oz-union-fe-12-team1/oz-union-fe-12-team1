@@ -328,6 +328,7 @@ export function SignUp() {
               type="checkbox"
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
+              className="accent-[#2d5b81]"
             ></input>
             <label htmlFor="cb" className="text-neutral-200 select-none text-[12px]">
               개인 정보 수집 이용 동의 (필수)

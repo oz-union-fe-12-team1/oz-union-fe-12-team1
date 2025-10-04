@@ -1,17 +1,17 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 const initialForm = {
-  dateStart: "",
-  timeStart: "",
-  dateEnd: "",
-  timeEnd: "",
-  title: "",
-  memo: "",
+  dateStart: '',
+  timeStart: '',
+  dateEnd: '',
+  timeEnd: '',
+  title: '',
+  memo: '',
 };
 
 const toISO = (d, t) => {
-  const [Y, M, D] = (d || "").split("-").map(Number);
-  const [h = 0, m = 0] = (t || "00:00").split(":").map(Number);
+  const [Y, M, D] = (d || '').split('-').map(Number);
+  const [h = 0, m = 0] = (t || '00:00').split(':').map(Number);
   const dt = new Date(Y, M - 1, D, h, m, 0);
   return dt.toISOString();
 };
@@ -34,8 +34,8 @@ export const useSchedule = create((set, get) => ({
       const isAllDay = !src.timeStart && !src.timeEnd;
       let start_time, end_time;
       if (isAllDay) {
-        start_time = toISO(src.dateStart, "00:00");
-        end_time = toISO(src.dateEnd, "23:59");
+        start_time = toISO(src.dateStart, '00:00');
+        end_time = toISO(src.dateEnd, '23:59');
       } else {
         if (!src.timeStart || !src.timeEnd) return state;
         start_time = toISO(src.dateStart, src.timeStart);
@@ -45,11 +45,11 @@ export const useSchedule = create((set, get) => ({
 
       const base = {
         title: src.title.trim(),
-        memo: src.memo || "",
+        memo: src.memo || '',
         dateStart: src.dateStart,
-        timeStart: src.timeStart || "00:00",
+        timeStart: src.timeStart || null,
         dateEnd: src.dateEnd,
-        timeEnd: src.timeEnd || "23:59",
+        timeEnd: src.timeEnd || null,
         start_time,
         end_time,
         all_day: isAllDay,
@@ -57,9 +57,7 @@ export const useSchedule = create((set, get) => ({
 
       if (state.isEditing && state.editingId !== null) {
         return {
-          list: state.list.map((it) =>
-            it.id === state.editingId ? { ...it, ...base } : it
-          ),
+          list: state.list.map((it) => (it.id === state.editingId ? { ...it, ...base } : it)),
           form: { ...initialForm },
           isEditing: false,
           editingId: null,
@@ -82,7 +80,7 @@ export const useSchedule = create((set, get) => ({
     set(() => {
       const st = new Date(item.start_time);
       const et = new Date(item.end_time);
-      const pad = (n) => String(n).padStart(2, "0");
+      const pad = (n) => String(n).padStart(2, '0');
 
       const dateStart = `${st.getFullYear()}-${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
       const timeStart = `${pad(st.getHours())}:${pad(st.getMinutes())}`;
@@ -92,11 +90,11 @@ export const useSchedule = create((set, get) => ({
       return {
         form: {
           dateStart,
-          timeStart: item.all_day ? "" : timeStart,
+          timeStart: item.all_day ? '' : timeStart,
           dateEnd,
-          timeEnd: item.all_day ? "" : timeEnd,
+          timeEnd: item.all_day ? '' : timeEnd,
           title: item.title,
-          memo: item.memo ?? "",
+          memo: item.memo ?? '',
         },
         isEditing: true,
         editingId: item.id,
