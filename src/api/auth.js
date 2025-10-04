@@ -52,6 +52,19 @@ export function useSocialLogin() {
   } = useMutation({ mutationFn: socialLogin });
   return { socialLoginMutate, socialLoginError, ...rest };
 }
+
+export async function googleCallback({ code }) {
+  const res = await api.get(`/auth/google/callback?code=${code}`);
+  return res.data;
+}
+export function useGoogleCallback() {
+  const {
+    mutate: googleCallbackMutate,
+    error: googleCallbackError,
+    ...rest
+  } = useMutation({ mutationFn: googleCallback });
+  return { googleCallbackMutate, googleCallbackError, ...rest };
+}
 // const { socialLoginMutate, socialLoginError } = useSocialLogin();
 // socialLoginMutate(form)
 
