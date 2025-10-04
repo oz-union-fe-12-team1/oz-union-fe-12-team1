@@ -85,7 +85,7 @@ export default function AnalogClock() {
 
               {/* 분침 */}
               <div
-                className="w-[1.4%] lg:h-[30%] h-[25%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
+                className="w-[1.4%] lg:h-[29%] h-[24%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_15px_#000] transition-transform duration-1000 ease-linear z-30
                 bg-gradient-to-b from-[#1c3c57] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${minutes * 6}deg)`,
@@ -95,7 +95,7 @@ export default function AnalogClock() {
               {/* 초침 */}
               <div
                 ref={secondHandRef}
-                className="w-[1%] lg:h-[28%] h-[22%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
+                className="w-[0.8%] lg:h-[27%] h-[22%] absolute top-[50%] left-[50%] origin-bottom shadow-[0_0_20px_#000] z-30
                 bg-gradient-to-b from-[#122a3f] via-[#1e4564] to-[#2d5b81]"
                 style={{
                   transform: `translateX(-50%) translateY(-100%) rotate(${secondAngle}deg)`,
@@ -112,7 +112,7 @@ export default function AnalogClock() {
 
       {/* 디지털 시간 표시 */}
       <div
-        className="flex-shrink-0 flex flex-col justify-center items-center gap-2 lg:gap-1 lg:mb-5 lg:flex-row text-center bg-gradient-to-r from-[#17334c] via-[#1e4564] to-[#234c6d] bg-clip-text text-transparent text-3xl lg:text-5xl"
+        className="flex-shrink-0 flex flex-col justify-center items-center gap-2 lg:gap-1 lg:mb-5 mb-3 lg:flex-row text-center bg-gradient-to-r from-[#17334c] via-[#1e4564] to-[#234c6d] bg-clip-text text-transparent text-3xl lg:text-5xl"
         style={{ textShadow: '0 0 15px black' }}
       >
         <span className=" font-semilight">{String(time.hour()).padStart(2, '0')}</span>
