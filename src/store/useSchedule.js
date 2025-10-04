@@ -82,7 +82,7 @@ export const useSchedule = create((set, get) => ({
       const et = new Date(item.end_time);
       const pad = (n) => String(n).padStart(2, '0');
 
-      const dateStart = `${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
+      const dateStart = `${st.getFullYear()}-${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
       const timeStart = `${pad(st.getHours())}:${pad(st.getMinutes())}`;
       const dateEnd = `${et.getFullYear()}-${pad(et.getMonth() + 1)}-${pad(et.getDate())}`;
       const timeEnd = `${pad(et.getHours())}:${pad(et.getMinutes())}`;

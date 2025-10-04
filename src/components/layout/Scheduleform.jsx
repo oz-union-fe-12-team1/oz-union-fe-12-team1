@@ -73,7 +73,7 @@ export default function ScheduleForm({
   const onBack = () => setOpenSchedule(false);
 
   return (
-    <div className="rounded-xl bg-[#1c1c1c] border border-[#333] p-4 space-y-3 h-full flex flex-col relative">
+    <div className="rounded-xl bg-[#1c1c1c] border border-[#333] p-4 space-y-3 h-full flex flex-col relative overflow-hidden">
       <button
         type="button"
         onClick={onBack}
@@ -163,11 +163,13 @@ export default function ScheduleForm({
             />
           </div>
         </div>
-        {isAllDay && (
-          <p className="text-xs text-[#777] px-3 py-2">
-            시간을 입력하지 않으면 종일 일정으로 등록됩니다.
-          </p>
-        )}
+        <div className="h-10">
+          {isAllDay && (
+            <p className="text-xs text-[#777] px-3 py-2">
+              시간을 입력하지 않으면 종일 일정으로 등록됩니다.
+            </p>
+          )}
+        </div>
         <input
           type="text"
           name="title"
