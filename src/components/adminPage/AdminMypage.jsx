@@ -7,7 +7,7 @@ import { useTicketsStore } from '../../store/useTicketsStore';
 import { useMainPage } from '../../store/useMainPage';
 import { useUser } from '../../store/useUser';
 import { useLogout } from '../../api/auth';
-import { VscAccount } from 'react-icons/vsc';
+import { VscAccount, VscChromeClose } from 'react-icons/vsc';
 import { MdOutlineMailOutline } from 'react-icons/md';
 
 export default function AdminMypage() {
@@ -69,7 +69,7 @@ export default function AdminMypage() {
             <div className="flex flex-col gap-2">
               <p className="text-sm text-[#999]">[회원정보]</p>
               <button
-                className="border-b pb-10 border-[#444] w-full justify-start flex hover:underline"
+                className="border-b pb-10 border-[#444] w-full justify-start flex hover:text-[#999]"
                 onClick={() => {
                   setOpenAdminDashboard(!openAdminDashboard);
                   if (openAdminDashboard) {
@@ -80,7 +80,10 @@ export default function AdminMypage() {
                 }}
               >
                 {openAdminDashboard ? (
-                  <p>숨기기</p>
+                  <div className="flex items-center gap-2">
+                    <VscChromeClose />
+                    <p>숨기기</p>
+                  </div>
                 ) : (
                   <div className="flex items-center gap-2">
                     <VscAccount size={20} />
@@ -92,10 +95,10 @@ export default function AdminMypage() {
 
             <div className="flex flex-col gap-2">
               <p className="text-sm text-[#999]">[문의 답변]</p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 hover:text-[#999]">
                 <MdOutlineMailOutline size={24} />
                 <button
-                  className="w-full justify-start flex hover:underline"
+                  className="w-full justify-start flex"
                   onClick={() => {
                     setContactTab('reply'); // 관리자 전용 탭으로 진입
                     setContactOpen(true); // 모달 열기
