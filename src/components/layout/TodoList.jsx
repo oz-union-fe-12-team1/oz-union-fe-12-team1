@@ -43,7 +43,7 @@ export default function TodoList({
                   type="checkbox"
                   checked={item.completed || false}
                   onChange={() => onToggle(item.id)}
-                  className="w-4 h-4"
+                  className="w-4 h-4 accent-[#2d5b81]"
                 />
                 <div className={`flex-1 ${item.completed && 'line-through text-[#555]'}`}>
                   {item.title}

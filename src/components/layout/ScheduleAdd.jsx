@@ -2,7 +2,7 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
   return (
     <div className="h-full flex flex-col overflow-hidden">
       {list.length === 0 ? (
-        <p className="text-gray-500 text-center py-4">등록된 일정이 없습니다.</p>
+        <p className="text-[#555] text-center py-4">등록된 일정이 없습니다.</p>
       ) : (
         <div className="overflow-y-auto custom-scroll space-y-2 flex-1 min-h-0">
           {list.map((item) => (
@@ -45,7 +45,7 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
                 <span className="flex justify-center mt-1">{item.title}</span>
 
                 {/* 메모 */}
-                {item.memo && <span className="text-gray-700 text-mt">{item.memo}</span>}
+                {item.memo && <span className="text-[#1b4567] text-mt">{item.memo}</span>}
               </div>
 
               {/* 수정/삭제 버튼 */}

@@ -184,7 +184,7 @@ export default function ScheduleForm({
           placeholder="메모"
           value={form.memo || ''}
           onChange={handleChange}
-          className="w-full rounded-xl px-3 py-2 border border-[#555]"
+          className="w-full rounded-xl px-3 py-2 border border-[#555]  resize-none"
         />
         {errors && (
           <p className="text-red-700 text-sm rounded-xl px-3 py-2 border border-red-200">
