@@ -6,8 +6,7 @@ import { useDebounce } from '../../hook/useDebounce';
 import { VscChromeClose } from 'react-icons/vsc';
 import { VscCircleLarge } from 'react-icons/vsc';
 import { formatDate } from '../../hook/useFormatDate';
-import { useUsers, useUserSearch } from '../../api/admin';
-import { isArray } from 'chart.js/helpers';
+import { useDeleteUser, useUpdateUser, useUsers, useUserSearch } from '../../api/admin';
 
 export default function Admin() {
   const [mode, setMode] = useState('all');
@@ -17,6 +16,8 @@ export default function Admin() {
   const { userSearchData, userSearchIsLoading, userSearchIsError } = useUserSearch(debouncedValue);
 
   const { usersData } = useUsers();
+
+  const { deleteUserMutate, deleteUserError } = useDeleteUser();
 
   const { updateUserMutate } = useUpdateUser();
   const { deleteUserMutate } = useDeleteUser();
@@ -42,6 +43,7 @@ export default function Admin() {
     '계정차단',
     '계정삭제',
   ];
+  const tableHead = ['이름', '활성화여부', '관리자', '이름', '이메일', '가입일시', '계정차단'];
 
   return (
     <>
@@ -106,8 +108,8 @@ export default function Admin() {
                       조회된 유저가 없습니다.
                     </td>
                   </tr>
-                ) : isArray(searchedUser) ? (
-                  searchedUser.map((user) => (
+                ) : (
+                  searchedUser?.map((user) => (
                     <tr key={user.id}>
                       <td className="border border-table p-2 text-center bg-[#222222] whitespace-nowrap">
                         {user.id}
@@ -159,36 +161,6 @@ export default function Admin() {
                       </td>
                     </tr>
                   ))
-                ) : (
-                  <tr>
-                    <td>{searchedUser.id}</td>
-                    <td className="border border-table whitespace-nowrap">
-                      {searchedUser.is_active ? (
-                        <div className="m-auto border  rounded-2xl bg-[#34cf20] w-3.5 h-3.5 shadow-[0_0_5px_#34cf20]"></div>
-                      ) : (
-                        <div className="m-auto border  rounded-2xl bg-[#cf2020] w-3.5 h-3.5 shadow-[0_0_5px_#909090]"></div>
-                      )}
-                    </td>
-                    <td
-                      className={`border p-2 text-center border-table ${searchedUser.is_superuser && 'text-red-500'}`}
-                    >
-                      {searchedUser.is_superuser ? <VscCircleLarge /> : <VscChromeClose />}
-                    </td>
-                    <td className="border border-table p-2 text-center whitespace-nowrap">
-                      {searchedUser.username}
-                    </td>
-                    <td className="border border-table p-2 text-center  whitespace-nowrap">
-                      {searchedUser.email}
-                    </td>
-                    <td className="border border-table p-2 text-center whitespace-nowrap">
-                      {formatDate(searchedUser.created_at)}
-                    </td>
-                    <td className="border border-table text-center align-middle p-1">
-                      <Button size="vsm" variant="common">
-                        차단
-                      </Button>
-                    </td>
-                  </tr>
                 )}
               </tbody>
             </table>
