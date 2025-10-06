@@ -23,7 +23,7 @@ export function useUsers() {
   } = useQuery({
     queryKey: [ADMIN_USERS],
     queryFn: () => getUsers(),
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
     // 유저 목록은 자주 바뀌지 않으니 짧게 캐싱해 두었음.
   });
   return { usersData, usersIsLoading, usersIsError, usersError, ...rest };
@@ -42,7 +42,6 @@ export async function getUserSearch(search) {
   const res = await api.get(`/admin/users/search`, {
     params: { search },
   });
-  console.log('유저검색:', res.data);
   return res.data;
 }
 export function useUserSearch(search) {

@@ -17,7 +17,7 @@ export default function Admin() {
 
   const { usersData } = useUsers();
 
-  const { deleteUserMutate, deleteUserError } = useDeleteUser();
+  const { updateUserMutate } = useUpdateUser();
 
   const { updateUserMutate } = useUpdateUser();
   const { deleteUserMutate } = useDeleteUser();
