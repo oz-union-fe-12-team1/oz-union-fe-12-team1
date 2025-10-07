@@ -57,6 +57,7 @@ export const useSchedule = create((set, get) => ({
         dateEnd: finalDateEnd,
         timeStart: isAllDay ? "" : src.timeStart,
         timeEnd: isAllDay ? "" : src.timeEnd,
+        start_time,
         end_time,
         all_day: isAllDay,
       };
@@ -85,29 +86,20 @@ export const useSchedule = create((set, get) => ({
     })),
 
   startEdit: (item) =>
-    set(() => {
-      const st = new Date(item.start_time);
-      const et = new Date(item.end_time);
-      const pad = (n) => String(n).padStart(2, "0");
-
-      const dateStart = `${st.getFullYear()}-${pad(st.getMonth() + 1)}-${pad(st.getDate())}`;
-      const timeStart = `${pad(st.getHours())}:${pad(st.getMinutes())}`;
-      const dateEnd = `${et.getFullYear()}-${pad(et.getMonth() + 1)}-${pad(et.getDate())}`;
-      const timeEnd = `${pad(et.getHours())}:${pad(et.getMinutes())}`;
-
-      return {
-        form: {
-          dateStart,
-          timeStart: item.all_day ? "" : timeStart,
-          dateEnd,
-          timeEnd: item.all_day ? "" : timeEnd,
-          title: item.title,
-          memo: item.memo ?? "",
-        },
-        isEditing: true,
-        editingId: item.id,
-      };
-    }),
+  set(() => {
+    return {
+      form: {
+        dateStart: item.dateStart,
+        timeStart: item.all_day ? "" : item.timeStart,
+        dateEnd: item.all_day ? "" : item.dateEnd,
+        timeEnd: item.all_day ? "" : item.timeEnd,
+        title: item.title,
+        memo: item.memo || "",
+      },
+      isEditing: true,
+      editingId: item.id,
+    };
+  }),
 
   cancelEdit: () =>
     set({
