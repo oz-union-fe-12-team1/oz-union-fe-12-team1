@@ -20,9 +20,6 @@ export default function Admin() {
   const { updateUserMutate } = useUpdateUser();
   const { deleteUserMutate } = useDeleteUser();
 
-  const { updateUserMutate } = useUpdateUser();
-  const { deleteUserMutate } = useDeleteUser();
-
   const baseData = debouncedValue ? (userSearchData?.users ?? []) : (usersData?.users ?? []);
 
   const searchedUser =
@@ -44,7 +41,6 @@ export default function Admin() {
     '계정차단',
     '계정삭제',
   ];
-  const tableHead = ['이름', '활성화여부', '관리자', '이름', '이메일', '가입일시', '계정차단'];
 
   return (
     <>
