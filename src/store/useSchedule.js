@@ -42,12 +42,19 @@ export const useSchedule = create((set, get) => ({
         start_time = toISO(src.dateStart, "00:00");
         end_time = toISO(finalDateEnd, "23:59");
       } else {
-        if (!hasTimeStart || !hasTimeEnd) return state;
+        let useStartTime = src.timeStart;
+        let useEndTime = src.timeEnd;
         
-        start_time = toISO(src.dateStart, src.timeStart);
-        end_time = toISO(finalDateEnd, src.timeEnd);
+        if (!hasTimeEnd && hasTimeStart) {
+          useEndTime = src.timeStart;
+        }
         
-        if (new Date(start_time) >= new Date(end_time)) return state;
+        start_time = toISO(src.dateStart, useStartTime);
+        end_time = toISO(finalDateEnd, useEndTime);
+        
+        if (hasTimeStart && hasTimeEnd) {
+          if (new Date(start_time) >= new Date(end_time)) return state;
+        }
       }
 
       const base = {
@@ -86,20 +93,20 @@ export const useSchedule = create((set, get) => ({
     })),
 
   startEdit: (item) =>
-  set(() => {
-    return {
-      form: {
-        dateStart: item.dateStart,
-        timeStart: item.all_day ? "" : item.timeStart,
-        dateEnd: item.all_day ? "" : item.dateEnd,
-        timeEnd: item.all_day ? "" : item.timeEnd,
-        title: item.title,
-        memo: item.memo || "",
-      },
-      isEditing: true,
-      editingId: item.id,
-    };
-  }),
+    set(() => {
+      return {
+        form: {
+          dateStart: item.dateStart,
+          timeStart: item.all_day ? "" : item.timeStart,
+          dateEnd: item.all_day ? "" : item.dateEnd,
+          timeEnd: item.all_day ? "" : item.timeEnd,
+          title: item.title,
+          memo: item.memo || "",
+        },
+        isEditing: true,
+        editingId: item.id,
+      };
+    }),
 
   cancelEdit: () =>
     set({
