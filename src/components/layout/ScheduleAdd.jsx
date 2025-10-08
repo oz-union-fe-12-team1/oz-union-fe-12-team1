@@ -6,6 +6,8 @@ export default function ScheduleAdd({ list, onDelete, onEdit }) {
       ) : (
         <div className="overflow-y-auto custom-scroll space-y-2 flex-1 min-h-0">
           {list.map((item) => {
+            console.log('item:', item);
+            
             const isDifferentDate = item.dateStart !== item.dateEnd;
             const hasEndTime = item.timeEnd && item.timeEnd.trim() !== '';
             const isSameTime = hasEndTime && item.timeStart === item.timeEnd;
